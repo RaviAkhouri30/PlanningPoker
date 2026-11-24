@@ -1,0 +1,234 @@
+rules_version = '2';
+
+// Ante's security rules (docs/architecture/data-model.md, ADR-0008).
+//
+// Everyone is signed in: guests anonymously (ADR-0007). A room's moderator changes the room and
+// its stories; each person writes only their own seat and their own vote. A vote stays secret
+// until its round is revealed: `rounds/{round}` is created by the moderator at the flip, and
+// only then may others read the round's votes. The rules can't count votes, so auto-reveal runs
+// in the moderator's tab.
+//
+// Mirrors in code: decks (decks.constants.ts), limits (limits.constants.ts), palette size
+// (palette.constants.ts), paths (store-paths.constants.ts). Tests: tests/rules.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- Helpers -------------------------------------------------------------------------
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isUser(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function roomPath(roomId) {
+      return /databases/$(database)/documents/rooms/$(roomId);
+    }
+
+    function participantPath(roomId, uid) {
+      return /databases/$(database)/documents/rooms/$(roomId)/participants/$(uid);
+    }
+
+    function roundPath(roomId, round) {
+      return /databases/$(database)/documents/rooms/$(roomId)/rounds/$(round);
+    }
+
+    function isParticipant(roomId) {
+      return signedIn() && exists(participantPath(roomId, request.auth.uid));
+    }
+
+    function isModerator(roomId) {
+      return signedIn() && get(roomPath(roomId)).data.moderatorUid == request.auth.uid;
+    }
+
+    function isText(value, min, max) {
+      return value is string && value.size() >= min && value.size() <= max;
+    }
+
+    function changedOnly(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    function unchanged(key) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny([key]);
+    }
+
+    // The four decks (decks.constants.ts).
+    function deckCards(deck) {
+      return {
+        'mfib': ['0', '½', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', 'break'],
+        'fib': ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '?', 'break'],
+        'tshirt': ['XS', 'S', 'M', 'L', 'XL', 'XXL', '?', 'break'],
+        'pow2': ['0', '1', '2', '4', '8', '16', '32', '64', '?', 'break']
+      }[deck];
+    }
+
+    function isDeck(deck) {
+      return deck in ['mfib', 'fib', 'tshirt', 'pow2'];
+    }
+
+    // ---- Rooms ---------------------------------------------------------------------------
+
+    function validNewRoom(roomId, data) {
+      return data.keys().hasOnly(['name', 'code', 'moderatorUid', 'moderatorName', 'deck',
+          'autoReveal', 'spectatorsByDefault', 'activeStoryId', 'round', 'revealed',
+          'roundStartedAt', 'createdAt'])
+        && data.moderatorUid == request.auth.uid
+        && isText(data.name, 1, 60)
+        && isText(data.moderatorName, 1, 40)
+        && data.code is string && data.code.matches('^[A-Z2-9]{4}-[A-Z2-9]{2}$')
+        && isDeck(data.deck)
+        && data.autoReveal is bool
+        && data.spectatorsByDefault is bool
+        && data.activeStoryId == null
+        && data.round == 1
+        && data.revealed == false
+        && data.roundStartedAt == request.time
+        && data.createdAt == request.time
+        // The code and the moderator's seat are created in the same batch.
+        && getAfter(/databases/$(database)/documents/roomCodes/$(data.code)).data.roomId == roomId
+        && existsAfter(participantPath(roomId, request.auth.uid));
+    }
+
+    // A round moves on by exactly one, unflipped, with its timer restarted; the flip keeps the
+    // round and needs its `rounds/{round}` marker in the same batch.
+    function validRoomChange(roomId) {
+      let before = resource.data;
+      let after = request.resource.data;
+      let nextRound = after.round == before.round + 1
+        && after.revealed == false && after.roundStartedAt == request.time;
+      let sameRound = after.round == before.round
+        && (after.revealed == before.revealed
+          || (after.revealed == true && existsAfter(roundPath(roomId, string(before.round)))));
+      return changedOnly(['deck', 'autoReveal', 'spectatorsByDefault', 'activeStoryId', 'round',
+          'revealed', 'roundStartedAt'])
+        && (nextRound || sameRound)
+        && isDeck(after.deck)
+        && after.autoReveal is bool
+        && after.spectatorsByDefault is bool
+        && (unchanged('roundStartedAt') || after.roundStartedAt == request.time)
+        && (after.activeStoryId == null
+          || existsAfter(/databases/$(database)/documents/rooms/$(roomId)/stories/$(after.activeStoryId)));
+    }
+
+    match /rooms/{roomId} {
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if signedIn() && validNewRoom(roomId, request.resource.data);
+      allow update: if isModerator(roomId) && validRoomChange(roomId);
+      allow delete: if false;
+
+      // ---- People ------------------------------------------------------------------------
+
+      function validSeat(data) {
+        return isText(data.displayName, 1, 40)
+          && data.colour is int && data.colour >= 0 && data.colour <= 5
+          && data.role in ['player', 'spectator'];
+      }
+
+      match /participants/{uid} {
+        // Anyone signed in may see who is in a room: the join page shows it.
+        allow read: if signedIn();
+        allow create: if isUser(uid)
+          && existsAfter(roomPath(roomId))
+          && request.resource.data.keys().hasOnly(['displayName', 'colour', 'role', 'votedRound',
+              'joinedAt', 'lastSeenAt'])
+          && validSeat(request.resource.data)
+          && request.resource.data.votedRound == null
+          && request.resource.data.joinedAt == request.time
+          && request.resource.data.lastSeenAt == request.time;
+        // Their own seat: name, colour, role, presence, and the round they voted in, which must
+        // be the room's current round (written with the vote) or cleared.
+        allow update: if isUser(uid)
+          && changedOnly(['displayName', 'colour', 'role', 'votedRound', 'lastSeenAt'])
+          && validSeat(request.resource.data)
+          && (unchanged('lastSeenAt') || request.resource.data.lastSeenAt == request.time)
+          && (unchanged('votedRound') || request.resource.data.votedRound == null
+            || request.resource.data.votedRound == get(roomPath(roomId)).data.round);
+        // The moderator may make someone a player or a spectator.
+        allow update: if isModerator(roomId) && changedOnly(['role'])
+          && request.resource.data.role in ['player', 'spectator'];
+        allow delete: if isUser(uid) || isModerator(roomId);
+      }
+
+      // ---- Stories -----------------------------------------------------------------------
+
+      function validStory(data) {
+        return isText(data.key, 1, 16)
+          && isText(data.title, 1, 200)
+          && isText(data.description, 0, 2000)
+          && data.order is number
+          && data.status in ['pending', 'done', 'skipped']
+          && (data.estimate == null || isText(data.estimate, 1, 8))
+          && data.rounds is int && data.rounds >= 0;
+      }
+
+      match /stories/{storyId} {
+        allow read: if isParticipant(roomId);
+        allow create: if isModerator(roomId)
+          && request.resource.data.keys().hasOnly(['key', 'title', 'description', 'order',
+              'status', 'estimate', 'rounds', 'createdAt'])
+          && validStory(request.resource.data)
+          && request.resource.data.status == 'pending'
+          && request.resource.data.createdAt == request.time;
+        allow update: if isModerator(roomId)
+          && changedOnly(['key', 'title', 'description', 'order', 'status', 'estimate', 'rounds'])
+          && validStory(request.resource.data);
+        allow delete: if isModerator(roomId);
+      }
+
+      // ---- Rounds and votes --------------------------------------------------------------
+
+      // Created at the flip: unlocks the round's votes for everyone in the room.
+      match /rounds/{round} {
+        allow read: if isParticipant(roomId);
+        allow create: if isModerator(roomId)
+          && round == string(get(roomPath(roomId)).data.round)
+          && getAfter(roomPath(roomId)).data.revealed == true
+          && request.resource.data.keys().hasOnly(['storyId', 'revealed', 'revealedAt'])
+          && request.resource.data.storyId == get(roomPath(roomId)).data.activeStoryId
+          && request.resource.data.revealed == true
+          && request.resource.data.revealedAt == request.time;
+        allow update, delete: if false;
+
+        function roundIsOpen() {
+          let room = get(roomPath(roomId)).data;
+          return round == string(room.round) && room.revealed == false
+            && !exists(roundPath(roomId, round));
+        }
+
+        match /votes/{uid} {
+          // Your own vote always; everyone's once the round is revealed.
+          allow get: if isUser(uid) || (isParticipant(roomId) && exists(roundPath(roomId, round)));
+          allow list: if isParticipant(roomId) && exists(roundPath(roomId, round));
+          // Players vote with a card of the room's deck while the round is open, marking their
+          // seat with this round in the same batch.
+          allow create, update: if isUser(uid)
+            && roundIsOpen()
+            && get(participantPath(roomId, uid)).data.role == 'player'
+            && getAfter(participantPath(roomId, uid)).data.votedRound == int(round)
+            && request.resource.data.keys().hasOnly(['value', 'castAt'])
+            && request.resource.data.value in deckCards(get(roomPath(roomId)).data.deck)
+            && request.resource.data.castAt == request.time;
+          allow delete: if isUser(uid) && roundIsOpen();
+        }
+      }
+    }
+
+    // ---- Room codes ------------------------------------------------------------------------
+
+    // `roomCodes/{code}` → `{ roomId }`, created only with its room.
+    match /roomCodes/{code} {
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['roomId'])
+        && getAfter(roomPath(request.resource.data.roomId)).data.code == code
+        && getAfter(roomPath(request.resource.data.roomId)).data.moderatorUid == request.auth.uid
+        && !exists(roomPath(request.resource.data.roomId));
+      allow update, delete: if false;
+    }
+  }
+}
