@@ -1,0 +1,39 @@
+<section id="features" class="section" aria-labelledby="features-title">
+  <div class="section__head">
+    <span class="section__kicker">Features</span>
+    <h2 class="section__title" id="features-title">
+      Everything a refinement session needs. Nothing it doesn’t.
+    </h2>
+  </div>
+  <div class="grid">
+    <article class="feature feature--dark feature--wide">
+      <span class="feature__icon"><app-icon [name]="sparkleIcon" [size]="22" /></span>
+      <h3 class="feature__title">{{ smart.title }}</h3>
+      <p class="feature__text">{{ smart.text }}</p>
+      <div class="feature__chips">
+        @for (chip of smart.chips; track chip; let index = $index) {
+          <span
+            class="chip"
+            [class.chip--accent]="index === suggestedChip"
+            [class.chip--hint]="index === hintChip"
+            >{{ chip }}</span
+          >
+        }
+      </div>
+    </article>
+    @for (feature of features; track feature.title) {
+      <article class="feature" [class.feature--wide]="feature.wide">
+        <span class="feature__icon"><app-icon [name]="feature.icon" [size]="22" /></span>
+        <h3 class="feature__title">{{ feature.title }}</h3>
+        <p class="feature__text">{{ feature.text }}</p>
+        @if (feature.chips.length > 0) {
+          <div class="feature__chips">
+            @for (chip of feature.chips; track chip) {
+              <span class="chip">{{ chip }}</span>
+            }
+          </div>
+        }
+      </article>
+    }
+  </div>
+</section>

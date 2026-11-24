@@ -1,0 +1,50 @@
+@use 'tokens' as t;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: t.$z-header;
+  background: rgba(244, 245, 247, 0.86);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid t.color('line');
+
+  &__nav {
+    max-width: t.$content-width;
+    margin: 0 auto;
+    padding: 14px t.$gutter;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 28px;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    flex: 1 1 auto;
+  }
+}
+
+.nav-link {
+  color: t.color('text');
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 10px 6px;
+
+  &:hover {
+    color: t.color('ink');
+  }
+}
+
+@media (max-width: 620px) {
+  .header__links {
+    display: none;
+  }
+
+  .header__nav {
+    justify-content: space-between;
+    padding-inline: t.$gutter-mobile;
+  }
+}

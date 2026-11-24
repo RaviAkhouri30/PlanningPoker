@@ -1,0 +1,24 @@
+<section class="cta" aria-labelledby="cta-title">
+  <div class="cta__band">
+    <div class="cta__copy">
+      <h2 class="cta__title" id="cta-title">Your next estimate is one link away.</h2>
+      <p class="cta__text">No download. No sign-up. Works on any device.</p>
+    </div>
+    <form class="cta__form" (submit)="submit($event)" novalidate>
+      <label class="visually-hidden" for="cta-name">Your name</label>
+      <input
+        id="cta-name"
+        class="field cta__field"
+        type="text"
+        placeholder="Your name"
+        [formControl]="name()"
+      />
+      <button class="btn btn--primary" type="submit" [disabled]="creating()">Create room</button>
+      @if (name().touched && name().invalid) {
+        <span class="field-error cta__error" role="alert"
+          >Enter your name so the team knows who you are.</span
+        >
+      }
+    </form>
+  </div>
+</section>

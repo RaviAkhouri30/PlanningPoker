@@ -1,0 +1,62 @@
+<section id="guest" class="section section--band" aria-labelledby="guest-title">
+  <div class="section__inner">
+    <div class="section__head">
+      <span class="section__kicker">Your choice</span>
+      <h2 class="section__title" id="guest-title">
+        Jump in as a guest. Sign up only if you want to keep things.
+      </h2>
+    </div>
+    <div class="plans">
+      <article class="plan">
+        <div class="plan__head">
+          <h3 class="plan__title">As a guest</h3>
+          <span class="chip">Just your name</span>
+        </div>
+        <ul class="plan__perks">
+          @for (perk of guestPerks; track perk) {
+            <li class="perk">
+              <app-icon class="perk__tick" [name]="checkIcon" [stroke]="2.4" />{{ perk }}
+            </li>
+          }
+        </ul>
+        <a class="btn btn--dark plan__cta" href="#start">Start as guest</a>
+      </article>
+      <article class="plan plan--account">
+        <div class="plan__head">
+          <h3 class="plan__title">With a free account</h3>
+          <span class="chip chip--accent">Coming soon</span>
+        </div>
+        <ul class="plan__perks">
+          @for (perk of accountPerks; track perk) {
+            <li class="perk">
+              <app-icon class="perk__tick" [name]="checkIcon" [stroke]="2.4" />{{ perk }}
+            </li>
+          }
+        </ul>
+      </article>
+    </div>
+    <div class="compare">
+      <table class="compare__table">
+        <caption class="compare__caption">
+          How Ante compares
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Feature</th>
+            <th scope="col" class="compare__ante">Ante</th>
+            <th scope="col">Typical free planning poker tool</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of comparisons; track row.feature) {
+            <tr>
+              <th scope="row">{{ row.feature }}</th>
+              <td class="compare__yes">{{ row.ante }}</td>
+              <td class="compare__no">{{ row.typical }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

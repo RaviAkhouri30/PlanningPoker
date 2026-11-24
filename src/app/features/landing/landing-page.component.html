@@ -1,0 +1,38 @@
+<app-landing-header />
+<main>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__copy rise">
+      <span class="chip hero__badge"><span class="pulse"></span>Free · No sign-up needed</span>
+      <h1 class="hero__title" id="hero-title">Estimate the sprint in minutes, not meetings.</h1>
+      <p class="hero__lead">
+        Type your name, get a room and a link to share. Your team votes in private, cards flip
+        together, and Ante points out where you disagree before you settle.
+      </p>
+      <app-hero-form
+        [forms]="forms"
+        [state]="model.view()"
+        [linkPrefix]="model.linkPrefix"
+        [slug]="model.slugPreview()"
+        [createLabel]="model.createLabel()"
+        (create)="model.createRoom()"
+        (joinCode)="model.joinByCode()"
+      />
+      <p class="hero__note">
+        Guests get every voting feature. Free accounts with saved history are coming soon.
+      </p>
+    </div>
+    <div class="hero__stage rise">
+      <app-hero-stage />
+    </div>
+  </section>
+  <app-how-it-works />
+  <app-feature-grid />
+  <app-guest-account />
+  <app-faq-list />
+  <app-closing-cta
+    [name]="model.createForm.controls.name"
+    [creating]="model.view().creating"
+    (create)="model.createRoom()"
+  />
+</main>
+<app-landing-footer />

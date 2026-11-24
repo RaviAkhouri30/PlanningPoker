@@ -1,0 +1,113 @@
+@use 'tokens' as t;
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: 20px;
+}
+
+.plan {
+  border: 1.5px solid t.color('line');
+  border-radius: t.$radius-xl;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+
+  &--account {
+    border-color: t.color('accent');
+    background: t.color('accent-faint');
+    box-shadow: 0 24px 60px rgba(75, 60, 247, 0.12);
+
+    .perk__tick {
+      color: t.color('accent');
+    }
+  }
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__title {
+    font: 600 26px t.$font-display;
+  }
+
+  &__perks {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__cta {
+    align-self: flex-start;
+  }
+}
+
+.perk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+
+  &__tick {
+    color: t.color('success-text');
+  }
+}
+
+.chip--accent {
+  background: t.color('accent');
+  color: t.color('white');
+}
+
+.compare {
+  overflow-x: auto;
+  border: 1px solid t.color('line');
+  border-radius: 24px;
+
+  &__table {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+    background: t.color('white');
+
+    th,
+    td {
+      padding: 18px 20px;
+      border-bottom: 1px solid t.color('line');
+      text-align: left;
+      font-size: 15px;
+    }
+
+    thead th {
+      font-weight: 600;
+      font-size: 14px;
+      color: t.color('text');
+    }
+  }
+
+  &__caption {
+    text-align: left;
+    padding: 22px 20px 6px;
+    font: 600 20px t.$font-display;
+  }
+
+  &__ante {
+    color: t.color('accent');
+  }
+
+  &__yes {
+    color: t.color('success-text');
+    font-weight: 600;
+  }
+
+  &__no {
+    color: t.color('text-faint');
+  }
+}

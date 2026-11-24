@@ -1,0 +1,13 @@
+<section id="faq" class="section faq" aria-labelledby="faq-title">
+  <h2 class="section__title faq__title" id="faq-title">Questions</h2>
+  <div class="faq__list">
+    @for (item of questions; track item.question; let first = $first) {
+      <details class="faq__item" [open]="first">
+        <summary class="faq__question">
+          {{ item.question }}<app-icon class="faq__plus" [name]="plusIcon" [size]="20" />
+        </summary>
+        <p class="faq__answer">{{ item.answer }}</p>
+      </details>
+    }
+  </div>
+</section>

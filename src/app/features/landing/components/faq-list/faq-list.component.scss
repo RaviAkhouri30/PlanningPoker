@@ -1,0 +1,59 @@
+@use 'tokens' as t;
+
+.faq {
+  max-width: 880px;
+  gap: 32px;
+
+  &__title {
+    text-align: center;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__item {
+    background: t.color('white');
+    border: 1px solid t.color('line');
+    border-radius: 18px;
+    padding: 0 24px;
+    transition: box-shadow 0.2s;
+
+    &[open] {
+      box-shadow: 0 10px 30px rgba(17, 19, 24, 0.06);
+
+      .faq__plus {
+        rotate: 45deg;
+      }
+    }
+  }
+
+  &__question {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 0;
+    font: 600 18px t.$font-display;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  &__plus {
+    flex: none;
+    color: t.color('accent');
+    transition: rotate 0.25s t.$ease-out;
+  }
+
+  &__answer {
+    margin: 0 0 22px;
+    color: t.color('text');
+    line-height: 1.65;
+  }
+}

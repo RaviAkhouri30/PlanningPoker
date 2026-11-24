@@ -1,0 +1,60 @@
+@use 'tokens' as t;
+
+.cta {
+  padding: 0 t.$gutter 96px;
+
+  &__band {
+    max-width: t.$content-width;
+    margin: 0 auto;
+    background: t.color('table');
+    border-radius: 36px;
+    padding: clamp(36px, 6vw, 72px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__copy {
+    flex: 1 1 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__title {
+    color: t.color('white');
+    font: 700 clamp(32px, 4vw, 48px) / 1.08 t.$font-display;
+    letter-spacing: -0.03em;
+  }
+
+  &__text {
+    color: t.color('table-text-soft');
+    font-size: 17px;
+  }
+
+  &__form {
+    flex: 1 1 360px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__field {
+    flex: 1 1 200px;
+    width: auto;
+    background: t.color('table-track');
+    border-color: t.color('table-line');
+    color: t.color('white');
+  }
+
+  &__error {
+    flex-basis: 100%;
+    color: t.color('hint-text');
+  }
+
+  @media (max-width: 620px) {
+    padding-inline: t.$gutter-mobile;
+  }
+}

@@ -1,0 +1,17 @@
+<section id="how" class="section section--band" aria-labelledby="how-title">
+  <div class="section__inner">
+    <div class="section__head">
+      <span class="section__kicker">How it works</span>
+      <h2 class="section__title" id="how-title">From zero to first estimate in under a minute.</h2>
+    </div>
+    <ol class="steps">
+      @for (step of steps; track step.title; let index = $index) {
+        <li class="step">
+          <span class="step__number">{{ index + 1 }}</span>
+          <h3 class="step__title">{{ step.title }}</h3>
+          <p class="step__text">{{ step.text }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>

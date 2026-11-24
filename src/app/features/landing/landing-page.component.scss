@@ -1,0 +1,60 @@
+@use 'tokens' as t;
+
+.hero {
+  max-width: t.$content-width;
+  margin: 0 auto;
+  padding: 72px t.$gutter 96px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+  align-items: center;
+
+  &__copy {
+    flex: 1 1 480px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  &__badge {
+    align-self: flex-start;
+    background: t.color('white');
+    border: 1px solid t.color('line');
+  }
+
+  &__title {
+    font: 700 clamp(44px, 6vw, 76px) / 1.02 t.$font-display;
+    letter-spacing: -0.035em;
+  }
+
+  &__lead {
+    font-size: 19px;
+    line-height: 1.6;
+    color: t.color('text');
+    max-width: 540px;
+  }
+
+  &__note {
+    font-size: 14px;
+    color: t.color('text-muted');
+  }
+
+  &__stage {
+    flex: 1 1 460px;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+    animation-delay: 0.15s;
+  }
+
+  @media (max-width: 620px) {
+    padding: 40px t.$gutter-mobile 64px;
+    gap: 40px;
+
+    &__copy,
+    &__stage {
+      flex-basis: 100%;
+    }
+  }
+}

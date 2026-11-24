@@ -1,0 +1,52 @@
+<div class="table">
+  <div class="table__row">
+    @for (seat of top; track seat.name) {
+      <div class="seat">
+        <div class="flip">
+          <div class="flip__in" [appDelay]="seat.delay">
+            <div class="flip__face flip__back"></div>
+            <div class="flip__face flip__front">{{ seat.card }}</div>
+          </div>
+        </div>
+        <app-avatar [name]="seat.name" [colourIndex]="seat.colour" size="sm" />
+      </div>
+    }
+  </div>
+  <div class="table__middle">
+    <span class="table__wait">Everyone voted · revealing…</span>
+    <span class="table__result">
+      <span class="table__label">Average</span>
+      <span class="table__value">5.5</span>
+      <span class="table__suggest">Suggest 5</span>
+    </span>
+  </div>
+  <div class="table__row">
+    @for (seat of bottom; track seat.name) {
+      <div class="seat">
+        <app-avatar [name]="seat.name" [colourIndex]="seat.colour" size="sm" />
+        <div class="flip">
+          <div class="flip__in" [appDelay]="seat.delay">
+            <div class="flip__face flip__back"></div>
+            <div class="flip__face flip__front">{{ seat.card }}</div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+<div class="fan">
+  @for (card of fan; track card.card) {
+    <div class="fan__card">
+      <div class="fan__in" [class.fan__in--picked]="card.picked" [appDelay]="card.delay">
+        <span class="fan__corner">{{ card.card }}</span
+        >{{ card.card }}
+      </div>
+    </div>
+  }
+</div>
+<span class="float float--joined"
+  ><app-avatar name="Maya Chen" [colourIndex]="1" size="sm" />Maya joined via link</span
+>
+<span class="float float--voted"
+  ><app-icon [name]="checkIcon" [size]="16" [stroke]="2.4" />6 of 6 voted</span
+>

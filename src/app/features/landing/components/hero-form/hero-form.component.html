@@ -1,0 +1,69 @@
+<form class="panel" id="start" [formGroup]="forms().create" (ngSubmit)="create.emit()" novalidate>
+  <div class="panel__row">
+    <div class="field-group">
+      <label class="field-label" for="hero-name">Your name</label>
+      <input
+        id="hero-name"
+        class="field field--lg"
+        type="text"
+        placeholder="e.g. Alex"
+        formControlName="name"
+        autocomplete="name"
+        [attr.aria-invalid]="
+          forms().create.controls.name.invalid && forms().create.controls.name.touched
+        "
+        aria-describedby="hero-name-error"
+      />
+      @if (forms().create.controls.name.touched && forms().create.controls.name.errors) {
+        <span class="field-error" id="hero-name-error">
+          @if (forms().create.controls.name.hasError('tooLong')) {
+            Use 40 characters or fewer.
+          } @else {
+            Enter your name so the team knows who you are.
+          }
+        </span>
+      }
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="hero-room"
+        >Room name <span class="panel__optional">(optional)</span></label
+      >
+      <input
+        id="hero-room"
+        class="field field--lg"
+        type="text"
+        placeholder="Sprint 42 planning"
+        formControlName="roomName"
+      />
+    </div>
+  </div>
+  <div class="panel__row panel__row--center">
+    <button class="btn btn--primary btn--lg panel__cta" type="submit" [disabled]="state().creating">
+      {{ state().creating ? 'Creating your room…' : createLabel() }}
+      <app-icon [name]="arrowIcon" />
+    </button>
+    <span class="panel__link">
+      <app-icon [name]="linkIcon" [size]="16" />
+      <span class="panel__link-text"
+        >{{ linkPrefix() }}<strong>{{ slug() }}</strong
+        >-…</span
+      >
+    </span>
+  </div>
+</form>
+<form class="code" [formGroup]="forms().code" (ngSubmit)="joinCode.emit()" novalidate>
+  <label class="field-label" for="hero-code">Got a code?</label>
+  <input
+    id="hero-code"
+    class="field code__input"
+    type="text"
+    placeholder="X7K2-91"
+    formControlName="code"
+    autocomplete="off"
+    aria-describedby="hero-code-error"
+  />
+  <button class="btn" type="submit" [disabled]="state().joining">Join room</button>
+  @if (state().codeError; as error) {
+    <span class="field-error code__error" id="hero-code-error" role="alert">{{ error }}</span>
+  }
+</form>
