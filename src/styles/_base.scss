@@ -1,0 +1,105 @@
+@use 'tokens' as t;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: t.color('page');
+  color: t.color('ink');
+  font-family: t.$font-body;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: t.color('accent');
+
+  &:hover {
+    color: t.color('accent-deep');
+  }
+}
+
+button {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid t.color('accent');
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: t.$font-display;
+}
+
+p {
+  margin: 0;
+}
+
+.eyebrow {
+  font: 600 12px t.$font-body;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: t.color('text-muted');
+}
+
+.pulse {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: t.color('success');
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(18, 160, 106, 0.5);
+  }
+
+  70% {
+    box-shadow: 0 0 0 8px rgba(18, 160, 106, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(18, 160, 106, 0);
+  }
+}
+
+.rise {
+  animation: rise 0.6s t.$ease-out both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.key {
+  flex: none;
+  font: 600 11px t.$font-body;
+  color: t.color('text');
+  background: t.color('surface-muted');
+  border-radius: 6px;
+  padding: 4px 6px;
+  letter-spacing: 0.02em;
+}
+
+// The design turns every animation off for people who ask for less motion.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

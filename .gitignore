@@ -1,0 +1,70 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# Firebase emulator logs (rewritten on every run)
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Test & analysis output
+/playwright-report
+/test-results
+/blob-report
+/playwright/.cache
+/reports
+/.scannerwork
+
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+*-firebase-adminsdk-*.json
+public/runtime-config.js
+
+# Azure Functions (api/)
+/api/node_modules
+/api/dist
+/api/coverage
+/api/local.settings.json

@@ -1,0 +1,96 @@
+// Design tokens: the single source of truth for colours, type, radii, shadows and layers.
+// Values are taken from the design canvas (Main, Room, Join .dc.html). Components and global
+// partials consume these; never hard-code a value elsewhere (CLAUDE.md §10).
+@use 'sass:map';
+
+$palette: (
+  // Page and surfaces
+  'page': #f4f5f7,
+  'white': #ffffff,
+  'surface-soft': #f8f8fa,
+  'surface-muted': #f1f2f5,
+  'accent-wash': #f5f4ff,
+  'accent-tint': #eeecff,
+  'accent-faint': #fbfaff,
+  // Lines
+  'line': #e3e5ea,
+  'line-strong': #dadde5,
+  'line-hover': #b9bdc9,
+  'accent-line': #c9c3ff,
+  // Text
+  'ink': #111318,
+  'ink-soft': #22252d,
+  'text': #3d414c,
+  'text-muted': #555a66,
+  'text-faint': #6b7080,
+  // Accent
+  'accent': #4b3cf7,
+  'accent-hover': #3d2ee6,
+  'accent-deep': #3326c9,
+  'accent-light': #7c70ff,
+  'accent-pale': #bdb6ff,
+  // The dark table
+  'table': #181a22,
+  'table-raised': #2b2f3d,
+  'table-hover': #353a4b,
+  'table-line': #3a3d4d,
+  'table-dash': #3e4252,
+  'table-track': #262935,
+  'table-bar': #5a5f75,
+  'table-text': #e9eaf0,
+  'table-text-soft': #c4c7d4,
+  'table-text-muted': #a9adbd,
+  'table-text-faint': #8b90a3,
+  // Status
+  'success': #12a06a,
+  'success-text': #0e7a52,
+  'mint-bright': #7ce0b4,
+  'consensus': #3dd598,
+  'warning': #ffb547,
+  'coral': #ff7a59,
+  'hint-text': #ffd5c2,
+  'switch-off': #c9ccd6
+);
+
+/// @return The colour token `$name`.
+@function color($name) {
+  @if not map.has-key($palette, $name) {
+    @error 'Unknown colour token: #{$name}';
+  }
+  @return map.get($palette, $name);
+}
+
+// ---- Type -----------------------------------------------------------------
+$font-display: 'Space Grotesk', system-ui, sans-serif;
+$font-body: 'Inter', system-ui, sans-serif;
+
+// ---- Radii ----------------------------------------------------------------
+$radius-sm: 10px;
+$radius-md: 14px;
+$radius-lg: 20px;
+$radius-xl: 28px;
+$radius-pill: 999px;
+
+// ---- Shadows --------------------------------------------------------------
+$shadow-hover: 0 8px 20px rgba(17, 19, 24, 0.08);
+$shadow-accent: 0 10px 26px rgba(75, 60, 247, 0.35);
+$shadow-panel: 0 24px 60px rgba(17, 19, 24, 0.07);
+$shadow-toast: 0 18px 40px rgba(0, 0, 0, 0.25);
+$shadow-card: 0 8px 18px rgba(0, 0, 0, 0.3);
+$shadow-modal: 0 40px 90px rgba(0, 0, 0, 0.3);
+$focus-ring: 0 0 0 4px rgba(75, 60, 247, 0.15);
+
+// ---- Motion ---------------------------------------------------------------
+$ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+$ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+// ---- Layers ---------------------------------------------------------------
+$z-header: 20;
+$z-dialog: 50;
+$z-toast: 60;
+
+// ---- Layout ---------------------------------------------------------------
+$content-width: 1240px;
+$room-width: 1440px;
+$gutter: 24px;
+$gutter-mobile: 16px;

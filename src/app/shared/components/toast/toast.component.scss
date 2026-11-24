@@ -1,0 +1,40 @@
+@use 'tokens' as t;
+
+.toast-region {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: t.$z-toast;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100vw - 32px);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  background: t.color('ink');
+  color: t.color('white');
+  border-radius: t.$radius-md;
+  padding: 14px 18px;
+  font: 600 14px t.$font-body;
+  box-shadow: t.$shadow-toast;
+  animation: toast-in 0.45s t.$ease-spring both;
+
+  &__icon {
+    color: t.color('mint-bright');
+  }
+
+  &--error &__icon {
+    color: t.color('coral');
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}

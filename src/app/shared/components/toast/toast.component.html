@@ -1,0 +1,12 @@
+<!-- The live region is always present, so a toast added later is announced. -->
+<div class="toast-region" role="status" aria-live="polite">
+  @if (model.toast(); as toast) {
+    <p class="toast" [class.toast--error]="toast.tone === error">
+      <app-icon
+        class="toast__icon"
+        [name]="toast.tone === error ? alertIcon : checkIcon"
+        [size]="18"
+      />{{ toast.text }}
+    </p>
+  }
+</div>

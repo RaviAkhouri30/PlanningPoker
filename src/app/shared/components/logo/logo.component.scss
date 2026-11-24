@@ -1,0 +1,31 @@
+@use 'tokens' as t;
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: t.color('ink');
+  text-decoration: none;
+
+  &:hover {
+    color: t.color('ink');
+  }
+
+  &__back {
+    fill: t.color('ink');
+  }
+
+  &__front {
+    fill: t.color('accent');
+  }
+
+  &__word {
+    font: 700 22px t.$font-display;
+    letter-spacing: -0.02em;
+  }
+
+  &--compact &__word {
+    font-size: 20px;
+  }
+}
