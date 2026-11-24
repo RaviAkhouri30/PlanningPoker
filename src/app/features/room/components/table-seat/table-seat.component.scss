@@ -1,0 +1,133 @@
+@use 'tokens' as t;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 104px;
+}
+
+:host(.seat--below) {
+  flex-direction: column-reverse;
+}
+
+.slot {
+  position: relative;
+  width: 58px;
+  height: 82px;
+  perspective: 600px;
+
+  &__empty {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    border: 2px dashed t.color('table-dash');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: t.color('table-text-faint');
+    font: 600 18px t.$font-display;
+  }
+
+  &__pop {
+    position: absolute;
+    inset: 0;
+    animation: pop 0.5s t.$ease-spring both;
+  }
+}
+
+.flip {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.75s t.$ease-out;
+  transition-delay: var(--delay, 0ms);
+
+  &--up {
+    transform: rotateY(180deg);
+  }
+
+  &__face {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__back {
+    background: t.color('accent')
+      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.14) 0 6px, transparent 6px 12px);
+    border: 3px solid t.color('white');
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  }
+
+  &__front {
+    transform: rotateY(180deg);
+    background: t.color('white');
+    border: 1.5px solid t.color('line-strong');
+    color: t.color('ink');
+    font: 700 26px t.$font-display;
+    box-shadow: t.$shadow-card;
+  }
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: t.color('table-text');
+  font: 600 13px t.$font-body;
+  max-width: 104px;
+
+  &__text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.dots {
+  display: flex;
+  gap: 4px;
+
+  i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: t.color('table-text-faint');
+    animation: dot 1.2s infinite ease-in-out;
+
+    &:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.5) rotate(-12deg);
+  }
+}
+
+@keyframes dot {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+
+  40% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,24 @@
+<div class="deck">
+  <span class="eyebrow" aria-live="polite">{{ prompt() }}</span>
+  <div class="deck__cards" role="group" aria-label="Your card">
+    @for (card of cards(); track card) {
+      <button
+        class="card"
+        type="button"
+        [class.card--picked]="picked() === card"
+        [disabled]="!enabled()"
+        [attr.aria-pressed]="picked() === card"
+        [attr.aria-label]="card === breakCard ? 'I need a break' : 'Vote ' + card"
+        (click)="pick.emit(card)"
+      >
+        @if (card === breakCard) {
+          <app-icon [name]="coffeeIcon" [size]="26" />
+        } @else {
+          <span class="card__corner" aria-hidden="true">{{ card }}</span>
+          {{ card }}
+          <span class="card__corner card__corner--end" aria-hidden="true">{{ card }}</span>
+        }
+      </button>
+    }
+  </div>
+</div>

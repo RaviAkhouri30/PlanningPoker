@@ -1,0 +1,48 @@
+<dialog
+  #dialog
+  class="modal"
+  aria-labelledby="invite-title"
+  (close)="closed.emit()"
+  (cancel)="closed.emit()"
+>
+  <div class="modal__head">
+    <div class="modal__copy">
+      <h2 class="modal__title" id="invite-title">Invite your team</h2>
+      <p class="modal__text">Anyone with the link can join with just a name. No account needed.</p>
+    </div>
+    <button
+      class="btn btn--icon modal__close"
+      type="button"
+      aria-label="Close"
+      (click)="closed.emit()"
+    >
+      <app-icon [name]="closeIcon" />
+    </button>
+  </div>
+  <div class="link">
+    <span class="link__text">{{ link() }}</span>
+    <button class="btn btn--primary" type="button" (click)="copyLink.emit()">
+      <app-icon [name]="copyIcon" />Copy link
+    </button>
+  </div>
+  <div class="code">
+    <span class="code__label">Or join with code</span>
+    <span class="code__value">{{ code() }}</span>
+  </div>
+  @if (canConfigure()) {
+    <div class="toggle">
+      <div class="toggle__copy">
+        <span class="toggle__label" id="spectator-label">New people join as spectators</span>
+        <span class="toggle__note">They can watch, then pick up a card</span>
+      </div>
+      <button
+        class="switch"
+        type="button"
+        role="switch"
+        aria-label="New people join as spectators"
+        [attr.aria-checked]="spectatorsByDefault()"
+        (click)="spectatorsToggle.emit()"
+      ></button>
+    </div>
+  }
+</dialog>

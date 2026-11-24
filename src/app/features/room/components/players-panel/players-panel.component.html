@@ -1,0 +1,23 @@
+<section class="panel-card" aria-labelledby="players-title">
+  <div class="panel-card__head">
+    <h2 class="panel-card__title" id="players-title">People</h2>
+    <span class="panel-card__note">{{ votedCount() }} of {{ playerCount() }} voted</span>
+  </div>
+  <ul class="people">
+    @for (seat of seats(); track seat.uid) {
+      <li class="person" [class.person--away]="!seat.online">
+        <app-avatar [name]="seat.fullName" [colourIndex]="seat.colour" [isMe]="seat.isMe" />
+        <div class="person__who">
+          <span class="person__name">{{ seat.fullName }}</span>
+          <span class="person__role">{{ seat.roleLabel }}{{ seat.online ? '' : ' · away' }}</span>
+        </div>
+        <span class="person__status" [class.person__status--voted]="seat.slot === card">
+          @if (seat.slot === card) {
+            <app-icon [name]="checkIcon" [size]="14" [stroke]="2.6" />
+          }
+          {{ seat.status }}
+        </span>
+      </li>
+    }
+  </ul>
+</section>

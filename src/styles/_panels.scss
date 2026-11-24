@@ -1,0 +1,31 @@
+@use 'tokens' as t;
+
+// The room's white side cards, shared by its panel components.
+.panel-card {
+  background: t.color('white');
+  border: 1px solid t.color('line');
+  border-radius: t.$radius-lg;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__title {
+    font: 600 16px t.$font-display;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__note {
+    font-size: 12px;
+    color: t.color('text-muted');
+  }
+}

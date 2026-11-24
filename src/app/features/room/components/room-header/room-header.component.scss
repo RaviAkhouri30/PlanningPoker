@@ -1,0 +1,82 @@
+@use 'tokens' as t;
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: t.$z-header;
+  background: rgba(244, 245, 247, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid t.color('line');
+
+  &__inner {
+    max-width: t.$room-width;
+    margin: 0 auto;
+    padding: 10px t.$gutter;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+  }
+
+  &__rule {
+    width: 1px;
+    height: 28px;
+    background: t.color('line-strong');
+  }
+
+  &__room {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__name {
+    font: 600 16px t.$font-display;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: t.color('text-muted');
+
+    strong {
+      color: t.color('ink');
+      letter-spacing: 0.06em;
+    }
+  }
+
+  &__spacer {
+    flex: 1 1 auto;
+  }
+
+  &__timer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background: t.color('white');
+    border: 1px solid t.color('line');
+    font: 600 16px t.$font-display;
+    font-variant-numeric: tabular-nums;
+    color: t.color('ink');
+  }
+
+  @media (max-width: 620px) {
+    &__inner {
+      padding-inline: t.$gutter-mobile;
+    }
+
+    &__rule,
+    &__spacer {
+      display: none;
+    }
+  }
+}

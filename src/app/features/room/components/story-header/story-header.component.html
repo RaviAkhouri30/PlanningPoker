@@ -1,0 +1,29 @@
+<section class="story rise" aria-labelledby="story-title">
+  <div class="story__main">
+    <div class="story__meta">
+      <span class="eyebrow story__now">Now estimating</span>
+      <span class="key">{{ story().key }}</span>
+      <span class="story__count">Story {{ position() }} of {{ stories().length }}</span>
+    </div>
+    <h1 class="story__title" id="story-title">{{ story().title }}</h1>
+    @if (story().description) {
+      <p class="story__text">{{ story().description }}</p>
+    }
+  </div>
+  <div class="progress">
+    <div class="progress__row">
+      <span>Session progress</span><strong>{{ settled() }}/{{ stories().length }}</strong>
+    </div>
+    <div
+      class="progress__track"
+      role="progressbar"
+      aria-label="Stories settled"
+      [attr.aria-valuenow]="percent()"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      <div class="progress__fill" [appWidthPercent]="percent()"></div>
+    </div>
+    <span class="progress__deck">{{ deckLabel() }} deck</span>
+  </div>
+</section>

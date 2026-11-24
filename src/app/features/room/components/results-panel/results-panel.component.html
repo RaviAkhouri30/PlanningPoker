@@ -1,0 +1,83 @@
+<div class="results" role="region" aria-label="Results">
+  @if (stats().isConsensus) {
+    <app-confetti-burst />
+  }
+  <div class="summary rise">
+    <div class="average">
+      <span class="average__label">Average</span>
+      <span class="average__value">{{ stats().averageLabel }}</span>
+      <span class="average__note"
+        >Median {{ stats().medianLabel }} · {{ stats().numericCount }} votes</span
+      >
+    </div>
+    <ul class="bars" aria-label="Votes per card">
+      @for (bar of stats().distribution; track bar.card) {
+        <li class="bars__row" [attr.title]="bar.voters">
+          <span class="bars__card">{{ bar.label }}</span>
+          <span class="bars__track"
+            ><span
+              class="bars__fill"
+              [class.bars__fill--top]="bar.isTop"
+              [appWidthPercent]="bar.percent"
+            ></span
+          ></span>
+          <span class="bars__count">{{ bar.count }}</span>
+        </li>
+      }
+    </ul>
+    <div class="agreement">
+      <svg
+        width="84"
+        height="84"
+        viewBox="0 0 84 84"
+        role="img"
+        [attr.aria-label]="stats().agreementPercent + ' percent agreement'"
+      >
+        <circle class="agreement__track" cx="42" cy="42" r="34" />
+        <circle
+          class="agreement__ring"
+          [class.agreement__ring--full]="stats().isConsensus"
+          cx="42"
+          cy="42"
+          r="34"
+          [attr.stroke-dasharray]="ringLength"
+          [attr.stroke-dashoffset]="ringOffset()"
+        />
+        <text class="agreement__pct" x="42" y="48" text-anchor="middle">
+          {{ stats().agreementPercent }}%
+        </text>
+      </svg>
+      <div class="agreement__copy">
+        <span class="agreement__label">{{ stats().agreementLabel }}</span>
+        <span class="agreement__note">agreement on one card</span>
+      </div>
+    </div>
+  </div>
+  @if (stats().hint; as hint) {
+    <p class="hint rise"><app-icon [name]="alertIcon" [size]="16" />{{ hint }}</p>
+  }
+  @if (isModerator()) {
+    <div class="choices rise">
+      @if (stats().suggested; as suggested) {
+        <button class="btn btn--primary btn--lg" type="button" (click)="accept.emit(suggested)">
+          <app-icon [name]="checkIcon" />Accept {{ suggested }}
+        </button>
+      }
+      @for (card of stats().alternatives; track card) {
+        <button
+          class="chip-btn"
+          type="button"
+          [attr.aria-label]="'Accept ' + card + ' instead'"
+          (click)="accept.emit(card)"
+        >
+          {{ card }}
+        </button>
+      }
+      <button class="btn btn--ghost-dark btn--lg" type="button" (click)="voteAgain.emit()">
+        <app-icon [name]="refreshIcon" />Vote again
+      </button>
+    </div>
+  } @else {
+    <p class="waiting">The moderator settles the estimate.</p>
+  }
+</div>

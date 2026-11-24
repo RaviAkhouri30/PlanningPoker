@@ -1,0 +1,88 @@
+@use 'tokens' as t;
+
+.story {
+  background: t.color('white');
+  border: 1px solid t.color('line');
+  border-radius: t.$radius-lg;
+  padding: 22px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  &__main {
+    flex: 1 1 380px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__now {
+    color: t.color('accent');
+  }
+
+  &__count {
+    font-size: 12px;
+    color: t.color('text-muted');
+  }
+
+  &__title {
+    font: 700 28px/1.15 t.$font-display;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  &__text {
+    color: t.color('text');
+    line-height: 1.55;
+    font-size: 15px;
+    max-width: 720px;
+  }
+}
+
+.progress {
+  flex: 0 1 220px;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: t.color('text');
+
+    strong {
+      color: t.color('ink');
+    }
+  }
+
+  &__track {
+    height: 8px;
+    border-radius: t.$radius-pill;
+    background: t.color('line');
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: t.$radius-pill;
+    background: t.color('accent');
+    transition: width 0.6s t.$ease-out;
+  }
+
+  &__deck {
+    font-size: 12px;
+    color: t.color('text-muted');
+  }
+}

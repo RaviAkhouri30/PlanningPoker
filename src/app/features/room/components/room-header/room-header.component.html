@@ -1,0 +1,23 @@
+<header class="bar">
+  <div class="bar__inner">
+    <app-logo />
+    <span class="bar__rule" aria-hidden="true"></span>
+    <div class="bar__room">
+      <span class="bar__name">{{ room().name }}</span>
+      <span class="bar__meta"
+        ><span class="pulse"></span>{{ onlineCount() }} online · code
+        <strong>{{ room().code }}</strong></span
+      >
+    </div>
+    <span class="bar__spacer"></span>
+    <div class="bar__timer" role="timer" aria-label="Round timer">
+      <app-icon [name]="clockIcon" [size]="16" />{{ timer() }}
+    </div>
+    <button class="btn btn--primary" type="button" (click)="invite.emit()">
+      <app-icon [name]="linkIcon" [size]="16" />Invite
+    </button>
+    @if (me(); as person) {
+      <app-avatar [name]="person.displayName" [colourIndex]="person.colourIndex" [isMe]="true" />
+    }
+  </div>
+</header>

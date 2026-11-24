@@ -1,0 +1,202 @@
+@use 'tokens' as t;
+
+.results {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+.summary {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.average {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  min-width: 120px;
+
+  &__label {
+    color: t.color('table-text-muted');
+    font: 600 12px t.$font-body;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__value {
+    color: t.color('white');
+    font: 700 60px/1 t.$font-display;
+  }
+
+  &__note {
+    color: t.color('table-text-muted');
+    font-size: 13px;
+  }
+}
+
+.bars {
+  flex: 0 1 280px;
+  min-width: 220px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) 24px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__card {
+    color: t.color('white');
+    font: 700 18px t.$font-display;
+    text-align: right;
+  }
+
+  &__track {
+    height: 10px;
+    border-radius: t.$radius-pill;
+    background: t.color('table-track');
+    overflow: hidden;
+  }
+
+  &__fill {
+    display: block;
+    height: 10px;
+    border-radius: t.$radius-pill;
+    background: t.color('table-bar');
+    animation: grow 0.8s t.$ease-out both 0.25s;
+
+    &--top {
+      background: t.color('accent-light');
+    }
+  }
+
+  &__count {
+    color: t.color('table-text-soft');
+    font: 600 13px t.$font-body;
+  }
+}
+
+.agreement {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  &__track,
+  &__ring {
+    fill: none;
+    stroke-width: 8;
+  }
+
+  &__track {
+    stroke: t.color('table-track');
+  }
+
+  &__ring {
+    stroke: t.color('accent-light');
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: stroke-dashoffset 1s;
+    animation: ring 1.1s t.$ease-out both 0.3s;
+
+    &--full {
+      stroke: t.color('consensus');
+    }
+  }
+
+  &__pct {
+    fill: t.color('white');
+    font: 700 18px t.$font-display;
+  }
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+  }
+
+  &__label {
+    color: t.color('white');
+    font: 600 16px t.$font-display;
+  }
+
+  &__note {
+    color: t.color('table-text-muted');
+    font-size: 13px;
+  }
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: t.color('table-raised');
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: t.color('hint-text');
+  font-size: 14px;
+  text-align: left;
+  animation-delay: 0.4s;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  animation-delay: 0.5s;
+}
+
+.chip-btn {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: t.$radius-pill;
+  border: 1px solid t.color('table-line');
+  background: transparent;
+  color: t.color('table-text');
+  font: 600 14px t.$font-body;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background: t.color('table-raised');
+    border-color: t.color('text-faint');
+  }
+}
+
+.waiting {
+  color: t.color('table-text-muted');
+  font-size: 14px;
+}
+
+@keyframes grow {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes ring {
+  from {
+    stroke-dashoffset: 213.6;
+  }
+}

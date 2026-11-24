@@ -1,0 +1,58 @@
+<section class="panel-card" aria-labelledby="moderator-title">
+  <div class="panel-card__head">
+    <h2 class="panel-card__title" id="moderator-title">
+      <app-icon [name]="icons.Crown" [size]="16" />Moderator controls
+    </h2>
+    <span class="panel-card__note">Only you see these</span>
+  </div>
+  <div class="controls">
+    <button class="control" type="button" (click)="resetTimer.emit()">
+      <app-icon [name]="icons.Clock" />Reset timer
+    </button>
+    <button
+      class="control"
+      type="button"
+      [disabled]="!hasStory() || room().revealed || votedCount() === 0"
+      (click)="reveal.emit()"
+    >
+      <app-icon [name]="icons.Eye" />Flip cards
+    </button>
+    <button class="control" type="button" [disabled]="!hasStory()" (click)="voteAgain.emit()">
+      <app-icon [name]="icons.Refresh" />Clear votes
+    </button>
+    <button class="control" type="button" [disabled]="!hasStory()" (click)="skip.emit()">
+      <app-icon [name]="icons.Skip" />Skip story
+    </button>
+  </div>
+  <div class="group">
+    <span class="eyebrow" id="deck-label">Card deck</span>
+    <div class="decks" role="group" aria-labelledby="deck-label">
+      @for (deck of decks; track deck.type) {
+        <button
+          class="deck"
+          type="button"
+          [class.deck--on]="room().deckType === deck.type"
+          [attr.aria-pressed]="room().deckType === deck.type"
+          (click)="deckPick.emit(deck.type)"
+        >
+          <span class="deck__name">{{ deck.label }}</span>
+          <span class="deck__sample">{{ deck.sample }}</span>
+        </button>
+      }
+    </div>
+  </div>
+  <div class="toggle">
+    <div class="toggle__copy">
+      <span class="toggle__label" id="auto-label">Auto-reveal</span>
+      <span class="panel-card__note">Flip as soon as everyone has voted</span>
+    </div>
+    <button
+      class="switch"
+      type="button"
+      role="switch"
+      aria-label="Auto-reveal"
+      [attr.aria-checked]="room().autoReveal"
+      (click)="autoRevealToggle.emit()"
+    ></button>
+  </div>
+</section>

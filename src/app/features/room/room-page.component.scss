@@ -1,0 +1,57 @@
+@use 'tokens' as t;
+
+.layout {
+  max-width: t.$room-width;
+  margin: 0 auto;
+  padding: t.$gutter;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+
+  &__main {
+    flex: 999 1 640px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__side {
+    flex: 1 1 340px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @media (max-width: 620px) {
+    padding: t.$gutter-mobile;
+  }
+}
+
+.table-card {
+  background: t.color('white');
+  border: 1px solid t.color('line');
+  border-radius: t.$radius-xl;
+  padding: 20px;
+
+  @media (max-width: 620px) {
+    padding: 10px;
+  }
+}
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 120px t.$gutter;
+  text-align: center;
+  color: t.color('text');
+
+  &__title {
+    font: 700 36px t.$font-display;
+    color: t.color('ink');
+  }
+}

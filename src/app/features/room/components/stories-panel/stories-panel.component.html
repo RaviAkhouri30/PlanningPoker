@@ -1,0 +1,59 @@
+<section class="panel-card" aria-labelledby="stories-title">
+  <div class="panel-card__head">
+    <h2 class="panel-card__title" id="stories-title">Stories</h2>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Story filter">
+    @for (item of tabs; track item.tab) {
+      <button
+        class="tabs__tab"
+        type="button"
+        role="tab"
+        [class.tabs__tab--on]="tab() === item.tab"
+        [attr.aria-selected]="tab() === item.tab"
+        (click)="tabPick.emit(item.tab)"
+      >
+        {{ item.label }}<span class="tabs__count">{{ counts()[item.key] }}</span>
+      </button>
+    }
+  </div>
+  <div class="list" role="tabpanel">
+    @for (story of stories(); track story.id) {
+      <button
+        class="row"
+        type="button"
+        [class.row--active]="story.id === activeId()"
+        [attr.aria-current]="story.id === activeId() ? 'true' : null"
+        [disabled]="!isModerator()"
+        (click)="storyPick.emit(story)"
+      >
+        <span class="key">{{ story.key }}</span>
+        <span class="row__title">{{ story.title }}</span>
+        @if (story.id === activeId()) {
+          <span class="row__badge">Voting</span>
+        } @else if (story.estimate !== null) {
+          <span class="row__estimate">{{ story.estimate }}</span>
+        } @else if (story.status === skipped) {
+          <span class="row__badge row__badge--muted">Skipped</span>
+        }
+      </button>
+    } @empty {
+      <p class="list__empty">Nothing here yet.</p>
+    }
+  </div>
+  @if (isModerator()) {
+    <form class="add" (submit)="submit($event, draft)">
+      <label class="visually-hidden" for="new-story">New story title</label>
+      <input
+        #draft
+        id="new-story"
+        class="field add__field"
+        type="text"
+        placeholder="Add a story, e.g. PAY-214 Saved cards"
+        [attr.maxlength]="maxTitle"
+      />
+      <button class="btn btn--primary btn--icon" type="submit" aria-label="Add story">
+        <app-icon [name]="plusIcon" />
+      </button>
+    </form>
+  }
+</section>

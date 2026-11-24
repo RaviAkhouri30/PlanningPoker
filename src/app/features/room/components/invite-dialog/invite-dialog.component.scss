@@ -1,0 +1,117 @@
+@use 'tokens' as t;
+
+.modal {
+  width: calc(100% - 32px);
+  max-width: 520px;
+  border: 0;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: t.$shadow-modal;
+  color: t.color('ink');
+
+  &[open] {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: modal 0.4s t.$ease-spring both;
+  }
+
+  &::backdrop {
+    background: rgba(17, 19, 24, 0.55);
+    backdrop-filter: blur(4px);
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__close {
+    flex: none;
+    align-self: flex-start;
+  }
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__title {
+    font: 700 24px t.$font-display;
+  }
+
+  &__text {
+    color: t.color('text');
+    line-height: 1.5;
+  }
+}
+
+.link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 16px;
+  border-radius: t.$radius-md;
+  border: 1.5px solid t.color('line-strong');
+
+  &__text {
+    flex: 1 1 200px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+}
+
+.code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: t.$radius-md;
+  background: t.color('surface-muted');
+
+  &__label {
+    color: t.color('text');
+    font-size: 14px;
+  }
+
+  &__value {
+    font: 700 22px t.$font-display;
+    letter-spacing: 0.12em;
+  }
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__label {
+    font: 600 14px t.$font-body;
+  }
+
+  &__note {
+    font-size: 12px;
+    color: t.color('text-muted');
+  }
+}
+
+@keyframes modal {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+}

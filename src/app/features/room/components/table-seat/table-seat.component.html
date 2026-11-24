@@ -1,0 +1,40 @@
+<div class="slot">
+  @switch (seat().slot) {
+    @case (slots.Thinking) {
+      <div class="slot__empty" aria-hidden="true">
+        <span class="dots"><i></i><i></i><i></i></span>
+      </div>
+    }
+    @case (slots.Empty) {
+      <div class="slot__empty" aria-hidden="true">–</div>
+    }
+    @default {
+      <div class="slot__pop">
+        <div
+          class="flip"
+          [class.flip--up]="revealed() && seat().card !== null"
+          [appDelay]="seat().flipDelay"
+        >
+          <div class="flip__face flip__back"></div>
+          <div class="flip__face flip__front">
+            @if (seat().card === breakCard) {
+              <app-icon [name]="coffeeIcon" [size]="26" label="Break" />
+            } @else {
+              {{ seat().card }}
+            }
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>
+<div class="name">
+  <app-avatar
+    [name]="seat().fullName"
+    [colourIndex]="seat().colour"
+    [isMe]="seat().isMe"
+    size="sm"
+  />
+  <span class="name__text">{{ seat().shortName }}</span>
+  <span class="visually-hidden">: {{ seat().status }}</span>
+</div>

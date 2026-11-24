@@ -1,0 +1,47 @@
+@use 'sass:list';
+@use 'sass:math';
+@use 'tokens' as t;
+
+$confetti-colours: (
+  t.color('accent-light'),
+  t.color('consensus'),
+  t.color('warning'),
+  t.color('coral'),
+  t.color('white')
+);
+
+:host {
+  position: absolute;
+  inset: -260px 0 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  .piece {
+    position: absolute;
+    top: -12px;
+    width: 8px;
+    height: 14px;
+    border-radius: 2px;
+    animation: fall 2.2s cubic-bezier(0.3, 0.6, 0.4, 1) both;
+
+    @for $i from 1 through 26 {
+      &:nth-child(#{$i}) {
+        left: math.percentage(math.div(($i - 1) * 37 % 100, 100));
+        background: list.nth($confetti-colours, ($i - 1) % 5 + 1);
+        animation-delay: (($i - 1) % 9) * 70ms;
+      }
+    }
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(380px) rotate(540deg);
+    opacity: 0;
+  }
+}

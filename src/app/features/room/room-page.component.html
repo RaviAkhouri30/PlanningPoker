@@ -1,0 +1,101 @@
+@switch (model.view().status) {
+  @case (statuses.Ready) {
+    @if (model.view().room; as room) {
+      <app-room-header
+        [room]="room"
+        [me]="model.me()"
+        [onlineCount]="model.onlineCount()"
+        [timer]="model.timerLabel()"
+        (invite)="model.commands.setInviteOpen(true)"
+      />
+      <div class="layout">
+        <main class="layout__main">
+          @if (model.activeStory(); as story) {
+            <app-story-header
+              [story]="story"
+              [stories]="model.view().stories"
+              [deckLabel]="room.deck.label"
+            />
+          }
+          <section class="table-card" aria-label="Poker table">
+            <app-poker-table
+              [seats]="model.tableSeats()"
+              [hasStory]="model.activeStory() !== null"
+              [settledCount]="counts().done"
+              [revealed]="room.revealed"
+              [autoReveal]="room.autoReveal"
+              [isModerator]="model.isModerator()"
+              [votedCount]="model.votedCount()"
+              [stats]="model.stats()"
+              (reveal)="model.commands.reveal()"
+              (accept)="model.commands.accept($event)"
+              (voteAgain)="model.commands.voteAgain()"
+            />
+            <app-card-deck
+              [cards]="room.deck.cards"
+              [picked]="model.view().myCard"
+              [enabled]="model.canVote()"
+              [prompt]="prompt()"
+              (pick)="model.commands.pick($event)"
+            />
+          </section>
+        </main>
+        <aside class="layout__side">
+          @if (model.isModerator()) {
+            <app-moderator-controls
+              [room]="room"
+              [hasStory]="model.activeStory() !== null"
+              [votedCount]="model.votedCount()"
+              (resetTimer)="model.commands.resetTimer()"
+              (reveal)="model.commands.reveal()"
+              (voteAgain)="model.commands.voteAgain()"
+              (skip)="model.commands.skip()"
+              (deckPick)="model.commands.setDeck($event)"
+              (autoRevealToggle)="model.commands.toggleAutoReveal()"
+            />
+          }
+          <app-players-panel
+            [seats]="model.seats()"
+            [votedCount]="model.votedCount()"
+            [playerCount]="model.playerCount()"
+          />
+          <app-stories-panel
+            [stories]="listed()"
+            [counts]="counts()"
+            [tab]="model.view().storyTab"
+            [activeId]="room.activeStoryId"
+            [isModerator]="model.isModerator()"
+            (tabPick)="model.commands.showTab($event)"
+            (storyPick)="model.commands.select($event)"
+            (add)="model.commands.addStory($event)"
+          />
+        </aside>
+      </div>
+      <app-invite-dialog
+        [open]="model.view().inviteOpen"
+        [link]="model.link"
+        [code]="room.code"
+        [spectatorsByDefault]="room.spectatorsByDefault"
+        [canConfigure]="model.isModerator()"
+        (closed)="model.commands.setInviteOpen(false)"
+        (copyLink)="model.commands.copyLink()"
+        (spectatorsToggle)="model.commands.toggleSpectatorsByDefault()"
+      />
+    }
+  }
+  @case (statuses.Loading) {
+    <p class="notice" role="status">Opening the room…</p>
+  }
+  @case (statuses.Missing) {
+    <div class="notice">
+      <h1 class="notice__title">This room doesn’t exist</h1>
+      <a class="btn btn--primary" routerLink="/">Start a room</a>
+    </div>
+  }
+  @default {
+    <div class="notice" role="alert">
+      <h1 class="notice__title">Could not open the room</h1>
+      <p>Check your connection and reload the page.</p>
+    </div>
+  }
+}
