@@ -1,0 +1,39 @@
+<header class="top">
+  <app-logo />
+  <span class="top__link">{{ model.linkLabel }}</span>
+</header>
+<main class="body">
+  @switch (model.view().status) {
+    @case (statuses.Ready) {
+      @if (model.view().room; as room) {
+        <app-room-preview [room]="room" [people]="model.view().people" [seat]="model.seat()" />
+      }
+      <app-guest-join-form
+        [form]="model.form"
+        [tab]="model.view().tab"
+        [joinLabel]="model.joinLabel()"
+        [joining]="model.view().joining"
+        (tabPick)="model.showTab($event)"
+        (colourPick)="model.pickColour($event)"
+        (rolePick)="model.pickRole($event)"
+        (join)="model.join()"
+      />
+    }
+    @case (statuses.Loading) {
+      <p class="notice" role="status">Opening the room…</p>
+    }
+    @case (statuses.Missing) {
+      <div class="notice">
+        <h1 class="notice__title">This room doesn’t exist</h1>
+        <p>Check the link, or start a new room.</p>
+        <a class="btn btn--primary" routerLink="/">Start a room</a>
+      </div>
+    }
+    @default {
+      <div class="notice" role="alert">
+        <h1 class="notice__title">Could not open the room</h1>
+        <p>Check your connection and reload the page.</p>
+      </div>
+    }
+  }
+</main>

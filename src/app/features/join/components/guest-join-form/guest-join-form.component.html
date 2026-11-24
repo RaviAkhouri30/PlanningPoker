@@ -1,0 +1,128 @@
+<section class="card rise">
+  <div class="tabs" role="tablist" aria-label="How to join">
+    <button
+      class="tabs__tab"
+      type="button"
+      role="tab"
+      id="tab-guest"
+      aria-controls="pane-guest"
+      [class.tabs__tab--on]="tab() === tabs.Guest"
+      [attr.aria-selected]="tab() === tabs.Guest"
+      (click)="tabPick.emit(tabs.Guest)"
+    >
+      Join as guest
+    </button>
+    <button
+      class="tabs__tab"
+      type="button"
+      role="tab"
+      id="tab-account"
+      aria-controls="pane-account"
+      [class.tabs__tab--on]="tab() === tabs.Account"
+      [attr.aria-selected]="tab() === tabs.Account"
+      (click)="tabPick.emit(tabs.Account)"
+    >
+      Sign in
+    </button>
+  </div>
+
+  @if (tab() === tabs.Guest) {
+    <form
+      class="pane"
+      id="pane-guest"
+      role="tabpanel"
+      aria-labelledby="tab-guest"
+      [formGroup]="form()"
+      (ngSubmit)="join.emit()"
+      novalidate
+    >
+      <div class="pane__head">
+        <h2 class="pane__title">Just tell us your name</h2>
+        <p class="pane__lead">No email, no password.</p>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="join-name">Display name</label>
+        <input
+          id="join-name"
+          class="field"
+          type="text"
+          placeholder="e.g. Jordan"
+          formControlName="name"
+          autocomplete="nickname"
+          aria-describedby="join-name-error"
+          [attr.aria-invalid]="form().controls.name.invalid && form().controls.name.touched"
+        />
+        @if (form().controls.name.touched && form().controls.name.errors) {
+          <span class="field-error" id="join-name-error">
+            @if (form().controls.name.hasError('tooLong')) {
+              Use 40 characters or fewer.
+            } @else {
+              Enter a name so the team knows who you are.
+            }
+          </span>
+        }
+      </div>
+      <div class="pane__group">
+        <span class="field-label" id="colour-label">Your colour</span>
+        <div class="swatches" role="radiogroup" aria-labelledby="colour-label">
+          @for (swatch of palette; track swatch.label; let index = $index) {
+            <button
+              class="swatch"
+              type="button"
+              role="radio"
+              [appBackground]="swatch.background"
+              [class.swatch--on]="form().controls.colour.value === index"
+              [attr.aria-checked]="form().controls.colour.value === index"
+              [attr.aria-label]="swatch.label"
+              (click)="colourPick.emit(index)"
+            ></button>
+          }
+        </div>
+      </div>
+      <div class="pane__group">
+        <span class="field-label" id="role-label">Join as</span>
+        <div class="roles" role="radiogroup" aria-labelledby="role-label">
+          <button
+            class="role"
+            type="button"
+            role="radio"
+            [class.role--on]="form().controls.role.value === roles.Player"
+            [attr.aria-checked]="form().controls.role.value === roles.Player"
+            (click)="rolePick.emit(roles.Player)"
+          >
+            <span class="role__name">Player</span>
+            <span class="role__hint">Vote on every story</span>
+          </button>
+          <button
+            class="role"
+            type="button"
+            role="radio"
+            [class.role--on]="form().controls.role.value === roles.Spectator"
+            [attr.aria-checked]="form().controls.role.value === roles.Spectator"
+            (click)="rolePick.emit(roles.Spectator)"
+          >
+            <span class="role__name">Spectator</span>
+            <span class="role__hint">Watch without a card</span>
+          </button>
+        </div>
+      </div>
+      <button class="btn btn--primary btn--lg btn--block" type="submit" [disabled]="joining()">
+        {{ joining() ? 'Joining…' : joinLabel() }}
+        <app-icon [name]="arrowIcon" />
+      </button>
+    </form>
+  } @else {
+    <div class="pane" id="pane-account" role="tabpanel" aria-labelledby="tab-account">
+      <div class="pane__head">
+        <h2 class="pane__title">Accounts are coming soon</h2>
+        <p class="pane__lead">
+          Free accounts will keep permanent rooms and session history. For now, join as a guest: you
+          get every voting feature.
+        </p>
+      </div>
+      <button class="btn btn--dark" type="button" (click)="tabPick.emit(tabs.Guest)">
+        Join as guest
+      </button>
+    </div>
+  }
+</section>

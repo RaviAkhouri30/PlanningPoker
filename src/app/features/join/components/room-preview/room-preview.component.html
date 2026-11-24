@@ -1,0 +1,34 @@
+<section class="preview rise" aria-label="Room you are joining">
+  <div class="preview__top">
+    <span class="preview__live"><span class="pulse"></span>Live now</span>
+    <span class="preview__invite">{{ room().moderatorName }} invited you to</span>
+    <h1 class="preview__title">{{ room().name }}</h1>
+    @if (people().length > 0) {
+      <div class="preview__people">
+        <div class="preview__faces">
+          @for (person of faces(); track person.uid) {
+            <app-avatar
+              class="preview__face"
+              [name]="person.displayName"
+              [colourIndex]="person.colourIndex"
+            />
+          }
+        </div>
+        <span class="preview__count">{{ headcount() }}</span>
+      </div>
+    }
+  </div>
+  <div class="preview__seat">
+    <div class="seat-card" aria-hidden="true">
+      <app-avatar [name]="seatName()" [colourIndex]="seat().colour" size="lg" />
+      <span class="seat-card__name">{{ seatName() }}</span>
+      <span class="seat-card__role">{{ roleLabel() }}</span>
+    </div>
+    <div class="preview__explain">
+      <span class="preview__subtitle">This is your seat</span>
+      <p class="preview__text">
+        Your teammates see your name and colour, never your card, until the cards flip all at once.
+      </p>
+    </div>
+  </div>
+</section>

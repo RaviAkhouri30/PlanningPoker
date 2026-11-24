@@ -1,0 +1,61 @@
+@use 'tokens' as t;
+
+:host {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top {
+  max-width: t.$content-width;
+  width: 100%;
+  margin: 0 auto;
+  padding: 18px t.$gutter;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  &__link {
+    font-size: 14px;
+    color: t.color('text-muted');
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.body {
+  flex: 1 1 auto;
+  max-width: t.$content-width;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px t.$gutter 64px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.notice {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 96px 0;
+  text-align: center;
+  color: t.color('text');
+
+  &__title {
+    font: 700 36px t.$font-display;
+    color: t.color('ink');
+  }
+}
+
+@media (max-width: 620px) {
+  .top,
+  .body {
+    padding-inline: t.$gutter-mobile;
+  }
+}
