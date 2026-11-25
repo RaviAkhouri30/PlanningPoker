@@ -24,14 +24,14 @@
   }
 
   &__title {
-    font: 700 clamp(30px, 3.4vw, 44px) / 1.1 t.$font-display;
-    letter-spacing: -0.025em;
+    font: 700 clamp(26px, 2.6vw, 36px) / 1.15 t.$font-display;
+    letter-spacing: -0.02em;
     max-width: 20ch;
     text-wrap: balance;
   }
 
   &__lead {
-    font-size: 19px;
+    font-size: 16px;
     line-height: 1.6;
     color: t.color('text');
     max-width: 540px;

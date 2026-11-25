@@ -1,6 +1,7 @@
 # 05 · Operations — Rooms, themes and avatars
 
-- **Version:** 1.4.0
+- **Version:** 1.4.0, then 1.4.1 (patch: a smaller landing page hero title and introduction;
+  verify and e2e re-run and passing, no rules or data change)
 - **CHANGELOG entry:** ☑
 - **Deploy notes:**
   - Rules: the avatar change to `firestore.rules` (`validSeat` accepts the 16 avatar ids) was

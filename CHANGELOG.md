@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] — 2026-11-25
+
+### Changed
+
+- A smaller landing page hero: the title is 36 px on desktop (26 px on phones) on two balanced
+  lines, and the introduction is 16 px, so the create form fits above the fold.
+
 ## [1.4.0] — 2026-11-25
 
 ### Added
