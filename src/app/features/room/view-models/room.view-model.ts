@@ -41,6 +41,7 @@ import { ROOM_MESSAGES } from '../models/room-messages.constants';
 import { RoomView } from '../models/room-view.builder';
 import { StoriesService } from '../services/stories.service';
 import { type RoundVotes, VotesService } from '../services/votes.service';
+import { JoinNotices } from './join-notices';
 import { RoomCommands } from './room-commands';
 import { RoomTour } from './room-tour';
 
@@ -109,6 +110,7 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   private readonly logger = inject(LoggerService);
   private readonly actions = new Subject<IRoomAction>();
   private readonly changes = new Subject<IRoomState>();
+  private readonly joins = new JoinNotices();
 
   public constructor() {
     super();
@@ -197,6 +199,7 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   private apply(room: Room | null, change: Partial<IRoomState>): void {
     this.patch({ ...change, room, status: room === null ? RoomStatus.Missing : RoomStatus.Ready });
     this.tour.offer();
+    this.joins.see(change.people ?? [], this.view().uid);
     this.changes.next(this.view());
   }
 

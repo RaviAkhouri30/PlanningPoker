@@ -40,3 +40,9 @@ export const TIMER_TICK_MS = 1000;
 
 /** Attempts at creating a room before giving up, in case a random code is already taken. */
 export const ROOM_CREATE_ATTEMPTS = 3;
+
+/**
+ * A new seat is announced only when it was taken within this window, so a listener that fills in
+ * late (cache first, then the server) never announces people who were already there.
+ */
+export const JOIN_NOTICE_WINDOW_MS = 60_000;

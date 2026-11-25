@@ -4,7 +4,7 @@ import { RoomPage } from '../pages/room.page';
 
 /**
  * The real Firestore and Auth SDKs against the emulators, in two browsers: the moderator creates
- * a room and a second person joins by its link. Votes stay secret until the flip, then both see
+ * a room and a second person joins by its link, which the moderator is told about. Votes stay secret until the flip, then both see
  * the same result.
  */
 test.describe('Firebase room', () => {
@@ -32,6 +32,8 @@ test.describe('Firebase room', () => {
       await expect(guest.storyTitle).toHaveText('Save cards for later');
       // The tour opens by itself only for the moderator.
       await expect(guest.tour).toBeHidden();
+      // The moderator hears about the real person who just took a seat.
+      await expect(page.getByRole('status')).toContainText('Maya joined the room');
 
       await host.card('5').click();
       // One vote of two: the round stays open.

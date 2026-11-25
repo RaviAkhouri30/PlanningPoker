@@ -23,6 +23,8 @@ export const ROOM_MESSAGES = {
   moderator: 'Moderator',
   player: 'Player',
   spectator: 'Spectator',
+  joinedSuffix: ' joined the room',
+  nameSeparator: ', ',
 } as const;
 
 /** Stagger between seats when the cards flip, in ms. */
