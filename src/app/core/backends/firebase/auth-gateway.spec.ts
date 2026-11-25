@@ -10,6 +10,10 @@ import { AuthGateway } from './auth-gateway';
 
 vi.mock('firebase/app', async () => (await import('./testing/firebase-sdk.mock')).firebaseAppMock);
 vi.mock(
+  'firebase/app-check',
+  async () => (await import('./testing/firebase-sdk.mock')).appCheckMock,
+);
+vi.mock(
   'firebase/auth',
   async () => (await import('./testing/firebase-sdk.mock')).firebaseAuthMock,
 );

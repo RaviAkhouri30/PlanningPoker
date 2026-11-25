@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] — 2026-11-26
+
+### Security
+
+- App Check (reCAPTCHA v3) support: when a site key is set in `runtime-config.js`, every Firestore
+  and Auth request carries an attestation token, so only the real app can spend the project's quota
+  — the defence against scripted abuse where there's no server to rate-limit (ADR-0012). Ships dark;
+  the owner creates the key and turns on enforcement from the console.
+
 ## [1.9.0] — 2026-11-26
 
 ### Changed

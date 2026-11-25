@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app';
 import {
   type Firestore,
   type Query,
@@ -20,6 +19,7 @@ import {
   type StoreFields,
   type StoreWrite,
 } from '@core/interfaces/i-realtime-store';
+import { getFirebaseApp } from './firebase-app';
 import { fromFirestoreFields, toFirestoreFields } from './firestore-fields';
 import { type IFirestoreGateway } from './i-firestore-gateway';
 
@@ -42,8 +42,8 @@ export class FirestoreGateway implements IFirestoreGateway {
    * @param emulator Local emulator to use instead of the real service, or `null`.
    */
   public constructor(config: IFirebaseConfig, emulator: IEmulatorAddress | null) {
-    // initializeApp returns the existing default app when called again with the same options.
-    this.db = getFirestore(initializeApp({ ...config }));
+    // Shared default app; starts App Check when the config carries a site key.
+    this.db = getFirestore(getFirebaseApp(config));
     if (emulator !== null) {
       connectFirestoreEmulator(this.db, emulator.host, emulator.port);
     }

@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app';
 import {
   type Auth,
   type User,
@@ -11,6 +10,7 @@ import {
 import { Observable, defer, map, of, switchMap } from 'rxjs';
 import { type IAuthUser } from '@core/interfaces/i-auth-service';
 import { type IEmulatorAddress, type IFirebaseConfig } from '@core/interfaces/i-firebase-config';
+import { getFirebaseApp } from './firebase-app';
 import { type IAuthGateway } from './i-auth-gateway';
 
 /** @returns The app's view of a Firebase user. */
@@ -33,8 +33,8 @@ export class AuthGateway implements IAuthGateway {
    * @param emulator Local Auth emulator to use instead of the real service, or `null`.
    */
   public constructor(config: IFirebaseConfig, emulator: IEmulatorAddress | null) {
-    // initializeApp returns the existing default app when called again with the same options.
-    this.auth = getAuth(initializeApp({ ...config }));
+    // Shared default app; starts App Check when the config carries a site key.
+    this.auth = getAuth(getFirebaseApp(config));
     if (emulator !== null) {
       connectAuthEmulator(this.auth, `http://${emulator.host}:${String(emulator.port)}`, {
         disableWarnings: true,

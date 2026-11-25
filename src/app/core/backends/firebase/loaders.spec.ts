@@ -7,6 +7,10 @@ import { FIRESTORE_GATEWAY_LOADER } from './firestore-gateway-loader.token';
 
 vi.mock('firebase/app', async () => (await import('./testing/firebase-sdk.mock')).firebaseAppMock);
 vi.mock(
+  'firebase/app-check',
+  async () => (await import('./testing/firebase-sdk.mock')).appCheckMock,
+);
+vi.mock(
   'firebase/firestore',
   async () => (await import('./testing/firebase-sdk.mock')).firestoreMock,
 );

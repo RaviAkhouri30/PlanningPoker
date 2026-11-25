@@ -27,6 +27,11 @@ if (missing.length > 0) {
 const config = Object.fromEntries(
   Object.entries(VARIABLES).map(([key, name]) => [key, process.env[name]]),
 );
+// App Check reCAPTCHA v3 site key: optional, so a deploy without it still ships (App Check stays
+// off until it's set). Public, like the rest of this config.
+if (process.env.FIREBASE_APP_CHECK_SITE_KEY) {
+  config.appCheckSiteKey = process.env.FIREBASE_APP_CHECK_SITE_KEY;
+}
 // JSON.stringify quotes and escapes every value, so no value can break out of the statement.
 writeFileSync(output, `globalThis.__FIREBASE_CONFIG__ = ${JSON.stringify(config)};\n`);
 console.log(`Wrote ${output} for project ${config.projectId}.`);

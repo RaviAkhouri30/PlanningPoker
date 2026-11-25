@@ -7,6 +7,11 @@ export const firebaseAppMock = {
   initializeApp: vi.fn(() => ({ name: '[DEFAULT]' })),
 };
 
+export const appCheckMock = {
+  initializeAppCheck: vi.fn(),
+  ReCaptchaV3Provider: vi.fn(),
+};
+
 export const firestoreMock = {
   getFirestore: vi.fn(() => ({ type: 'firestore' })),
   connectFirestoreEmulator: vi.fn(),

@@ -10,6 +10,14 @@ export interface IFirebaseConfig {
   readonly storageBucket: string;
   readonly messagingSenderId: string;
   readonly appId: string;
+  /**
+   * App Check reCAPTCHA v3 site key (ADR-0012). When set, every Firestore and Auth request carries
+   * an attestation token, so only the real app can spend the project's quota — the defence against
+   * scripted abuse where there is no server to rate-limit. Public (it rides in the browser), and
+   * not an SDK `FirebaseOptions` field, so it is stripped before `initializeApp`. Absent on the
+   * emulators, locally and on the Fake backend, where App Check stays off.
+   */
+  readonly appCheckSiteKey?: string;
 }
 
 /** Address of a local Firebase emulator. */
