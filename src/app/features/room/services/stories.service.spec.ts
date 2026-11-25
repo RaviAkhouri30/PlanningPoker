@@ -27,7 +27,7 @@ describe('StoriesService', () => {
     const id = await firstValueFrom(
       TestBed.inject(StoriesService).add(
         'r1',
-        { key: 'PAY-214', title: 'Save cards' },
+        { key: 'PAY-214', title: 'Save cards', description: 'Visa and Mastercard' },
         4,
         (storyId) => [
           { kind: StoreWriteKind.Update, path: 'rooms/r1', fields: { activeStoryId: storyId } },
@@ -39,6 +39,7 @@ describe('StoriesService', () => {
     await expect(stored(`rooms/r1/stories/${id}`)).resolves.toMatchObject({
       key: 'PAY-214',
       title: 'Save cards',
+      description: 'Visa and Mastercard',
       order: 4,
       status: 'pending',
       rounds: 0,

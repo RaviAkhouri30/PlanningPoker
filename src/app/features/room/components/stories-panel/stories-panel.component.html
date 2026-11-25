@@ -40,20 +40,4 @@
       <p class="list__empty">Nothing here yet.</p>
     }
   </div>
-  @if (isModerator()) {
-    <form class="add" (submit)="submit($event, draft)">
-      <label class="visually-hidden" for="new-story">New story title</label>
-      <input
-        #draft
-        id="new-story"
-        class="field add__field"
-        type="text"
-        placeholder="Add a story, e.g. PAY-214 Saved cards"
-        [attr.maxlength]="maxTitle"
-      />
-      <button class="btn btn--primary btn--icon" type="submit" aria-label="Add story">
-        <app-icon [name]="plusIcon" />
-      </button>
-    </form>
-  }
 </section>

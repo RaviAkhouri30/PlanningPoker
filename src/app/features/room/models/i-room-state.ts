@@ -35,6 +35,8 @@ export interface IRoomState {
   /** Every card of the current round once it's revealed; empty before. */
   readonly roundVotes: RoundVotes;
   readonly inviteOpen: boolean;
+  /** The moderator's "Add a story" dialog. */
+  readonly addStoryOpen: boolean;
   readonly storyTab: StoryTab;
   /** The guided tour's current step (0-based), or `null` when it's closed. */
   readonly tourStep: number | null;
@@ -53,6 +55,7 @@ export const LOADING_ROOM: IRoomState = {
   myCard: null,
   roundVotes: NO_VOTES,
   inviteOpen: false,
+  addStoryOpen: false,
   storyTab: StoryTab.Active,
   tourStep: null,
 };

@@ -1,0 +1,75 @@
+<dialog
+  class="modal"
+  [appModal]="open()"
+  aria-labelledby="add-story-title"
+  aria-describedby="add-story-text"
+  (close)="close()"
+  (cancel)="close()"
+>
+  <div class="modal__head">
+    <div class="modal__copy">
+      <h2 class="modal__title" id="add-story-title">Add a story</h2>
+      <p class="modal__text" id="add-story-text">
+        Start with the ticket key to keep it, e.g. <span class="example-key">PAY-214</span> Save
+        cards for later.
+      </p>
+    </div>
+    <button class="btn btn--icon modal__close" type="button" aria-label="Close" (click)="close()">
+      <app-icon [name]="closeIcon" />
+    </button>
+  </div>
+  <form class="form" [formGroup]="form" (ngSubmit)="submit(false)" novalidate>
+    <div class="field-group">
+      <label class="field-label" for="new-story">Story</label>
+      <!-- autofocus: the native modal puts the cursor here instead of on the close button. -->
+      <input
+        #textField
+        id="new-story"
+        class="field"
+        type="text"
+        placeholder="PAY-214 Save cards for later"
+        formControlName="text"
+        autocomplete="off"
+        autofocus
+        aria-describedby="new-story-error"
+        [attr.aria-invalid]="form.controls.text.invalid && form.controls.text.touched"
+      />
+      @if (form.controls.text.touched && form.controls.text.errors) {
+        <span class="field-error" id="new-story-error">
+          @if (form.controls.text.hasError('tooLong')) {
+            Use {{ limits.storyTitle }} characters or fewer.
+          } @else {
+            Type what the team will estimate.
+          }
+        </span>
+      }
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="new-story-notes"
+        >Notes <span class="form__optional">(optional)</span></label
+      >
+      <textarea
+        id="new-story-notes"
+        class="field form__notes"
+        rows="3"
+        placeholder="Acceptance criteria, links, anything the team should know"
+        formControlName="description"
+        aria-describedby="new-story-notes-error"
+      ></textarea>
+      @if (form.controls.description.touched && form.controls.description.errors) {
+        <span class="field-error" id="new-story-notes-error">
+          Use {{ limits.storyDescription }} characters or fewer.
+        </span>
+      }
+    </div>
+    <div class="form__actions">
+      <p class="form__status" role="status">
+        @if (lastAdded()) {
+          Added “{{ lastAdded() }}”. Add the next one.
+        }
+      </p>
+      <button class="btn" type="button" (click)="submit(true)">Add another</button>
+      <button class="btn btn--primary" type="submit">Add story</button>
+    </div>
+  </form>
+</dialog>

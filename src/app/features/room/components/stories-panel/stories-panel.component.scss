@@ -123,15 +123,3 @@
     }
   }
 }
-
-.add {
-  display: flex;
-  gap: 8px;
-
-  &__field {
-    height: 44px;
-    // "Add story" focuses this field; keep it clear of the sticky header and the screen edge.
-    scroll-margin: 120px;
-    font-size: 14px;
-  }
-}

@@ -117,10 +117,15 @@ describe('RoomCommands', () => {
   it('should add stories, making the first one active', async () => {
     await start(roomFields({ moderatorUid: ME, activeStoryId: null }));
 
-    model.commands.addStory('   ');
-    model.commands.addStory('PAY-300 Refunds');
+    model.commands.addStory({ text: '   ', description: '' });
+    model.commands.addStory({ text: 'PAY-300 Refunds', description: ' Card refunds only ' });
 
-    expect(model.activeStory()).toMatchObject({ key: 'PAY-300', title: 'Refunds', order: 3 });
+    expect(model.activeStory()).toMatchObject({
+      key: 'PAY-300',
+      title: 'Refunds',
+      description: 'Card refunds only',
+      order: 3,
+    });
   });
 
   it('should ignore moderator commands from anyone else', async () => {
@@ -136,9 +141,14 @@ describe('RoomCommands', () => {
     await start();
 
     model.commands.setInviteOpen(true);
+    model.commands.setAddStoryOpen(true);
     model.commands.showTab(StoryTab.Done);
 
-    expect(model.view()).toMatchObject({ inviteOpen: true, storyTab: StoryTab.Done });
+    expect(model.view()).toMatchObject({
+      inviteOpen: true,
+      addStoryOpen: true,
+      storyTab: StoryTab.Done,
+    });
   });
 
   it('should copy the link and say whether it worked', async () => {

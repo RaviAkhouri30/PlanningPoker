@@ -1,0 +1,58 @@
+@use 'tokens' as t;
+
+// The native <dialog> modals (invite, add story), opened through `appModal`.
+.modal {
+  width: calc(100% - 32px);
+  max-width: 520px;
+  border: 0;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: t.$shadow-modal;
+  background: t.color('surface');
+  color: t.color('ink');
+
+  &[open] {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: modal 0.4s t.$ease-spring both;
+  }
+
+  &::backdrop {
+    background: rgba(17, 19, 24, 0.55);
+    backdrop-filter: blur(4px);
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__close {
+    flex: none;
+    align-self: flex-start;
+  }
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__title {
+    font: 700 24px t.$font-display;
+  }
+
+  &__text {
+    color: t.color('text');
+    line-height: 1.5;
+  }
+}
+
+@keyframes modal {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+}

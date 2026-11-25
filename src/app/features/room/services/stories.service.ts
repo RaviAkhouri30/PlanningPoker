@@ -46,7 +46,7 @@ export class StoriesService {
         fields: {
           key: draft.key.slice(0, LIMITS.storyKey),
           title: draft.title.slice(0, LIMITS.storyTitle),
-          description: '',
+          description: draft.description.slice(0, LIMITS.storyDescription),
           order,
           status: StoryStatus.Pending,
           estimate: null,

@@ -79,12 +79,12 @@ describe('RoomPageComponent', () => {
     expect(page.querySelector('dialog')?.hasAttribute('open')).toBe(true);
   });
 
-  it('should move the cursor to the story field when the moderator clicks "Add story"', async () => {
+  it('should open the story dialog when the moderator clicks "Add story"', async () => {
     const page = await render();
 
     click(page, 'app-room-header .btn:not(.btn--primary)');
 
-    expect(document.activeElement).toBe(page.querySelector('#new-story'));
+    expect(page.querySelector('app-add-story-dialog dialog')?.hasAttribute('open')).toBe(true);
   });
 
   it('should open the tour for the moderator on the first visit, and close it on skip', async () => {

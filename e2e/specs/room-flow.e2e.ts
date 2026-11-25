@@ -29,7 +29,7 @@ test.describe('Room flow', () => {
     await expect(room.results).toBeHidden();
   });
 
-  test('should take the moderator to the story field from the empty table and the header', async ({
+  test('should add stories through the dialog from the empty table and the header', async ({
     landing,
     page,
     axe,
@@ -42,11 +42,20 @@ test.describe('Room flow', () => {
     await room.tableAddStoryButton.click();
     await expect(room.newStoryField).toBeFocused();
     await page.keyboard.type('PAY-214 Save cards for later');
+    await room.addAnotherButton.click();
+    await expect(room.storyDialog.getByRole('status')).toContainText('PAY-214');
+    await expect(room.newStoryField).toBeFocused();
+    expect((await axe().analyze()).violations).toEqual([]);
+    await page.keyboard.type('PAY-215 Refunds');
     await page.keyboard.press('Enter');
+    await expect(room.storyDialog).toBeHidden();
     await expect(room.storyTitle).toHaveText('Save cards for later');
+    await expect(page.getByRole('region', { name: 'Stories' })).toContainText('Refunds');
 
     await room.headerAddStoryButton.click();
     await expect(room.newStoryField).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(room.storyDialog).toBeHidden();
     await expect(room.deckDisclosure).toBeVisible();
     await room.deckDisclosure.click();
     await expect(page.getByRole('button', { name: /T-shirt/ })).toBeVisible();

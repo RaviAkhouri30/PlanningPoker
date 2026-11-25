@@ -1,0 +1,40 @@
+@use 'tokens' as t;
+
+// The ticket key in the intro shouldn't break at its hyphen.
+.example-key {
+  white-space: nowrap;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__optional {
+    font-weight: 400;
+    color: t.color('text-muted');
+  }
+
+  &__notes {
+    height: auto;
+    min-height: 88px;
+    padding-block: 12px;
+    resize: vertical;
+  }
+
+  &__status {
+    // Takes no room while empty, so the buttons stay on one line.
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 14px;
+    color: t.color('success-text');
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}

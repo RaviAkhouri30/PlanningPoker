@@ -8,7 +8,7 @@
         [timer]="model.timerLabel()"
         [canAddStory]="model.isModerator()"
         (invite)="model.commands.setInviteOpen(true)"
-        (addStory)="focusStoryField()"
+        (addStory)="model.commands.setAddStoryOpen(true)"
         (tourStart)="model.tour.start()"
       />
       <div class="layout">
@@ -34,7 +34,7 @@
               (reveal)="model.commands.reveal()"
               (accept)="model.commands.accept($event)"
               (voteAgain)="model.commands.voteAgain()"
-              (addStory)="focusStoryField()"
+              (addStory)="model.commands.setAddStoryOpen(true)"
             >
               @if (!room.revealed) {
                 <app-card-deck
@@ -81,7 +81,6 @@
             [isModerator]="model.isModerator()"
             (tabPick)="model.commands.showTab($event)"
             (storyPick)="model.commands.select($event)"
-            (add)="model.commands.addStory($event)"
           />
         </aside>
       </div>
@@ -95,6 +94,13 @@
         (copyLink)="model.commands.copyLink()"
         (spectatorsToggle)="model.commands.toggleSpectatorsByDefault()"
       />
+      @if (model.isModerator()) {
+        <app-add-story-dialog
+          [open]="model.view().addStoryOpen"
+          (closed)="model.commands.setAddStoryOpen(false)"
+          (add)="model.commands.addStory($event)"
+        />
+      }
       @if (model.tour.progress(); as tour) {
         <app-room-tour
           [step]="tour.step"

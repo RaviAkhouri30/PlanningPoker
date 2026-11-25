@@ -4,8 +4,10 @@ import { BasePage } from './base.page';
 /** The planning room: stories, the table, the deck, results and the invite dialog. */
 export class RoomPage extends BasePage {
   public readonly storyTitle: Locator;
+  public readonly storyDialog: Locator;
   public readonly newStoryField: Locator;
   public readonly addStoryButton: Locator;
+  public readonly addAnotherButton: Locator;
   public readonly headerAddStoryButton: Locator;
   public readonly tableAddStoryButton: Locator;
   public readonly deckDisclosure: Locator;
@@ -23,11 +25,11 @@ export class RoomPage extends BasePage {
     super(page);
     this.path = roomPath;
     this.storyTitle = page.locator('#story-title');
-    this.newStoryField = page.getByLabel('New story title');
-    // Scoped: the header has an "Add story" button too, for the moderator.
-    this.addStoryButton = page
-      .getByRole('region', { name: 'Stories' })
-      .getByRole('button', { name: 'Add story' });
+    this.storyDialog = page.getByRole('dialog', { name: 'Add a story' });
+    this.newStoryField = this.storyDialog.getByLabel('Story', { exact: true });
+    // Scoped: the header has an "Add story" button too, which opens this dialog.
+    this.addStoryButton = this.storyDialog.getByRole('button', { name: 'Add story' });
+    this.addAnotherButton = this.storyDialog.getByRole('button', { name: 'Add another' });
     this.headerAddStoryButton = page.getByRole('banner').getByRole('button', { name: 'Add story' });
     this.tableAddStoryButton = page.getByRole('button', { name: 'Add a story' });
     this.deckDisclosure = page.getByText('Card deck');
@@ -46,10 +48,12 @@ export class RoomPage extends BasePage {
     await this.tour.waitFor({ state: 'hidden' });
   }
 
-  /** Adds a story, e.g. `PAY-214 Save cards`. */
+  /** Adds a story through the header's "Add story" dialog, e.g. `PAY-214 Save cards`. */
   public async addStory(text: string): Promise<void> {
+    await this.headerAddStoryButton.click();
     await this.newStoryField.fill(text);
     await this.addStoryButton.click();
+    await this.storyDialog.waitFor({ state: 'hidden' });
   }
 
   /** The button that plays `card`. */

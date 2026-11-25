@@ -29,6 +29,12 @@
    only from the list and still accepts seats without one. The rules tests, the Fake e2e (pick on
    the home page, see it in the room) and the two-browser journey (the guest's pick reaches the
    moderator) cover it.
+6. **Add story dialog**: "Add story" in the header and on the empty table opens
+   `app-add-story-dialog`, a native modal with the story line (ticket key and title) and optional
+   notes, which are saved as the story's description. "Add another" keeps it open with the cursor
+   back in the field and says what was added. The Stories panel lost its own field. The open and
+   close logic moved from the invite dialog into the shared `appModal` directive, and the modal
+   styles into `styles/_modal.scss`, so both dialogs share them.
 
 ## Decision log
 
@@ -40,6 +46,8 @@
 | 2026-11-25 | The flipped cards in the players row are each person's score; no second list | Avoids showing every card twice on a small screen                                            |
 | 2026-11-25 | Stage order lives in the markup, not CSS `order`                             | Keyboard and screen-reader order match what you see                                          |
 | 2026-11-25 | A facilitator is a spectator seat, labelled "Moderator · facilitator"        | No new role or rules change; auto-reveal and the vote rules already exclude spectators       |
+| 2026-11-25 | "I'm facilitating and won't vote" is ticked by default                       | Owner's call: most rooms are created by whoever runs the session                             |
+| 2026-11-25 | The add-story dialog keeps its own draft form                                | UI-only state that dies with the dialog; the page's commands decide what adding means        |
 | 2026-11-25 | Avatar faces are path data in TypeScript, not SVG files or markup            | No `innerHTML` and no `bypassSecurityTrust*` (strict CSP), no extra requests, themable tones |
 | 2026-11-25 | The picker reports picks; the form's view model owns the value               | Same pattern as the colour swatches; no ControlValueAccessor needed for one field            |
 | 2026-11-25 | Announce only seats newer than one minute                                    | Firestore may fill a listener from cache first, then the server; old seats aren't news       |

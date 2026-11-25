@@ -20,7 +20,7 @@ export const TOUR_STEPS: readonly ITourStep[] = [
   {
     target: TourTarget.AddStory,
     title: 'Add what to estimate',
-    text: 'Add stories one at a time. Start with a ticket key, like PAY-214, to keep it.',
+    text: 'Add stories here, one after another. Start with a ticket key, like PAY-214, to keep it.',
     moderatorOnly: true,
   },
   {

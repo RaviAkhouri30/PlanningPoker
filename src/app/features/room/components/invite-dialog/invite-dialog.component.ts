@@ -1,19 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  type ElementRef,
-  effect,
-  input,
-  output,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { IconComponent } from '@shared/components/icon/icon.component';
+import { ModalDirective } from '@shared/directives/modal.directive';
 import { IconName } from '@shared/enums/icon-name.enum';
 
 /** "Invite your team": the link to copy, the code, and the join-as-spectator default. */
 @Component({
   selector: 'app-invite-dialog',
-  imports: [IconComponent],
+  imports: [IconComponent, ModalDirective],
   templateUrl: './invite-dialog.component.html',
   styleUrl: './invite-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,35 +26,4 @@ export class InviteDialogComponent {
 
   protected readonly copyIcon = IconName.Copy;
   protected readonly closeIcon = IconName.Close;
-
-  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
-
-  public constructor() {
-    // The native dialog traps focus and closes on Escape; it is opened through its API.
-    effect(() => {
-      const element = this.dialog().nativeElement;
-      if (this.open() && !element.open) {
-        InviteDialogComponent.show(element);
-      } else if (!this.open() && element.open) {
-        InviteDialogComponent.hide(element);
-      }
-    });
-  }
-
-  // Browsers without the dialog API (and jsdom) fall back to the `open` attribute.
-  private static show(element: HTMLDialogElement): void {
-    if (typeof element.showModal === 'function') {
-      element.showModal();
-    } else {
-      element.setAttribute('open', '');
-    }
-  }
-
-  private static hide(element: HTMLDialogElement): void {
-    if (typeof element.close === 'function') {
-      element.close();
-    } else {
-      element.removeAttribute('open');
-    }
-  }
 }

@@ -1,6 +1,6 @@
 <dialog
-  #dialog
   class="modal"
+  [appModal]="open()"
   aria-labelledby="invite-title"
   (close)="closed.emit()"
   (cancel)="closed.emit()"

@@ -30,39 +30,17 @@ describe('StoriesPanelComponent', () => {
     expect(element.querySelector<HTMLButtonElement>('.item')?.disabled).toBe(true);
   });
 
-  it('should let the moderator pick a tab, a story and add one', () => {
+  it('should let the moderator pick a tab and a story when they click them', () => {
     const element = render(true);
     const picks: unknown[] = [];
     fixture.componentInstance.tabPick.subscribe((tab) => picks.push(tab));
     fixture.componentInstance.storyPick.subscribe((story) => picks.push(story.id));
-    fixture.componentInstance.add.subscribe((text) => picks.push(text));
-    const field = element.querySelector<HTMLInputElement>('#new-story')!;
-    const form = element.querySelector('form')!;
 
     element.querySelectorAll<HTMLButtonElement>('[role="tab"]')[1]?.click();
     element.querySelectorAll<HTMLButtonElement>('.item')[1]?.click();
-    form.dispatchEvent(new Event('submit'));
-    field.value = 'PAY-1 Refunds';
-    form.dispatchEvent(new Event('submit'));
 
-    expect(picks).toEqual([StoryTab.Done, 's2', 'PAY-1 Refunds']);
-    expect(field.value).toBe('');
-  });
-
-  it('should put the cursor in the story field when asked to focus it', () => {
-    const element = render(true);
-
-    fixture.componentInstance.focusDraft();
-
-    expect(document.activeElement).toBe(element.querySelector('#new-story'));
-  });
-
-  it('should ignore a focus request when the viewer is not the moderator', () => {
-    render(false);
-
-    expect(() => {
-      fixture.componentInstance.focusDraft();
-    }).not.toThrow();
+    expect(picks).toEqual([StoryTab.Done, 's2']);
+    expect(element.querySelector('form')).toBeNull();
   });
 
   it('should say when a tab is empty', () => {

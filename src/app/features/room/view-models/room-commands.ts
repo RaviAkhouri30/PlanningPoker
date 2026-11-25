@@ -12,7 +12,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { type IRoomState, type StoryTab } from '../models/i-room-state';
 import { ROOM_MESSAGES } from '../models/room-messages.constants';
 import { RoomView } from '../models/room-view.builder';
-import { parseStoryDraft } from '../models/story-draft.util';
+import { type INewStory, parseStoryDraft } from '../models/story-draft.util';
 import { ModerationService, activationWrites } from '../services/moderation.service';
 import { StoriesService } from '../services/stories.service';
 import { VotesService } from '../services/votes.service';
@@ -137,14 +137,14 @@ export class RoomCommands {
     this.moderate('Resetting the timer', (room) => this.moderation.resetTimer(room));
   }
 
-  /** Adds a story from "Add a story…"; the first one added becomes the current story. */
-  public addStory(text: string): void {
-    const title = text.trim();
+  /** Adds a story from the "Add a story" dialog; the first one added becomes the current story. */
+  public addStory(story: INewStory): void {
+    const title = story.text.trim();
     this.moderate('Adding a story', (room, state) => {
       if (title === '') {
         return EMPTY;
       }
-      const draft = parseStoryDraft(title, state.stories.length + 1);
+      const draft = parseStoryDraft(title, state.stories.length + 1, story.description);
       const order = Math.max(0, ...state.stories.map((story) => story.order)) + 1;
       const needsActive = RoomView.activeStory(state) === null;
       return this.stories.add(room.id, draft, order, (id) =>
@@ -156,6 +156,11 @@ export class RoomCommands {
   /** Shows which stories the panel lists. */
   public showTab(storyTab: StoryTab): void {
     this.host.patch({ storyTab });
+  }
+
+  /** Opens or closes the "Add a story" dialog. */
+  public setAddStoryOpen(addStoryOpen: boolean): void {
+    this.host.patch({ addStoryOpen });
   }
 
   /** Opens or closes the invite dialog. */
