@@ -1,7 +1,8 @@
 import { Service, inject } from '@angular/core';
-import { type Observable, map } from 'rxjs';
+import { type Observable, map, retry } from 'rxjs';
 import { StoreWriteKind } from '@core/enums/store-write-kind.enum';
 import { IRealtimeStore, SERVER_TIME } from '@core/interfaces/i-realtime-store';
+import { ROUND_VOTES_RETRIES, ROUND_VOTES_RETRY_MS } from '@shared/constants/room.constants';
 import { STORE_PATHS } from '@shared/constants/store-paths.constants';
 import { FieldReader } from '@shared/utils/fields.util';
 
@@ -61,6 +62,9 @@ export class VotesService {
   /**
    * Every card of a revealed round. Only subscribe once the round is revealed; before that the
    * rules refuse the read.
+   *
+   * Retries a refused read a few times: the moderator's tab shows its own flip before the server
+   * has stored it, so the first read can arrive while the round is still closed.
    */
   public watchRound(roomId: string, round: number): Observable<RoundVotes> {
     return this.store.watchCollection(STORE_PATHS.votes(roomId, round)).pipe(
@@ -73,6 +77,7 @@ export class VotesService {
             }),
           ),
       ),
+      retry({ count: ROUND_VOTES_RETRIES, delay: ROUND_VOTES_RETRY_MS }),
     );
   }
 }

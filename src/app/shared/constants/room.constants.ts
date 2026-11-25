@@ -26,6 +26,15 @@ export const HEARTBEAT_INTERVAL_MS = 30_000;
 /** Someone counts as online when seen within this window (two missed heartbeats and a margin). */
 export const ONLINE_WINDOW_MS = 75_000;
 
+/**
+ * Retries for reading a revealed round's cards. The moderator's own tab sees its flip before the
+ * server has stored it, so its first read can be refused (ADR-0008); the server catches up fast.
+ */
+export const ROUND_VOTES_RETRIES = 5;
+
+/** Wait between those retries. */
+export const ROUND_VOTES_RETRY_MS = 400;
+
 /** How often the round timer redraws. */
 export const TIMER_TICK_MS = 1000;
 

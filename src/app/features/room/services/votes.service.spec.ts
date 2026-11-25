@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { firstValueFrom } from 'rxjs';
+import { defer, firstValueFrom, of, throwError } from 'rxjs';
+import { IRealtimeStore } from '@core/interfaces/i-realtime-store';
+import { ROUND_VOTES_RETRY_MS } from '@shared/constants/room.constants';
 import {
   TEST_NOW,
   participantFields,
@@ -51,5 +53,26 @@ describe('VotesService', () => {
       ['u1', '5'],
       ['u2', '?'],
     ]);
+  });
+
+  it('should retry reading a round the server has not stored as revealed yet', async () => {
+    vi.useFakeTimers();
+    let attempts = 0;
+    const store = TestBed.inject(IRealtimeStore);
+    vi.spyOn(store, 'watchCollection').mockReturnValue(
+      defer(() => {
+        attempts += 1;
+        return attempts === 1
+          ? throwError(() => new Error('permission-denied'))
+          : of([{ id: 'u1', fields: { value: '5' } }]);
+      }),
+    );
+
+    const cards = firstValueFrom(TestBed.inject(VotesService).watchRound('r1', 3));
+    await vi.advanceTimersByTimeAsync(ROUND_VOTES_RETRY_MS);
+
+    await expect(cards).resolves.toEqual(new Map([['u1', '5']]));
+    expect(attempts).toBe(2);
+    vi.useRealTimers();
   });
 });
