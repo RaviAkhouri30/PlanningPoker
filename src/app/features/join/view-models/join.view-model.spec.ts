@@ -1,3 +1,4 @@
+import { LocalProfileService } from '@shared/services/local-profile.service';
 import { Animal } from '@shared/enums/animal.enum';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, convertToParamMap, provideRouter } from '@angular/router';
@@ -114,6 +115,14 @@ describe('JoinViewModel', () => {
     });
   });
 
+  it('should fill in the name and avatar this browser last used when there are some', () => {
+    TestBed.inject(LocalProfileService).save({ name: 'Maya Chen', avatar: Animal.Owl });
+
+    const model = start();
+
+    expect(model.form.getRawValue()).toMatchObject({ name: 'Maya Chen', avatar: Animal.Owl });
+  });
+
   it('should preview the seat and label the button from the form', () => {
     const model = start();
 
@@ -164,6 +173,10 @@ describe('JoinViewModel', () => {
       avatar: 'tiger',
     });
     expect(model.view().joining).toBe(false);
+    expect(TestBed.inject(LocalProfileService).profile()).toEqual({
+      name: 'Jordan',
+      avatar: Animal.Tiger,
+    });
   });
 
   it('should say so when the seat cannot be taken', async () => {

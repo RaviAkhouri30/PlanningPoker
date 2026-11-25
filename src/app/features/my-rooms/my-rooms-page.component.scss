@@ -1,0 +1,78 @@
+@use 'tokens' as t;
+
+.top {
+  max-width: t.$content-width;
+  margin: 0 auto;
+  padding: 18px t.$gutter;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  &__end {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+}
+
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px t.$gutter 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__title {
+    font: 700 40px/1.1 t.$font-display;
+    color: t.color('ink');
+    letter-spacing: -0.02em;
+  }
+
+  &__lead {
+    color: t.color('text');
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 620px) {
+    padding-inline: t.$gutter-mobile;
+
+    &__title {
+      font-size: 32px;
+    }
+  }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 28px;
+  border: 1.5px dashed t.color('line-strong');
+  border-radius: t.$radius-lg;
+
+  &__title {
+    font: 700 20px t.$font-display;
+    color: t.color('ink');
+  }
+
+  &__text {
+    color: t.color('text');
+  }
+}
+
+@media (max-width: 620px) {
+  .top {
+    padding-inline: t.$gutter-mobile;
+  }
+}

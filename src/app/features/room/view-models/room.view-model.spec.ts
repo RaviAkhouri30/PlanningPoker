@@ -1,3 +1,5 @@
+import { RoomRole } from '@shared/enums/room-role.enum';
+import { MyRoomsService } from '@shared/services/my-rooms.service';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { type Subscription, firstValueFrom, throwError } from 'rxjs';
@@ -72,6 +74,28 @@ describe('RoomViewModel', () => {
     expect(model.playerCount()).toBe(2);
     expect(model.canVote()).toBe(true);
     expect(model.link).toBe('planningpoker.test/r/r1');
+  });
+
+  it('should list the room on My rooms as its moderator when the room opens', () => {
+    start();
+
+    expect(TestBed.inject(MyRoomsService).rooms()).toEqual([
+      expect.objectContaining({ id: 'r1', role: RoomRole.Moderator }),
+    ]);
+  });
+
+  it('should list the room once with the seat role when someone else moderates', async () => {
+    await seed({
+      'rooms/r1': roomFields({ moderatorUid: 'maya', activeStoryId: 's1' }),
+      [`rooms/r1/participants/${ME}`]: participantFields({ role: 'spectator' }),
+    });
+    const remember = vi.spyOn(TestBed.inject(MyRoomsService), 'remember');
+    start();
+
+    await seed({ 'rooms/r1/participants/sam': participantFields({ displayName: 'Sam' }) });
+
+    expect(remember).toHaveBeenCalledTimes(1);
+    expect(remember).toHaveBeenCalledWith(expect.objectContaining({ role: RoomRole.Spectator }));
   });
 
   it('should tick the timer and count who is online', () => {

@@ -1,0 +1,28 @@
+@use 'tokens' as t;
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid t.color('line');
+  border-left: 4px solid t.color('warning');
+  border-radius: t.$radius-md;
+  background: t.color('surface');
+
+  &__icon {
+    flex: none;
+    margin-top: 2px;
+    color: t.color('text-muted');
+  }
+
+  &__text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: t.color('text');
+
+    strong {
+      color: t.color('ink');
+    }
+  }
+}

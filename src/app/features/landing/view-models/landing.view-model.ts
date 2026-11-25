@@ -25,6 +25,8 @@ import { type Animal } from '@shared/enums/animal.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import { ToastTone } from '@shared/enums/toast-tone.enum';
 import { GuestSessionService } from '@shared/services/guest-session.service';
+import { LocalProfileService } from '@shared/services/local-profile.service';
+import { MyRoomsService } from '@shared/services/my-rooms.service';
 import { RoomsService } from '@shared/services/rooms.service';
 import { ToastService } from '@shared/services/toast.service';
 import { firstNameOf } from '@shared/utils/display.util';
@@ -40,11 +42,11 @@ import { LANDING_MESSAGES } from '../models/landing-messages.constants';
 @Injectable()
 export class LandingViewModel extends ViewModel<ILandingState> {
   /**
-   * "Your name", the avatar (a random animal until one is picked), the optional room name, and
-   * whether the organiser only facilitates.
+   * "Your name", the avatar, the optional room name, and whether the organiser only facilitates.
+   * The name and avatar start as this browser last used them; a first visit gets a random animal.
    */
   public readonly createForm = new FormGroup({
-    name: new FormControl('', {
+    name: new FormControl(inject(LocalProfileService).profile()?.name ?? '', {
       nonNullable: true,
       validators: [TextValidators.notBlank, TextValidators.maxTrimmed(LIMITS.displayName)],
     }),
@@ -52,7 +54,10 @@ export class LandingViewModel extends ViewModel<ILandingState> {
       nonNullable: true,
       validators: [TextValidators.maxTrimmed(LIMITS.roomName)],
     }),
-    avatar: new FormControl<Animal>(animalAt(inject(RANDOM)()), { nonNullable: true }),
+    avatar: new FormControl<Animal>(
+      inject(LocalProfileService).profile()?.avatar ?? animalAt(inject(RANDOM)()),
+      { nonNullable: true },
+    ),
     /**
      * The organiser runs the session without voting (a scrum master, say). On by default: the
      * owner's call, as most rooms are created by whoever runs the session.
@@ -77,6 +82,9 @@ export class LandingViewModel extends ViewModel<ILandingState> {
   /** The create button's words: "Create room as Alex" once a name is typed. */
   public readonly createLabel: Signal<string>;
 
+  /** Whether this browser has rooms to go back to (the header links to My rooms). */
+  public readonly hasRooms = computed(() => this.myRooms.rooms().length > 0);
+
   /** The picked animal, for the picker. */
   public readonly avatar: Signal<Animal>;
 
@@ -89,6 +97,9 @@ export class LandingViewModel extends ViewModel<ILandingState> {
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
   private readonly logger = inject(LoggerService);
+  private readonly profiles = inject(LocalProfileService);
+  // Read lazily by `hasRooms`, so declaring it after is safe.
+  private readonly myRooms = inject(MyRoomsService);
   private readonly creates = new Subject<void>();
   private readonly codeLookups = new Subject<string>();
 
@@ -97,7 +108,7 @@ export class LandingViewModel extends ViewModel<ILandingState> {
     this.setData(IDLE_LANDING);
     const form = this.createForm.controls;
     const roomName = toSignal(form.roomName.valueChanges, { initialValue: '' });
-    const name = toSignal(form.name.valueChanges, { initialValue: '' });
+    const name = toSignal(form.name.valueChanges, { initialValue: form.name.value });
     this.avatar = toSignal(form.avatar.valueChanges, { initialValue: form.avatar.value });
     this.avatarColour = computed(() => animalFace(this.avatar())?.colour ?? 0);
     this.slugPreview = computed(() => slugify(roomName()) || LANDING_MESSAGES.slugPlaceholder);
@@ -155,6 +166,7 @@ export class LandingViewModel extends ViewModel<ILandingState> {
         }),
       ),
       tap((roomId) => {
+        this.profiles.save({ name: displayName, avatar });
         void this.router.navigate(roomCommands(roomId));
       }),
       catchError((error: unknown) => {

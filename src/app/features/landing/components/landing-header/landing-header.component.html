@@ -9,6 +9,9 @@
     </div>
     <div class="header__end">
       <app-theme-toggle />
+      @if (hasRooms()) {
+        <a class="btn" [routerLink]="myRooms">My rooms</a>
+      }
       <a class="btn btn--dark" href="#start">Start a room</a>
     </div>
   </nav>

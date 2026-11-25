@@ -1,3 +1,6 @@
+import { RoomRole } from '@shared/enums/room-role.enum';
+import { LocalProfileService } from '@shared/services/local-profile.service';
+import { MyRoomsService } from '@shared/services/my-rooms.service';
 import { Animal } from '@shared/enums/animal.enum';
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
@@ -52,6 +55,29 @@ describe('LandingViewModel', () => {
     expect(model.createLabel()).toBe('Create room as Alex');
   });
 
+  it('should fill in the name and avatar this browser last used when there are some', () => {
+    TestBed.inject(LocalProfileService).save({ name: 'Maya Chen', avatar: Animal.Owl });
+
+    const again = TestBed.runInInjectionContext(() => new LandingViewModel());
+
+    expect(again.createForm.getRawValue()).toMatchObject({ name: 'Maya Chen', avatar: Animal.Owl });
+    expect(again.createLabel()).toBe('Create room as Maya');
+  });
+
+  it('should link to My rooms once this browser has a room', () => {
+    expect(model.hasRooms()).toBe(false);
+
+    TestBed.inject(MyRoomsService).remember({
+      id: 'r1',
+      name: 'Sprint',
+      code: '',
+      role: RoomRole.Moderator,
+      lastVisit: 1,
+    });
+
+    expect(model.hasRooms()).toBe(true);
+  });
+
   it('should start with the organiser facilitating when the form first shows', () => {
     expect(model.createForm.controls.facilitate.value).toBe(true);
   });
@@ -91,6 +117,10 @@ describe('LandingViewModel', () => {
       colour: 1,
     });
     expect(model.view().creating).toBe(false);
+    expect(TestBed.inject(LocalProfileService).profile()).toEqual({
+      name: 'Alex Kim',
+      avatar: Animal.Fox,
+    });
   });
 
   it('should seat the organiser as a non-voting facilitator when they choose to', async () => {

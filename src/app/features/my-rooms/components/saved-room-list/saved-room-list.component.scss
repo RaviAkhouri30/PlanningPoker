@@ -1,0 +1,73 @@
+@use 'tokens' as t;
+
+.rooms {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.room {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid t.color('line');
+  border-radius: t.$radius-lg;
+  background: t.color('surface');
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  &:hover {
+    border-color: t.color('line-hover');
+    box-shadow: t.$shadow-hover;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__name {
+    font: 700 18px t.$font-display;
+    color: t.color('ink');
+    overflow-wrap: anywhere;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 14px;
+    color: t.color('text-muted');
+  }
+
+  &__role {
+    font-weight: 600;
+    color: t.color('accent-text');
+  }
+
+  &__code {
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: t.color('text');
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .room {
+    transition: none;
+  }
+}

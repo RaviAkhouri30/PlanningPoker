@@ -30,8 +30,11 @@ import {
   TIMER_TICK_MS,
 } from '@shared/constants/room.constants';
 import { ROOM_ID_PARAM, ROOM_ROUTE_SEGMENT } from '@shared/constants/routes.constants';
+import { RoomRole } from '@shared/enums/room-role.enum';
 import { ToastTone } from '@shared/enums/toast-tone.enum';
+import { type Participant } from '@shared/models/participant.model';
 import { type Room } from '@shared/models/room.model';
+import { MyRoomsService } from '@shared/services/my-rooms.service';
 import { ParticipantsService } from '@shared/services/participants.service';
 import { RoomsService } from '@shared/services/rooms.service';
 import { ToastService } from '@shared/services/toast.service';
@@ -113,6 +116,9 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   private readonly actions = new Subject<IRoomAction>();
   private readonly changes = new Subject<IRoomState>();
   private readonly joins = new JoinNotices();
+  private readonly myRooms = inject(MyRoomsService);
+  /** My rooms is updated once per visit, not on every change in the room. */
+  private remembered = false;
 
   public constructor() {
     super();
@@ -198,10 +204,27 @@ export class RoomViewModel extends ViewModel<IRoomState> {
       : of(NO_VOTES);
   }
 
+  /** Lists the room on My rooms (or moves it to the top) once this person's seat is known. */
+  private remember(room: Room | null, me: Participant | null): void {
+    if (this.remembered || room === null || me === null) {
+      return;
+    }
+    this.remembered = true;
+    const role = me.isPlayer ? RoomRole.Player : RoomRole.Spectator;
+    this.myRooms.remember({
+      id: room.id,
+      name: room.name,
+      code: room.code,
+      role: room.moderatorUid === me.uid ? RoomRole.Moderator : role,
+      lastVisit: this.clock.now(),
+    });
+  }
+
   private apply(room: Room | null, change: Partial<IRoomState>): void {
     this.patch({ ...change, room, status: room === null ? RoomStatus.Missing : RoomStatus.Ready });
     this.tour.offer();
     this.joins.see(change.people ?? [], this.view().uid);
+    this.remember(room, this.me());
     this.changes.next(this.view());
   }
 

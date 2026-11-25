@@ -7,6 +7,8 @@ flowchart TB
   app --> join["/r/:roomId/join JoinPage"]
   app --> room["/r/:roomId RoomPage (roomMemberGuard)"]
   app --> terms["/terms TermsPage"]
+  app --> mine["/rooms MyRoomsPage (returningGuestGuard on /)"]
+  mine --> bdn[browser-data-notice] & srl[saved-room-list]
 
   landing --> lh[landing-header] & hf[hero-form] & hs[hero-stage] & hiw[how-it-works]
   hs --> hfl[hero-floats: demo join toasts]

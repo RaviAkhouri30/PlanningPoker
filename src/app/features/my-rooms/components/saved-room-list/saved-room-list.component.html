@@ -1,0 +1,33 @@
+<ul class="rooms" aria-label="Your rooms">
+  @for (room of rooms(); track room.id) {
+    <li class="room">
+      <div class="room__info">
+        <h2 class="room__name">{{ room.name }}</h2>
+        <p class="room__meta">
+          <span class="room__role">{{ room.roleLabel }}</span>
+          <span aria-hidden="true">·</span>
+          <span>{{ room.visitLabel }}</span>
+          @if (room.code) {
+            <span aria-hidden="true">·</span>
+            <span
+              >Code <span class="room__code">{{ room.code }}</span></span
+            >
+          }
+        </p>
+      </div>
+      <div class="room__actions">
+        <button
+          class="btn"
+          type="button"
+          [attr.aria-label]="'Forget ' + room.name"
+          (click)="forgetRoom.emit(room.id)"
+        >
+          Forget
+        </button>
+        <a class="btn btn--primary" [routerLink]="room.open" [attr.aria-label]="'Open ' + room.name"
+          >Open <app-icon [name]="arrowIcon" [size]="18"
+        /></a>
+      </div>
+    </li>
+  }
+</ul>

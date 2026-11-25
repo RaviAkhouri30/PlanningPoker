@@ -1,0 +1,26 @@
+<header class="top">
+  <app-logo />
+  <div class="top__end">
+    <app-theme-toggle />
+    <a class="btn btn--dark" routerLink="/" fragment="start"
+      ><app-icon [name]="plusIcon" [size]="18" />New room</a
+    >
+  </div>
+</header>
+<main class="page">
+  <div class="page__head">
+    <span class="eyebrow">My rooms</span>
+    <h1 class="page__title">{{ model.title() }}</h1>
+    <p class="page__lead">Pick up where you left off, or start a new room for the next session.</p>
+  </div>
+  <app-browser-data-notice />
+  @if (model.cards().length > 0) {
+    <app-saved-room-list [rooms]="model.cards()" (forgetRoom)="model.forget($event)" />
+  } @else {
+    <div class="empty">
+      <h2 class="empty__title">No rooms yet</h2>
+      <p class="empty__text">Rooms you create or join in this browser show up here.</p>
+      <a class="btn btn--primary" routerLink="/" fragment="start">Start a room</a>
+    </div>
+  }
+</main>

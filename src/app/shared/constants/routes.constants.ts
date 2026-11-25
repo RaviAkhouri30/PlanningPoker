@@ -28,3 +28,9 @@ export const TERMS_ROUTE_SEGMENT = 'terms';
 
 /** The router commands for the terms page. */
 export const TERMS_COMMANDS: readonly string[] = ['/', TERMS_ROUTE_SEGMENT];
+
+/** The guest's room list: `/rooms`. */
+export const MY_ROOMS_ROUTE_SEGMENT = 'rooms';
+
+/** The router commands for My rooms. */
+export const MY_ROOMS_COMMANDS: readonly string[] = ['/', MY_ROOMS_ROUTE_SEGMENT];

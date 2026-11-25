@@ -1,4 +1,5 @@
 import { expect, test } from '../fixtures/test';
+import { MyRoomsPage } from '../pages/my-rooms.page';
 import { RoomPage } from '../pages/room.page';
 
 /** The first slice on the Fake backend, in one browser: create, add a story, vote, flip, settle. */
@@ -80,9 +81,10 @@ test.describe('Room flow', () => {
     await room.tour.getByRole('button', { name: 'Done' }).click();
     await expect(room.tour).toBeHidden();
 
-    // Shown once per browser: a second room doesn't bring it back, the tour button does. (Not a
-    // reload: the Fake backend keeps rooms in the tab's memory.)
+    // Shown once per browser: a second room doesn't bring it back, the tour button does. Coming
+    // back to the home page with a room saved opens My rooms, whose "New room" leads to the form.
     await landing.open();
+    await new MyRoomsPage(page).newRoomLink.click();
     await landing.createRoom('Alex Kim', 'Sprint 43');
     await expect(page.getByText('No story yet')).toBeVisible();
     await expect(room.tour).toBeHidden();

@@ -35,6 +35,7 @@ import { type ISeatProfile } from '@shared/interfaces/i-seat-profile';
 import { type Participant } from '@shared/models/participant.model';
 import { type Room } from '@shared/models/room.model';
 import { GuestSessionService } from '@shared/services/guest-session.service';
+import { LocalProfileService } from '@shared/services/local-profile.service';
 import { ParticipantsService } from '@shared/services/participants.service';
 import { RoomsService } from '@shared/services/rooms.service';
 import { ToastService } from '@shared/services/toast.service';
@@ -53,15 +54,21 @@ export class JoinViewModel extends ViewModel<IJoinState> {
   public readonly roomId: string =
     inject(ActivatedRoute).snapshot.paramMap.get(ROOM_ID_PARAM) ?? '';
 
-  /** Name, colour, role and avatar (a random animal until one is picked). */
+  /**
+   * Name, colour, role and avatar. The name and avatar start as this browser last used them; a
+   * first visit gets a random animal.
+   */
   public readonly form = new FormGroup({
-    name: new FormControl('', {
+    name: new FormControl(inject(LocalProfileService).profile()?.name ?? '', {
       nonNullable: true,
       validators: [TextValidators.notBlank, TextValidators.maxTrimmed(LIMITS.displayName)],
     }),
     colour: new FormControl(0, { nonNullable: true }),
     role: new FormControl(ParticipantRole.Player, { nonNullable: true }),
-    avatar: new FormControl<Animal>(animalAt(inject(RANDOM)()), { nonNullable: true }),
+    avatar: new FormControl<Animal>(
+      inject(LocalProfileService).profile()?.avatar ?? animalAt(inject(RANDOM)()),
+      { nonNullable: true },
+    ),
   });
 
   /** The page's state, never undefined. */
@@ -82,6 +89,7 @@ export class JoinViewModel extends ViewModel<IJoinState> {
   private readonly participants = inject(ParticipantsService);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
+  private readonly profiles = inject(LocalProfileService);
   private readonly logger = inject(LoggerService);
   private readonly joins = new Subject<void>();
   private defaultsApplied = false;
@@ -186,6 +194,7 @@ export class JoinViewModel extends ViewModel<IJoinState> {
       // One user arrives, so switchMap only ever follows one join.
       switchMap((user) => this.participants.join(this.roomId, user.uid, profile)),
       tap(() => {
+        this.profiles.save({ name: profile.displayName, avatar: profile.avatar });
         void this.router.navigate(roomCommands(this.roomId));
       }),
       catchError((error: unknown) => {
