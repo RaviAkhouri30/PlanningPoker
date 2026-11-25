@@ -1,0 +1,61 @@
+# Class diagram
+
+```mermaid
+classDiagram
+  class ViewModel~T~ {
+    <<abstract>>
+    +data Signal~T~
+    +init() Observable~void~
+    #attachViewHandler() Observable
+    #attachCommandHandler() Observable
+    #setData(value)
+    #updateData(update)
+  }
+  class BaseComponent~T~ {
+    <<abstract>>
+    #model IViewModel~T~
+    +ngOnInit()
+  }
+  class IRealtimeStore {
+    <<abstract>>
+    +watchDocument(path) Observable
+    +watchCollection(path, orderBy) Observable
+    +commit(writes) Observable~void~
+  }
+  class IAuthService {
+    <<abstract>>
+    +user$ Observable
+    +signInAsGuest(name) Observable
+  }
+  class IClipboardService {
+    <<abstract>>
+    +copy(text) Observable~void~
+  }
+  IRealtimeStore <|-- FirebaseRealtimeStore
+  IRealtimeStore <|-- FakeRealtimeStore
+  IAuthService <|-- FirebaseAuthService
+  IAuthService <|-- FakeAuthService
+  IClipboardService <|-- BrowserClipboardService
+  IClipboardService <|-- FakeClipboardService
+
+  ViewModel <|-- LandingViewModel
+  ViewModel <|-- JoinViewModel
+  ViewModel <|-- RoomViewModel
+  RoomViewModel *-- RoomCommands
+  RoomViewModel ..> RoomView : builds seats, stats
+  RoomCommands ..> ModerationService
+  RoomCommands ..> VotesService
+  RoomCommands ..> StoriesService
+  RoomViewModel ..> RoomsService
+  RoomViewModel ..> ParticipantsService
+  ModerationService ..> IRealtimeStore
+  VotesService ..> IRealtimeStore
+  StoriesService ..> IRealtimeStore
+  RoomsService ..> IRealtimeStore
+  ParticipantsService ..> IRealtimeStore
+```
+
+- `RoomViewModel` combines the live streams into one `IRoomState`; `RoomView` turns that state into
+  seats, players, results and the next story with pure functions.
+- `RoomCommands` runs every user action through one `concatMap` queue, so writes keep their order,
+  and re-checks the moderator role when the action runs.
