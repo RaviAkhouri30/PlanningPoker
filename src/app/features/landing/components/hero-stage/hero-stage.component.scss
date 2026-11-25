@@ -1,6 +1,8 @@
 @use 'tokens' as t;
 
 $loop: 7s;
+// Six joiners × JOIN_SLOT_MS (hero-stage.constants.ts).
+$join-loop: 15s;
 
 :host {
   position: relative;
@@ -190,10 +192,29 @@ $loop: 7s;
   box-shadow: 0 12px 30px rgba(17, 19, 24, 0.1);
   animation: bob 5s ease-in-out infinite;
 
+  // Every joiner sits in the same corner; the join loop shows one at a time.
   &--joined {
     top: 0;
     right: -6px;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
     animation-delay: 0.4s;
+  }
+
+  &__in {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: t.color('white');
+    border: 1px solid t.color('line');
+    border-radius: t.$radius-md;
+    padding: 10px 14px;
+    box-shadow: 0 12px 30px rgba(17, 19, 24, 0.1);
+    opacity: 0;
+    animation: join-toast $join-loop t.$ease-out infinite both;
+    animation-delay: var(--delay, 0ms);
   }
 
   &--voted {
@@ -258,6 +279,33 @@ $loop: 7s;
   100% {
     opacity: 0;
     transform: translateY(8px);
+  }
+}
+
+// One slot is a sixth of the loop: slide in, hold, fade out, then wait for the others.
+@keyframes join-toast {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+
+  2%,
+  13% {
+    opacity: 1;
+    transform: none;
+  }
+
+  16%,
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+// Without motion, keep the latest arrival on show instead of an empty corner.
+@media (prefers-reduced-motion: reduce) {
+  .float--latest .float__in {
+    opacity: 1;
   }
 }
 

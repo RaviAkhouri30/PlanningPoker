@@ -5,6 +5,7 @@ import { FEATURES, QUESTIONS, STEPS } from '../models/landing-content.constants'
 import { FaqListComponent } from './faq-list/faq-list.component';
 import { FeatureGridComponent } from './feature-grid/feature-grid.component';
 import { GuestAccountComponent } from './guest-account/guest-account.component';
+import { JOIN_SLOT_MS, STAGE_JOINS } from '../models/hero-stage.constants';
 import { HeroStageComponent } from './hero-stage/hero-stage.component';
 import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { LandingFooterComponent } from './landing-footer/landing-footer.component';
@@ -49,5 +50,15 @@ describe('Landing sections', () => {
   it('should draw a decorative table and a footer', () => {
     expect(render(HeroStageComponent).getAttribute('aria-hidden')).toBe('true');
     expect(render(LandingFooterComponent).querySelectorAll('.footer__link')).toHaveLength(2);
+  });
+
+  it('should queue one join toast per seat, each in its own slot, when the hero stage renders', () => {
+    const toasts = render(HeroStageComponent).querySelectorAll<HTMLElement>(
+      '.float--joined .float__in',
+    );
+
+    expect(toasts).toHaveLength(STAGE_JOINS.length);
+    expect(toasts[0]?.textContent).toContain('Maya joined via link');
+    expect(toasts[1]?.style.getPropertyValue('--delay')).toBe(`${String(JOIN_SLOT_MS)}ms`);
   });
 });

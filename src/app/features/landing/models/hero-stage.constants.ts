@@ -36,3 +36,23 @@ export const FAN: readonly IFanCard[] = [
   { card: '8', picked: false, delay: 900 },
   { card: '13', picked: false, delay: 1200 },
 ];
+
+/** How long each "joined" toast owns the corner before the next person arrives, in ms. */
+export const JOIN_SLOT_MS = 2500;
+
+/** One "X joined via link" toast in the hero's join loop. */
+export interface IStageJoin {
+  readonly seat: IStageSeat;
+  readonly label: string;
+  /** When this toast's slot starts in the loop, in ms. */
+  readonly delay: number;
+}
+
+/** Everyone at the demo table joins in turn: one toast at a time, each shown then hidden. */
+export const STAGE_JOINS: readonly IStageJoin[] = [...STAGE_TOP, ...STAGE_BOTTOM].map(
+  (seat, index) => ({
+    seat,
+    label: `${seat.name.split(' ').at(0) ?? seat.name} joined via link`,
+    delay: index * JOIN_SLOT_MS,
+  }),
+);

@@ -3,7 +3,7 @@
 .hero {
   max-width: t.$content-width;
   margin: 0 auto;
-  padding: 72px t.$gutter 96px;
+  padding: 32px t.$gutter 96px;
   display: flex;
   flex-wrap: wrap;
   gap: 56px;
@@ -50,7 +50,7 @@
   }
 
   @media (max-width: 620px) {
-    padding: 40px t.$gutter-mobile 64px;
+    padding: 24px t.$gutter-mobile 64px;
     gap: 40px;
 
     &__copy,
