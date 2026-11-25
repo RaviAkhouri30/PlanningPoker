@@ -16,9 +16,12 @@ import {
 import { IAuthService } from '@core/interfaces/i-auth-service';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
+import { RANDOM } from '@core/tokens/random.token';
 import { ViewModel } from '@shared/base/view-model';
+import { animalAt, animalFace } from '@shared/constants/animals.constants';
 import { LIMITS } from '@shared/constants/limits.constants';
 import { ROOM_ROUTE_SEGMENT, roomCommands } from '@shared/constants/routes.constants';
+import { type Animal } from '@shared/enums/animal.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import { ToastTone } from '@shared/enums/toast-tone.enum';
 import { GuestSessionService } from '@shared/services/guest-session.service';
@@ -36,7 +39,10 @@ import { LANDING_MESSAGES } from '../models/landing-messages.constants';
  */
 @Injectable()
 export class LandingViewModel extends ViewModel<ILandingState> {
-  /** "Your name", the optional room name, and whether the organiser only facilitates. */
+  /**
+   * "Your name", the avatar (a random animal until one is picked), the optional room name, and
+   * whether the organiser only facilitates.
+   */
   public readonly createForm = new FormGroup({
     name: new FormControl('', {
       nonNullable: true,
@@ -46,6 +52,7 @@ export class LandingViewModel extends ViewModel<ILandingState> {
       nonNullable: true,
       validators: [TextValidators.maxTrimmed(LIMITS.roomName)],
     }),
+    avatar: new FormControl<Animal>(animalAt(inject(RANDOM)()), { nonNullable: true }),
     /** The organiser runs the session without voting (a scrum master, say). */
     facilitate: new FormControl(false, { nonNullable: true }),
   });
@@ -67,6 +74,12 @@ export class LandingViewModel extends ViewModel<ILandingState> {
   /** The create button's words: "Create room as Alex" once a name is typed. */
   public readonly createLabel: Signal<string>;
 
+  /** The picked animal, for the picker. */
+  public readonly avatar: Signal<Animal>;
+
+  /** The organiser's seat colour: the one their animal looks best on. */
+  public readonly avatarColour: Signal<number>;
+
   private readonly auth = inject(IAuthService);
   private readonly session = inject(GuestSessionService);
   private readonly rooms = inject(RoomsService);
@@ -82,6 +95,8 @@ export class LandingViewModel extends ViewModel<ILandingState> {
     const form = this.createForm.controls;
     const roomName = toSignal(form.roomName.valueChanges, { initialValue: '' });
     const name = toSignal(form.name.valueChanges, { initialValue: '' });
+    this.avatar = toSignal(form.avatar.valueChanges, { initialValue: form.avatar.value });
+    this.avatarColour = computed(() => animalFace(this.avatar())?.colour ?? 0);
     this.slugPreview = computed(() => slugify(roomName()) || LANDING_MESSAGES.slugPlaceholder);
     this.createLabel = computed(() => {
       const first = firstNameOf(name());
@@ -96,6 +111,11 @@ export class LandingViewModel extends ViewModel<ILandingState> {
       return;
     }
     this.creates.next();
+  }
+
+  /** Picks the organiser's animal. */
+  public pickAvatar(animal: Animal): void {
+    this.createForm.controls.avatar.setValue(animal);
   }
 
   /** Looks the typed code up, or explains what a code looks like. */
@@ -117,7 +137,7 @@ export class LandingViewModel extends ViewModel<ILandingState> {
   }
 
   private create(): Observable<string> {
-    const { name, roomName, facilitate } = this.createForm.getRawValue();
+    const { name, roomName, facilitate, avatar } = this.createForm.getRawValue();
     // A facilitator sits as a spectator, so auto-reveal waits only for the players.
     const role = facilitate ? ParticipantRole.Spectator : ParticipantRole.Player;
     const displayName = name.trim();
@@ -128,7 +148,7 @@ export class LandingViewModel extends ViewModel<ILandingState> {
         this.rooms.create({
           name: roomName,
           moderatorUid: user.uid,
-          moderator: { displayName, colour: 0, role },
+          moderator: { displayName, colour: this.avatarColour(), role, avatar },
         }),
       ),
       tap((roomId) => {

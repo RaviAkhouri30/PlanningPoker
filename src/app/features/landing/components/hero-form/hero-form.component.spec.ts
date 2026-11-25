@@ -1,3 +1,4 @@
+import { Animal } from '@shared/enums/animal.enum';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TextValidators } from '@shared/validators/text.validators';
@@ -17,6 +18,7 @@ describe('HeroFormComponent', () => {
           validators: [TextValidators.notBlank, TextValidators.maxTrimmed(3)],
         }),
         roomName: new FormControl('', { nonNullable: true }),
+        avatar: new FormControl<Animal>(Animal.Fox, { nonNullable: true }),
         facilitate: new FormControl(false, { nonNullable: true }),
       }),
       code: new FormGroup({ code: new FormControl('', { nonNullable: true }) }),
@@ -27,6 +29,7 @@ describe('HeroFormComponent', () => {
     fixture.componentRef.setInput('linkPrefix', 'planningpoker.test/r/');
     fixture.componentRef.setInput('slug', 'sprint-42');
     fixture.componentRef.setInput('createLabel', 'Create my room');
+    fixture.componentRef.setInput('avatar', Animal.Fox);
     fixture.detectChanges();
     forms.create.markAllAsTouched();
     fixture.detectChanges();

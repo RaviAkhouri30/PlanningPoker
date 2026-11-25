@@ -67,7 +67,23 @@ $palette: (
   'band-low': #1fa968,
   'band-mid': #f2b32a,
   'band-high': #e5534b,
-  'band-none': #b9bdc9
+  'band-none': #b9bdc9,
+  // Avatar animals (the same in both themes: faces sit on their own seat colour).
+  'animal-orange': #f08a3c,
+  'animal-dark': #2a2630,
+  'animal-cream': #fff3df,
+  'animal-white': #ffffff,
+  'animal-pink': #f5a6bb,
+  'animal-pink-dark': #e77f9b,
+  'animal-brown': #9c6440,
+  'animal-tan': #dcae7c,
+  'animal-yellow': #f5c242,
+  'animal-mane': #c97a2b,
+  'animal-grey': #9aa3b0,
+  'animal-grey-light': #dde1e8,
+  'animal-green': #5fbf6a,
+  'animal-blue': #5aa5e6,
+  'animal-sky': #d4ebfc
 );
 
 // Dark theme: only the tokens that change. The dark table, the status colours and pure white

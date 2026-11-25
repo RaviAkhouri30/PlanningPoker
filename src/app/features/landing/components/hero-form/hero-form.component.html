@@ -37,6 +37,13 @@
       />
     </div>
   </div>
+  <app-avatar-picker
+    idPrefix="hero-avatar"
+    [animal]="avatar()"
+    [colourIndex]="avatarColour()"
+    [name]="forms().create.controls.name.value"
+    (animalPick)="avatarPick.emit($event)"
+  />
   <label class="check">
     <input class="check__box" type="checkbox" formControlName="facilitate" />
     <span class="check__copy"

@@ -117,6 +117,7 @@ function seatOf(person: Participant, context: ISeatContext): ISeatView {
     shortName: isMe ? SELF_NAME : firstNameOf(person.displayName),
     fullName: isMe ? `${person.displayName} (you)` : person.displayName,
     colour: person.colourIndex,
+    avatar: person.avatar,
     isMe,
     isPlayer: person.isPlayer,
     roleLabel: roleLabelOf(person, room),

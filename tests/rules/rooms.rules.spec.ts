@@ -52,6 +52,7 @@ describe('firestore.rules · rooms', () => {
       displayName: 'Alex Kim',
       colour: 0,
       role,
+      avatar: 'fox',
       votedRound: null,
       joinedAt: serverTimestamp(),
       lastSeenAt: serverTimestamp(),
@@ -201,6 +202,25 @@ describe('firestore.rules · rooms', () => {
       ).rejects.toMatchObject(DENIED);
       await expect(
         setDoc(doc(maya, STORE_PATHS.participant(ROOM, 'other')), seat()),
+      ).rejects.toMatchObject(DENIED);
+    });
+
+    it('should take an avatar from the animal list only, and seats without one', async () => {
+      const mine = doc(maya, STORE_PATHS.participant(ROOM, 'maya'));
+      await expect(updateDoc(mine, { avatar: 'owl' })).resolves.not.toEqual(DENIED);
+      await expect(updateDoc(mine, { avatar: 'dragon' })).rejects.toMatchObject(DENIED);
+      await expect(updateDoc(mine, { avatar: 7 })).rejects.toMatchObject(DENIED);
+      // A seat from before avatars: no avatar field at all.
+      const older = seat();
+      delete older['avatar'];
+      await expect(
+        setDoc(doc(stranger, STORE_PATHS.participant(ROOM, 'stranger')), older),
+      ).resolves.not.toEqual(DENIED);
+      await expect(
+        setDoc(doc(stranger, STORE_PATHS.participant(ROOM, 'stranger')), {
+          ...seat(),
+          avatar: '<img>',
+        }),
       ).rejects.toMatchObject(DENIED);
     });
 

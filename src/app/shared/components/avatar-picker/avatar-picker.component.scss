@@ -1,0 +1,77 @@
+@use 'tokens' as t;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.picker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  &__text {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__name {
+    font: 700 16px t.$font-display;
+    color: t.color('ink');
+  }
+
+  &__change {
+    flex: none;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid t.color('line');
+  border-radius: 16px;
+  background: t.color('surface-soft');
+  animation: grid-in 0.25s t.$ease-out both;
+
+  &__option {
+    display: grid;
+    place-items: center;
+    min-height: 48px;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    background: transparent;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      transform 0.18s t.$ease-spring;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    &--on {
+      border-color: t.color('accent');
+    }
+  }
+}
+
+@keyframes grid-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid,
+  .grid__option {
+    animation: none;
+    transition: none;
+  }
+}

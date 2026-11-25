@@ -4,11 +4,13 @@ import {
   DEFAULT_AVATAR_COLOUR,
   type IAvatarColour,
 } from '@shared/constants/palette.constants';
+import { Animal } from '@shared/enums/animal.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import { initialsOf } from '@shared/utils/display.util';
 import { FieldReader } from '@shared/utils/fields.util';
 
 const ROLES = Object.values(ParticipantRole);
+const ANIMAL_IDS = Object.values(Animal);
 
 /** Someone in a room (`rooms/{roomId}/participants/{uid}`). */
 export class Participant {
@@ -16,6 +18,8 @@ export class Participant {
   /** Index into `AVATAR_PALETTE`. */
   public readonly colourIndex: number;
   public readonly role: ParticipantRole;
+  /** The animal on the avatar, or `null` for a seat from before avatars (shown as initials). */
+  public readonly avatar: Animal | null;
   /** The round this person last voted in; equal to the room's round means "has voted". */
   public readonly votedRound: number | null;
   public readonly joinedAt: number | null;
@@ -32,6 +36,7 @@ export class Participant {
     this.displayName = FieldReader.text(fields, 'displayName');
     this.colourIndex = FieldReader.number(fields, 'colour');
     this.role = FieldReader.oneOf(fields, 'role', ROLES, ParticipantRole.Player);
+    this.avatar = FieldReader.oneOfOrNull(fields, 'avatar', ANIMAL_IDS);
     this.votedRound = FieldReader.numberOrNull(fields, 'votedRound');
     this.joinedAt = FieldReader.numberOrNull(fields, 'joinedAt');
     this.lastSeenAt = FieldReader.numberOrNull(fields, 'lastSeenAt');

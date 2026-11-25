@@ -1,7 +1,10 @@
+import { Animal } from '@shared/enums/animal.enum';
+
 /** One seat at the hero's demo table. */
 export interface IStageSeat {
   readonly name: string;
   readonly colour: number;
+  readonly animal: Animal;
   readonly card: string;
   /** When its card flips in the loop, in ms. */
   readonly delay: number;
@@ -16,16 +19,16 @@ export interface IFanCard {
 
 /** The demo table's top row (the design's Main.dc.html hero). */
 export const STAGE_TOP: readonly IStageSeat[] = [
-  { name: 'Maya Chen', colour: 1, card: '5', delay: 0 },
-  { name: 'Jonah Reed', colour: 2, card: '5', delay: 120 },
-  { name: 'Priya Nair', colour: 3, card: '8', delay: 240 },
+  { name: 'Maya Chen', colour: 1, animal: Animal.Fox, card: '5', delay: 0 },
+  { name: 'Jonah Reed', colour: 2, animal: Animal.Panda, card: '5', delay: 120 },
+  { name: 'Priya Nair', colour: 3, animal: Animal.Owl, card: '8', delay: 240 },
 ];
 
 /** The demo table's bottom row. */
 export const STAGE_BOTTOM: readonly IStageSeat[] = [
-  { name: 'Leo Marsh', colour: 4, card: '5', delay: 360 },
-  { name: 'Sam Okafor', colour: 5, card: '3', delay: 480 },
-  { name: 'Alex Kim', colour: 0, card: '8', delay: 600 },
+  { name: 'Leo Marsh', colour: 4, animal: Animal.Cat, card: '5', delay: 360 },
+  { name: 'Sam Okafor', colour: 5, animal: Animal.Rabbit, card: '3', delay: 480 },
+  { name: 'Alex Kim', colour: 0, animal: Animal.Koala, card: '8', delay: 600 },
 ];
 
 /** The hand fanned below the table, with 5 picked. */

@@ -125,7 +125,11 @@ service cloud.firestore {
       function validSeat(data) {
         return isText(data.displayName, 1, 40)
           && data.colour is int && data.colour >= 0 && data.colour <= 5
-          && data.role in ['player', 'spectator'];
+          && data.role in ['player', 'spectator']
+          // Optional: seats from before avatars have none. The ids mirror animal.enum.ts.
+          && (!('avatar' in data) || data.avatar in ['fox', 'panda', 'owl', 'cat', 'frog', 'koala',
+            'bear', 'rabbit', 'penguin', 'tiger', 'lion', 'monkey', 'pig', 'whale', 'hedgehog',
+            'raccoon']);
       }
 
       match /participants/{uid} {
@@ -133,16 +137,17 @@ service cloud.firestore {
         allow read: if signedIn();
         allow create: if isUser(uid)
           && existsAfter(roomPath(roomId))
-          && request.resource.data.keys().hasOnly(['displayName', 'colour', 'role', 'votedRound',
-              'joinedAt', 'lastSeenAt'])
+          && request.resource.data.keys().hasOnly(['displayName', 'colour', 'role', 'avatar',
+              'votedRound', 'joinedAt', 'lastSeenAt'])
           && validSeat(request.resource.data)
           && request.resource.data.votedRound == null
           && request.resource.data.joinedAt == request.time
           && request.resource.data.lastSeenAt == request.time;
-        // Their own seat: name, colour, role, presence, and the round they voted in, which must
-        // be the room's current round (written with the vote) or cleared.
+        // Their own seat: name, colour, role, avatar, presence, and the round they voted in, which
+        // must be the room's current round (written with the vote) or cleared.
         allow update: if isUser(uid)
-          && changedOnly(['displayName', 'colour', 'role', 'votedRound', 'lastSeenAt'])
+          && changedOnly(['displayName', 'colour', 'role', 'avatar', 'votedRound',
+              'lastSeenAt'])
           && validSeat(request.resource.data)
           && (unchanged('lastSeenAt') || request.resource.data.lastSeenAt == request.time)
           && (unchanged('votedRound') || request.resource.data.votedRound == null

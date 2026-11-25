@@ -1,3 +1,4 @@
+import { Animal } from '@shared/enums/animal.enum';
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { type Subscription, throwError } from 'rxjs';
@@ -40,10 +41,22 @@ describe('LandingViewModel', () => {
     expect(model.slugPreview()).toBe(LANDING_MESSAGES.slugPlaceholder);
     expect(model.createLabel()).toBe(LANDING_MESSAGES.createLabel);
 
-    model.createForm.setValue({ name: 'Alex Kim', roomName: 'Sprint 42!', facilitate: false });
+    model.createForm.setValue({
+      name: 'Alex Kim',
+      roomName: 'Sprint 42!',
+      avatar: Animal.Fox,
+      facilitate: false,
+    });
 
     expect(model.slugPreview()).toBe('sprint-42');
     expect(model.createLabel()).toBe('Create room as Alex');
+  });
+
+  it('should seat the organiser on the colour their animal suits when they pick one', () => {
+    model.pickAvatar(Animal.Penguin);
+
+    expect(model.avatar()).toBe(Animal.Penguin);
+    expect(model.avatarColour()).toBe(4);
   });
 
   it('should show the errors instead of creating when the name is blank', () => {
@@ -54,7 +67,12 @@ describe('LandingViewModel', () => {
   });
 
   it('should create the room with the guest as moderator and open it', async () => {
-    model.createForm.setValue({ name: ' Alex Kim ', roomName: 'Sprint 42', facilitate: false });
+    model.createForm.setValue({
+      name: ' Alex Kim ',
+      roomName: 'Sprint 42',
+      avatar: Animal.Fox,
+      facilitate: false,
+    });
 
     model.createRoom();
 
@@ -65,12 +83,19 @@ describe('LandingViewModel', () => {
       stored('rooms/sprint-42-aaaaaa/participants/fake-guest-uid'),
     ).resolves.toMatchObject({
       displayName: 'Alex Kim',
+      avatar: 'fox',
+      colour: 1,
     });
     expect(model.view().creating).toBe(false);
   });
 
   it('should seat the organiser as a non-voting facilitator when they choose to', async () => {
-    model.createForm.setValue({ name: 'Sam Lee', roomName: 'Sprint 43', facilitate: true });
+    model.createForm.setValue({
+      name: 'Sam Lee',
+      roomName: 'Sprint 43',
+      avatar: Animal.Fox,
+      facilitate: true,
+    });
 
     model.createRoom();
 
@@ -87,7 +112,12 @@ describe('LandingViewModel', () => {
       throwError(() => new Error('down')),
     );
     const show = vi.spyOn(TestBed.inject(ToastService), 'show');
-    model.createForm.setValue({ name: 'Alex', roomName: '', facilitate: false });
+    model.createForm.setValue({
+      name: 'Alex',
+      roomName: '',
+      avatar: Animal.Fox,
+      facilitate: false,
+    });
 
     model.createRoom();
 

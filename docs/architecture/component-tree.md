@@ -23,6 +23,7 @@ flowchart TB
   res --> cb[confetti-burst]
 ```
 
-Shared building blocks: `logo`, `icon`, `avatar`, `toast`, `site-footer` (copyright and terms link),
+Shared building blocks: `logo`, `icon`, `avatar` (an animal face, or initials for older seats),
+`avatar-picker` (on the create and join forms), `toast`, `site-footer` (copyright and terms link),
 `theme-toggle` (in every page header: system, light, dark), and the style directives
 `appDelay`, `appWidthPercent` and `appBackground` (templates never bind styles directly).

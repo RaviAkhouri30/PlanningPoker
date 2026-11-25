@@ -33,6 +33,7 @@ describe('data models', () => {
       displayName: 'Alex Kim',
       colour: 2,
       role: 'spectator',
+      avatar: 'owl',
       votedRound: 4,
       lastSeenAt: 1000,
     });
@@ -40,6 +41,7 @@ describe('data models', () => {
     expect(person.initials).toBe('AK');
     expect(person.colour.label).toBe('Mint');
     expect(person.role).toBe(ParticipantRole.Spectator);
+    expect(person.avatar).toBe('owl');
     expect(person.isPlayer).toBe(false);
     expect(person.hasVotedIn(4)).toBe(true);
     expect(person.hasVotedIn(5)).toBe(false);
@@ -51,6 +53,7 @@ describe('data models', () => {
     const person = new Participant('u1', { colour: 99 });
 
     expect(person.colour.label).toBe('Lilac');
+    expect(person.avatar).toBeNull();
     expect(person.isPlayer).toBe(true);
     expect(person.isOnline(0, 1)).toBe(false);
   });

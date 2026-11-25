@@ -10,6 +10,7 @@
   color: var(--avatar-fg);
   font-family: t.$font-body;
   font-weight: 700;
+  overflow: hidden;
   transition:
     background 0.3s,
     color 0.3s;
@@ -37,4 +38,45 @@
   box-shadow:
     0 0 0 2px t.color('surface'),
     0 0 0 4px t.color('accent');
+}
+
+// An animal face fills the circle; each layer takes its colour from its tone.
+.face {
+  width: 100%;
+  height: 100%;
+
+  path {
+    fill: var(--tone);
+  }
+
+  .face__line {
+    fill: none;
+    stroke: var(--tone);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+}
+
+$tones: (
+  'orange',
+  'dark',
+  'cream',
+  'white',
+  'pink',
+  'pink-dark',
+  'brown',
+  'tan',
+  'yellow',
+  'mane',
+  'grey',
+  'grey-light',
+  'green',
+  'blue',
+  'sky'
+);
+
+@each $tone in $tones {
+  [data-tone='#{$tone}'] {
+    --tone: #{t.color('animal-' + $tone)};
+  }
 }

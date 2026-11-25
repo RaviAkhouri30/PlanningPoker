@@ -45,4 +45,10 @@ export const FieldReader = {
     const value = ownValue(fields, key);
     return allowed.find((option) => option === value) ?? fallback;
   },
+
+  /** @returns The field when it is one of `allowed`, else `null`. */
+  oneOfOrNull<T extends string>(fields: StoreFields, key: string, allowed: readonly T[]): T | null {
+    const value = ownValue(fields, key);
+    return allowed.find((option) => option === value) ?? null;
+  },
 } as const;

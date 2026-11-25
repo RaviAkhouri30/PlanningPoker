@@ -1,9 +1,12 @@
 @for (join of joins; track join.seat.name; let last = $last) {
   <span class="float float--joined" [class.float--latest]="last"
     ><span class="float__in" [appDelay]="join.delay"
-      ><app-avatar [name]="join.seat.name" [colourIndex]="join.seat.colour" size="sm" />{{
-        join.label
-      }}</span
+      ><app-avatar
+        [name]="join.seat.name"
+        [colourIndex]="join.seat.colour"
+        [animal]="join.seat.animal"
+        size="sm"
+      />{{ join.label }}</span
     ></span
   >
 }

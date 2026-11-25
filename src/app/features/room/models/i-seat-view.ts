@@ -1,3 +1,4 @@
+import { type Animal } from '@shared/enums/animal.enum';
 import { type ScoreBand } from '@shared/enums/score-band.enum';
 
 /** What a seat's card slot shows. */
@@ -18,6 +19,8 @@ export interface ISeatView {
   /** The full name, "(you)" added for this person. */
   readonly fullName: string;
   readonly colour: number;
+  /** The animal on the avatar; `null` shows initials. */
+  readonly avatar: Animal | null;
   readonly isMe: boolean;
   readonly isPlayer: boolean;
   /** e.g. "Moderator · player". */

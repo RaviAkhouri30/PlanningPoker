@@ -1,3 +1,4 @@
+import { Animal } from '@shared/enums/animal.enum';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
@@ -14,6 +15,7 @@ describe('GuestJoinFormComponent', () => {
       }),
       colour: new FormControl(0, { nonNullable: true }),
       role: new FormControl<ParticipantRole>(ParticipantRole.Player, { nonNullable: true }),
+      avatar: new FormControl<Animal>(Animal.Owl, { nonNullable: true }),
     });
     form.markAllAsTouched();
     const fixture = TestBed.createComponent(GuestJoinFormComponent);
@@ -31,6 +33,7 @@ describe('GuestJoinFormComponent', () => {
     expect(element.querySelector('#join-name-error')?.textContent).toContain('40 characters');
     expect(element.querySelector('[type="submit"]')?.textContent).toContain('Joining');
     expect(element.querySelector('.swatch--on')?.getAttribute('aria-label')).toBe('Lilac');
+    expect(element.querySelector('.picker__name')?.textContent).toBe('Owl');
   });
 
   it('should show the account tab', () => {

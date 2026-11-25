@@ -1,0 +1,43 @@
+<div class="picker">
+  <app-avatar
+    size="lg"
+    [name]="name() || label()"
+    [animal]="animal()"
+    [colourIndex]="colourIndex()"
+  />
+  <span class="picker__text">
+    <span class="field-label" [id]="idPrefix() + '-label'">Your avatar</span>
+    <span class="picker__name">{{ label() }}</span>
+  </span>
+  <button
+    class="btn picker__change"
+    type="button"
+    [attr.aria-expanded]="open()"
+    [attr.aria-controls]="idPrefix() + '-grid'"
+    (click)="toggle()"
+  >
+    {{ open() ? 'Done' : 'Change' }}
+  </button>
+</div>
+@if (open()) {
+  <div
+    class="grid"
+    role="radiogroup"
+    [id]="idPrefix() + '-grid'"
+    [attr.aria-labelledby]="idPrefix() + '-label'"
+  >
+    @for (face of faces; track face.animal) {
+      <button
+        class="grid__option"
+        type="button"
+        role="radio"
+        [class.grid__option--on]="face.animal === animal()"
+        [attr.aria-checked]="face.animal === animal()"
+        [attr.aria-label]="face.label"
+        (click)="pick(face.animal)"
+      >
+        <app-avatar [name]="face.label" [animal]="face.animal" [colourIndex]="colourIndex()" />
+      </button>
+    }
+  </div>
+}

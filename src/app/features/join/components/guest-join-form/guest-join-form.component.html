@@ -62,6 +62,13 @@
           </span>
         }
       </div>
+      <app-avatar-picker
+        idPrefix="join-avatar"
+        [animal]="form().controls.avatar.value"
+        [colourIndex]="form().controls.colour.value"
+        [name]="form().controls.name.value"
+        (animalPick)="avatarPick.emit($event)"
+      />
       <div class="pane__group">
         <span class="field-label" id="colour-label">Your colour</span>
         <div class="swatches" role="radiogroup" aria-labelledby="colour-label">

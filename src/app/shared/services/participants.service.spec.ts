@@ -1,3 +1,4 @@
+import { Animal } from '@shared/enums/animal.enum';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
@@ -12,7 +13,12 @@ import {
 import { ParticipantsService } from './participants.service';
 
 describe('ParticipantsService', () => {
-  const profile = { displayName: 'Maya', colour: 1, role: ParticipantRole.Spectator };
+  const profile = {
+    displayName: 'Maya',
+    colour: 1,
+    role: ParticipantRole.Spectator,
+    avatar: Animal.Owl,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: testBackendProviders() });
@@ -41,6 +47,7 @@ describe('ParticipantsService', () => {
     await expect(firstValueFrom(participants.watchOne('r1', 'u1'))).resolves.toMatchObject({
       displayName: 'Maya',
       role: ParticipantRole.Spectator,
+      avatar: Animal.Owl,
     });
   });
 

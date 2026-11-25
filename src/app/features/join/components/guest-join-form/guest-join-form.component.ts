@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { type FormControl, type FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AvatarPickerComponent } from '@shared/components/avatar-picker/avatar-picker.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { AVATAR_PALETTE } from '@shared/constants/palette.constants';
 import { BackgroundDirective } from '@shared/directives/background.directive';
+import { type Animal } from '@shared/enums/animal.enum';
 import { IconName } from '@shared/enums/icon-name.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import { JoinTab } from '../../models/i-join-state';
@@ -12,12 +14,13 @@ export type JoinForm = FormGroup<{
   name: FormControl<string>;
   colour: FormControl<number>;
   role: FormControl<ParticipantRole>;
+  avatar: FormControl<Animal>;
 }>;
 
-/** The white card: "Join as guest" (name, colour, role) and the "Sign in" tab. */
+/** The white card: "Join as guest" (name, avatar, colour, role) and the "Sign in" tab. */
 @Component({
   selector: 'app-guest-join-form',
-  imports: [ReactiveFormsModule, IconComponent, BackgroundDirective],
+  imports: [ReactiveFormsModule, IconComponent, BackgroundDirective, AvatarPickerComponent],
   templateUrl: './guest-join-form.component.html',
   styleUrl: './guest-join-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +39,8 @@ export class GuestJoinFormComponent {
   public readonly tabPick = output<JoinTab>();
   /** A colour was picked. */
   public readonly colourPick = output<number>();
+  /** An avatar was picked. */
+  public readonly avatarPick = output<Animal>();
   /** A role was picked. */
   public readonly rolePick = output<ParticipantRole>();
   /** Asked to join. */

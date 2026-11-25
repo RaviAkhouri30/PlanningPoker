@@ -1,1 +1,9 @@
-<span aria-hidden="true">{{ initials() }}</span>
+@if (face(); as face) {
+  <svg class="face" viewBox="0 0 64 64" aria-hidden="true">
+    @for (layer of face.layers; track $index) {
+      <path [attr.d]="layer.d" [attr.data-tone]="layer.tone" [class.face__line]="layer.line" />
+    }
+  </svg>
+} @else {
+  <span aria-hidden="true">{{ initials() }}</span>
+}

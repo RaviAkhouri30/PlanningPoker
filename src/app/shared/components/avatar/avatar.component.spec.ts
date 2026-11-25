@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { Animal } from '@shared/enums/animal.enum';
 import { AvatarComponent } from './avatar.component';
 
 describe('AvatarComponent', () => {
@@ -25,5 +26,20 @@ describe('AvatarComponent', () => {
     expect(render({ name: 'A', colourIndex: 42 }).style.getPropertyValue('--avatar-bg')).toBe(
       '#DCD8FF',
     );
+  });
+
+  it('should draw the animal face instead of the initials when an animal is set', () => {
+    const avatar = render({ name: 'Maya Chen', animal: Animal.Fox });
+
+    expect(avatar.querySelector('svg.face')).not.toBeNull();
+    expect(avatar.dataset['animal']).toBe('fox');
+    expect(avatar.querySelectorAll('path').length).toBeGreaterThan(1);
+    expect(avatar.textContent.trim()).toBe('');
+  });
+
+  it('should mark the stroked layers as lines when the face has whiskers or a mouth', () => {
+    const avatar = render({ name: 'Cat', animal: Animal.Cat });
+
+    expect(avatar.querySelector('path.face__line')).not.toBeNull();
   });
 });

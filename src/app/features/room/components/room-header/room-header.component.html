@@ -43,7 +43,12 @@
       <app-icon [name]="helpIcon" [size]="18" />
     </button>
     @if (me(); as person) {
-      <app-avatar [name]="person.displayName" [colourIndex]="person.colourIndex" [isMe]="true" />
+      <app-avatar
+        [name]="person.displayName"
+        [colourIndex]="person.colourIndex"
+        [animal]="person.avatar"
+        [isMe]="true"
+      />
     }
   </div>
 </header>

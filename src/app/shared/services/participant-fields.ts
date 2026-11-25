@@ -10,6 +10,7 @@ export function participantFields(profile: ISeatProfile): StoreFields {
     displayName: profile.displayName,
     colour: profile.colour,
     role: profile.role,
+    avatar: profile.avatar,
     votedRound: null,
     joinedAt: SERVER_TIME,
     lastSeenAt: SERVER_TIME,

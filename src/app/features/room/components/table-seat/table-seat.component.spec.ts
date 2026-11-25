@@ -9,6 +9,7 @@ describe('TableSeatComponent', () => {
     shortName: 'Maya',
     fullName: 'Maya Chen',
     colour: 1,
+    avatar: null,
     isMe: false,
     isPlayer: true,
     roleLabel: 'Player',

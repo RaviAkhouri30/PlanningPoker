@@ -95,6 +95,15 @@ test.describe('Room flow', () => {
     await expect(room.inviteDialog).toBeHidden();
   });
 
+  test('should seat the organiser with the animal they picked', async ({ landing, page }) => {
+    await landing.open();
+
+    await landing.pickAvatar('Owl');
+    await landing.createRoom('Alex Kim', 'Sprint 42');
+
+    await expect(new RoomPage(page).avatarOf('Alex Kim')).toHaveAttribute('data-animal', 'owl');
+  });
+
   test('should let the organiser facilitate without voting, then join the vote', async ({
     landing,
     page,

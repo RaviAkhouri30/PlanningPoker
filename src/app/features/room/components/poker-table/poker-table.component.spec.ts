@@ -13,6 +13,7 @@ function seat(uid: string): ISeatView {
     shortName: uid,
     fullName: uid,
     colour: 0,
+    avatar: null,
     isMe: false,
     isPlayer: true,
     roleLabel: 'Player',

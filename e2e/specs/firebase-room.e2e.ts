@@ -27,6 +27,7 @@ test.describe('Firebase room', () => {
       const join = new JoinPage(guestPage, new URL(page.url()).pathname);
       await join.open();
       await expect(guestPage).toHaveURL(/\/join$/);
+      await join.pickAvatar('Whale');
       await join.join('Maya Patel');
       const guest = new RoomPage(guestPage);
       await expect(guest.storyTitle).toHaveText('Save cards for later');
@@ -34,6 +35,8 @@ test.describe('Firebase room', () => {
       await expect(guest.tour).toBeHidden();
       // The moderator hears about the real person who just took a seat.
       await expect(page.getByRole('status')).toContainText('Maya joined the room');
+      // Her animal reaches the moderator's screen through the rules and the live listener.
+      await expect(host.avatarOf('Maya Patel')).toHaveAttribute('data-animal', 'whale');
 
       await host.card('5').click();
       // One vote of two: the round stays open.

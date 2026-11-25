@@ -11,6 +11,7 @@
               class="preview__face"
               [name]="person.displayName"
               [colourIndex]="person.colourIndex"
+              [animal]="person.avatar"
             />
           }
         </div>
@@ -20,7 +21,12 @@
   </div>
   <div class="preview__seat">
     <div class="seat-card" aria-hidden="true">
-      <app-avatar [name]="seatName()" [colourIndex]="seat().colour" size="lg" />
+      <app-avatar
+        [name]="seatName()"
+        [colourIndex]="seat().colour"
+        [animal]="seat().avatar"
+        size="lg"
+      />
       <span class="seat-card__name">{{ seatName() }}</span>
       <span class="seat-card__role">{{ roleLabel() }}</span>
     </div>

@@ -8,7 +8,12 @@
             <div class="flip__face flip__front">{{ seat.card }}</div>
           </div>
         </div>
-        <app-avatar [name]="seat.name" [colourIndex]="seat.colour" size="sm" />
+        <app-avatar
+          [name]="seat.name"
+          [colourIndex]="seat.colour"
+          [animal]="seat.animal"
+          size="sm"
+        />
       </div>
     }
   </div>
@@ -23,7 +28,12 @@
   <div class="table__row">
     @for (seat of bottom; track seat.name) {
       <div class="seat">
-        <app-avatar [name]="seat.name" [colourIndex]="seat.colour" size="sm" />
+        <app-avatar
+          [name]="seat.name"
+          [colourIndex]="seat.colour"
+          [animal]="seat.animal"
+          size="sm"
+        />
         <div class="flip">
           <div class="flip__in" [appDelay]="seat.delay">
             <div class="flip__face flip__back"></div>

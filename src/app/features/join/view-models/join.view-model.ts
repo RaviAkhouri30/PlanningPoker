@@ -18,7 +18,9 @@ import {
 import { IAuthService } from '@core/interfaces/i-auth-service';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
+import { RANDOM } from '@core/tokens/random.token';
 import { ViewModel } from '@shared/base/view-model';
+import { animalAt } from '@shared/constants/animals.constants';
 import { LIMITS } from '@shared/constants/limits.constants';
 import { AVATAR_PALETTE } from '@shared/constants/palette.constants';
 import {
@@ -26,6 +28,7 @@ import {
   ROOM_ROUTE_SEGMENT,
   roomCommands,
 } from '@shared/constants/routes.constants';
+import { type Animal } from '@shared/enums/animal.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import { ToastTone } from '@shared/enums/toast-tone.enum';
 import { type ISeatProfile } from '@shared/interfaces/i-seat-profile';
@@ -42,7 +45,7 @@ import { JOIN_MESSAGES } from '../models/join-messages.constants';
 
 /**
  * The join form behind a room's link: shows the room, then seats the visitor as a guest with
- * the name, colour and role they pick, and opens the room.
+ * the name, colour, avatar and role they pick, and opens the room.
  */
 @Injectable()
 export class JoinViewModel extends ViewModel<IJoinState> {
@@ -50,7 +53,7 @@ export class JoinViewModel extends ViewModel<IJoinState> {
   public readonly roomId: string =
     inject(ActivatedRoute).snapshot.paramMap.get(ROOM_ID_PARAM) ?? '';
 
-  /** Name, colour and role. */
+  /** Name, colour, role and avatar (a random animal until one is picked). */
   public readonly form = new FormGroup({
     name: new FormControl('', {
       nonNullable: true,
@@ -58,6 +61,7 @@ export class JoinViewModel extends ViewModel<IJoinState> {
     }),
     colour: new FormControl(0, { nonNullable: true }),
     role: new FormControl(ParticipantRole.Player, { nonNullable: true }),
+    avatar: new FormControl<Animal>(animalAt(inject(RANDOM)()), { nonNullable: true }),
   });
 
   /** The page's state, never undefined. */
@@ -89,8 +93,8 @@ export class JoinViewModel extends ViewModel<IJoinState> {
       initialValue: this.form.getRawValue(),
     });
     this.seat = computed(() => {
-      const { name, colour, role } = values();
-      return { displayName: name.trim(), colour, role };
+      const { name, colour, role, avatar } = values();
+      return { displayName: name.trim(), colour, role, avatar };
     });
     this.joinLabel = computed(() => {
       const first = firstNameOf(this.seat().displayName);
@@ -106,6 +110,11 @@ export class JoinViewModel extends ViewModel<IJoinState> {
   /** Picks a seat colour. */
   public pickColour(index: number): void {
     this.form.controls.colour.setValue(index);
+  }
+
+  /** Picks the avatar's animal. */
+  public pickAvatar(animal: Animal): void {
+    this.form.controls.avatar.setValue(animal);
   }
 
   /** Picks player or spectator. */

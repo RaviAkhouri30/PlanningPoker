@@ -1,3 +1,4 @@
+import { Animal } from '@shared/enums/animal.enum';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, convertToParamMap, provideRouter } from '@angular/router';
 import { type Subscription, throwError } from 'rxjs';
@@ -119,12 +120,14 @@ describe('JoinViewModel', () => {
     model.form.controls.name.setValue(' Jordan Lee ');
     model.pickColour(3);
     model.pickRole(ParticipantRole.Spectator);
+    model.pickAvatar(Animal.Whale);
     model.showTab(JoinTab.Account);
 
     expect(model.seat()).toEqual({
       displayName: 'Jordan Lee',
       colour: 3,
       role: ParticipantRole.Spectator,
+      avatar: Animal.Whale,
     });
     expect(model.joinLabel()).toBe('Join as Jordan');
     expect(model.view().tab).toBe(JoinTab.Account);
@@ -142,7 +145,12 @@ describe('JoinViewModel', () => {
   it('should take the seat and open the room', async () => {
     await seed({ 'rooms/r1': roomFields() });
     const model = start();
-    model.form.setValue({ name: 'Jordan', colour: 2, role: ParticipantRole.Player });
+    model.form.setValue({
+      name: 'Jordan',
+      colour: 2,
+      role: ParticipantRole.Player,
+      avatar: Animal.Tiger,
+    });
 
     model.join();
 
@@ -153,6 +161,7 @@ describe('JoinViewModel', () => {
       displayName: 'Jordan',
       colour: 2,
       role: 'player',
+      avatar: 'tiger',
     });
     expect(model.view().joining).toBe(false);
   });

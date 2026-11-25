@@ -6,7 +6,12 @@
   <ul class="people">
     @for (seat of seats(); track seat.uid) {
       <li class="person" [class.person--away]="!seat.online">
-        <app-avatar [name]="seat.fullName" [colourIndex]="seat.colour" [isMe]="seat.isMe" />
+        <app-avatar
+          [name]="seat.fullName"
+          [colourIndex]="seat.colour"
+          [animal]="seat.avatar"
+          [isMe]="seat.isMe"
+        />
         <div class="person__who">
           <span class="person__name">{{ seat.fullName }}</span>
           <span class="person__role">{{ seat.roleLabel }}{{ seat.online ? '' : ' · away' }}</span>

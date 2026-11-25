@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom, of, throwError } from 'rxjs';
 import { IRealtimeStore } from '@core/interfaces/i-realtime-store';
+import { Animal } from '@shared/enums/animal.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import {
   TEST_NOW,
@@ -12,7 +13,12 @@ import {
 import { RoomsService } from './rooms.service';
 
 describe('RoomsService', () => {
-  const moderator = { displayName: 'Alex Kim', colour: 0, role: ParticipantRole.Player };
+  const moderator = {
+    displayName: 'Alex Kim',
+    colour: 0,
+    role: ParticipantRole.Player,
+    avatar: Animal.Koala,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: testBackendProviders() });
