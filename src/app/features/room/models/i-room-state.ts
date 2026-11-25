@@ -36,6 +36,8 @@ export interface IRoomState {
   readonly roundVotes: RoundVotes;
   readonly inviteOpen: boolean;
   readonly storyTab: StoryTab;
+  /** The guided tour's current step (0-based), or `null` when it's closed. */
+  readonly tourStep: number | null;
 }
 
 /** No votes. */
@@ -52,4 +54,5 @@ export const LOADING_ROOM: IRoomState = {
   roundVotes: NO_VOTES,
   inviteOpen: false,
   storyTab: StoryTab.Active,
+  tourStep: null,
 };

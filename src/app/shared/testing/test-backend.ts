@@ -3,10 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { FakeAuthService } from '@core/backends/fake/fake-auth.service';
 import { FakeClipboardService } from '@core/backends/fake/fake-clipboard.service';
+import { FakePreferenceStore } from '@core/backends/fake/fake-preference-store';
 import { FakeRealtimeStore } from '@core/backends/fake/fake-realtime-store';
 import { StoreWriteKind } from '@core/enums/store-write-kind.enum';
 import { IAuthService } from '@core/interfaces/i-auth-service';
 import { IClipboardService } from '@core/interfaces/i-clipboard-service';
+import { IPreferenceStore } from '@core/interfaces/i-preference-store';
 import { IRealtimeStore, type StoreFields } from '@core/interfaces/i-realtime-store';
 import { CLOCK } from '@core/tokens/clock.token';
 import { RANDOM } from '@core/tokens/random.token';
@@ -28,6 +30,7 @@ export function testBackendProviders(): Provider[] {
     { provide: IRealtimeStore, useFactory: () => new FakeRealtimeStore() },
     { provide: IAuthService, useFactory: () => new FakeAuthService() },
     { provide: IClipboardService, useFactory: () => new FakeClipboardService() },
+    { provide: IPreferenceStore, useFactory: () => new FakePreferenceStore() },
   ];
 }
 

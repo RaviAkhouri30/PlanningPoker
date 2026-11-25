@@ -14,12 +14,32 @@
       <app-icon [name]="clockIcon" [size]="16" />{{ timer() }}
     </div>
     @if (canAddStory()) {
-      <button class="btn" type="button" (click)="addStory.emit()">
+      <button
+        class="btn"
+        type="button"
+        [attr.data-tour]="targets.AddStory"
+        (click)="addStory.emit()"
+      >
         <app-icon [name]="plusIcon" [size]="16" />Add story
       </button>
     }
-    <button class="btn btn--primary" type="button" (click)="invite.emit()">
+    <button
+      class="btn btn--primary"
+      type="button"
+      [attr.data-tour]="targets.Invite"
+      (click)="invite.emit()"
+    >
       <app-icon [name]="linkIcon" [size]="16" />Invite
+    </button>
+    <button
+      class="btn btn--icon"
+      type="button"
+      aria-label="Take the room tour"
+      title="Take the room tour"
+      [attr.data-tour]="targets.TourButton"
+      (click)="tourStart.emit()"
+    >
+      <app-icon [name]="helpIcon" [size]="18" />
     </button>
     @if (me(); as person) {
       <app-avatar [name]="person.displayName" [colourIndex]="person.colourIndex" [isMe]="true" />

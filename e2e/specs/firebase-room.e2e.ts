@@ -16,6 +16,7 @@ test.describe('Firebase room', () => {
     await landing.open();
     await landing.createRoom('Alex Kim', 'Sprint 42');
     const host = new RoomPage(page);
+    await host.skipTour();
     await host.addStory('PAY-214 Save cards for later');
     await expect(host.storyTitle).toHaveText('Save cards for later');
 
@@ -29,6 +30,8 @@ test.describe('Firebase room', () => {
       await join.join('Maya Patel');
       const guest = new RoomPage(guestPage);
       await expect(guest.storyTitle).toHaveText('Save cards for later');
+      // The tour opens by itself only for the moderator.
+      await expect(guest.tour).toBeHidden();
 
       await host.card('5').click();
       // One vote of two: the round stays open.

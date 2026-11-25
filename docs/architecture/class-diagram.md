@@ -31,17 +31,26 @@ classDiagram
     <<abstract>>
     +copy(text) Observable~void~
   }
+  class IPreferenceStore {
+    <<abstract>>
+    +read(key) string
+    +write(key, value) void
+  }
   IRealtimeStore <|-- FirebaseRealtimeStore
   IRealtimeStore <|-- FakeRealtimeStore
   IAuthService <|-- FirebaseAuthService
   IAuthService <|-- FakeAuthService
   IClipboardService <|-- BrowserClipboardService
   IClipboardService <|-- FakeClipboardService
+  IPreferenceStore <|-- BrowserPreferenceStore
+  IPreferenceStore <|-- FakePreferenceStore
 
   ViewModel <|-- LandingViewModel
   ViewModel <|-- JoinViewModel
   ViewModel <|-- RoomViewModel
   RoomViewModel *-- RoomCommands
+  RoomViewModel *-- RoomTour
+  RoomTour ..> IPreferenceStore : seen once per browser
   RoomViewModel ..> RoomView : builds seats, stats
   RoomCommands ..> ModerationService
   RoomCommands ..> VotesService

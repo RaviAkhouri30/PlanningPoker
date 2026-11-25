@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { BrowserClipboardService } from '@core/backends/browser/browser-clipboard.service';
+import { BrowserPreferenceStore } from '@core/backends/browser/browser-preference-store';
 import { FakeAuthService } from '@core/backends/fake/fake-auth.service';
 import { FakeRealtimeStore } from '@core/backends/fake/fake-realtime-store';
 import { FirebaseAuthService } from '@core/backends/firebase/firebase-auth.service';
@@ -8,6 +9,7 @@ import { BackendType } from '@core/enums/backend-type.enum';
 import { APP_ENVIRONMENT } from '@core/tokens/app-environment.token';
 import { authServiceFactory } from './auth-service.factory';
 import { clipboardServiceFactory } from './clipboard-service.factory';
+import { preferenceStoreFactory } from './preference-store.factory';
 import { realtimeStoreFactory } from './realtime-store.factory';
 
 describe('adapter factories', () => {
@@ -48,6 +50,12 @@ describe('adapter factories', () => {
   it('should provide the browser clipboard', () => {
     expect(inEnvironment(BackendType.Fake, clipboardServiceFactory)).toBeInstanceOf(
       BrowserClipboardService,
+    );
+  });
+
+  it('should provide the browser preference store', () => {
+    expect(inEnvironment(BackendType.Fake, preferenceStoreFactory)).toBeInstanceOf(
+      BrowserPreferenceStore,
     );
   });
 });

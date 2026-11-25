@@ -99,6 +99,7 @@ serves as the DI token. A **factory** (`core/factories`) picks the adapter from
 | `IRealtimeStore`    | `FirebaseRealtimeStore`, `FakeRealtimeStore`     | `watchDocument`, `watchCollection(path, orderBy?)` (live), `commit(writes)` (one atomic batch) |
 | `IAuthService`      | `FirebaseAuthService`, `FakeAuthService`         | `user$` (waits for the saved session), `signInAsGuest(name)`            |
 | `IClipboardService` | `BrowserClipboardService`, `FakeClipboardService`| `copy(text)`                                                            |
+| `IPreferenceStore`  | `BrowserPreferenceStore`, `FakePreferenceStore`  | `read(key)`, `write(key, value)`: per-browser settings, never throw     |
 
 - The Firebase SDK is loaded lazily through the `*_GATEWAY_LOADER` tokens, so the landing page
   never downloads it.

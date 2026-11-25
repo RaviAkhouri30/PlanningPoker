@@ -1,0 +1,26 @@
+@if (spot(); as box) {
+  <div class="spot" aria-hidden="true" [appRect]="box"></div>
+} @else {
+  <div class="dim" aria-hidden="true"></div>
+}
+<section
+  class="coach"
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="tour-title"
+  aria-describedby="tour-text"
+  [class.coach--top]="cardAtTop()"
+>
+  <div class="coach__head">
+    <span class="coach__count">Step {{ number() }} of {{ total() }}</span>
+    <button class="coach__skip" type="button" (click)="skip.emit()">Skip tour</button>
+  </div>
+  <h2 class="coach__title" id="tour-title">{{ step().title }}</h2>
+  <p class="coach__text" id="tour-text">{{ step().text }}</p>
+  <div class="coach__actions">
+    <button class="btn" type="button" [disabled]="isFirst()" (click)="back.emit()">Back</button>
+    <button #nextButton class="btn btn--primary" type="button" (click)="next.emit()">
+      {{ nextLabel() }}
+    </button>
+  </div>
+</section>

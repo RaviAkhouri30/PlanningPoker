@@ -9,6 +9,7 @@
         [canAddStory]="model.isModerator()"
         (invite)="model.commands.setInviteOpen(true)"
         (addStory)="focusStoryField()"
+        (tourStart)="model.tour.start()"
       />
       <div class="layout">
         <main class="layout__main">
@@ -21,6 +22,7 @@
           }
           <section class="table-card" aria-label="Poker table">
             <app-poker-table
+              [attr.data-tour]="targets.Table"
               [seats]="model.tableSeats()"
               [hasStory]="model.activeStory() !== null"
               [settledCount]="counts().done"
@@ -35,6 +37,7 @@
               (addStory)="focusStoryField()"
             />
             <app-card-deck
+              [attr.data-tour]="targets.Deck"
               [cards]="room.deck.cards"
               [picked]="model.view().myCard"
               [enabled]="model.canVote()"
@@ -46,6 +49,7 @@
         <aside class="layout__side">
           @if (model.isModerator()) {
             <app-moderator-controls
+              [attr.data-tour]="targets.Moderator"
               [room]="room"
               [hasStory]="model.activeStory() !== null"
               [votedCount]="model.votedCount()"
@@ -58,11 +62,13 @@
             />
           }
           <app-players-panel
+            [attr.data-tour]="targets.People"
             [seats]="model.seats()"
             [votedCount]="model.votedCount()"
             [playerCount]="model.playerCount()"
           />
           <app-stories-panel
+            [attr.data-tour]="targets.Stories"
             [stories]="listed()"
             [counts]="counts()"
             [tab]="model.view().storyTab"
@@ -84,6 +90,16 @@
         (copyLink)="model.commands.copyLink()"
         (spectatorsToggle)="model.commands.toggleSpectatorsByDefault()"
       />
+      @if (model.tour.progress(); as tour) {
+        <app-room-tour
+          [step]="tour.step"
+          [number]="tour.number"
+          [total]="tour.total"
+          (back)="model.tour.back()"
+          (next)="model.tour.next()"
+          (skip)="model.tour.close()"
+        />
+      }
     }
   }
   @case (statuses.Loading) {

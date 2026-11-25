@@ -11,6 +11,7 @@ export enum IconName {
   Copy = 'copy',
   Crown = 'crown',
   Eye = 'eye',
+  Help = 'help',
   Link = 'link',
   Plus = 'plus',
   Refresh = 'refresh',

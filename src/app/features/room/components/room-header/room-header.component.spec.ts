@@ -26,6 +26,21 @@ describe('RoomHeaderComponent', () => {
     expect(header.textContent).not.toContain('Add story');
   });
 
+  it('should ask to replay the tour when the tour button is pressed', () => {
+    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    const fixture = TestBed.createComponent(RoomHeaderComponent);
+    fixture.componentRef.setInput('room', aRoom());
+    const tourStart = vi.fn();
+    fixture.componentInstance.tourStart.subscribe(tourStart);
+    fixture.detectChanges();
+
+    (fixture.nativeElement as HTMLElement)
+      .querySelector<HTMLButtonElement>('[aria-label="Take the room tour"]')
+      ?.click();
+
+    expect(tourStart).toHaveBeenCalled();
+  });
+
   it('should show "Add story" and ask for the story field when the viewer moderates', () => {
     TestBed.configureTestingModule({ providers: [provideRouter([])] });
     const fixture = TestBed.createComponent(RoomHeaderComponent);

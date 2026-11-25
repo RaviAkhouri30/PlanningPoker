@@ -10,7 +10,7 @@ Unit tests, `npm start` and the deterministic e2e suite must run without Firebas
 
 ## Decision
 
-Features depend on abstract-class ports (`IRealtimeStore`, `IAuthService`, `IClipboardService`) used as DI tokens. Factories in `core/factories` pick a Fake or Firebase adapter from `APP_ENVIRONMENT.backend`. Only `core/backends` imports `firebase/*`, loaded lazily through `*_GATEWAY_LOADER` tokens.
+Features depend on abstract-class ports (`IRealtimeStore`, `IAuthService`, `IClipboardService`, `IPreferenceStore`) used as DI tokens. Factories in `core/factories` pick a Fake or Firebase adapter from `APP_ENVIRONMENT.backend`. Only `core/backends` imports `firebase/*`, loaded lazily through `*_GATEWAY_LOADER` tokens.
 
 ## Consequences
 

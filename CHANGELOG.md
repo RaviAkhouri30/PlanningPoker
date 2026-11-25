@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] — 2026-11-25
+
+### Added
+
+- A guided tour of the room: a spotlight on each part and a card with Back, Next and Skip. It opens
+  by itself once per browser for the room's moderator; anyone can replay it from the new "?" button
+  in the top bar. Escape closes it.
+- `IPreferenceStore` port (browser `localStorage` and in-memory adapters) to remember that the tour
+  was shown.
+
+### Changed
+
+- The copyright footer is split: the notice on the left, "No account needed · Terms of use" on the
+  right, lined up with each page's content width; centred on phones.
+
 ## [1.2.0] — 2026-11-25
 
 ### Added

@@ -42,6 +42,7 @@ import { RoomView } from '../models/room-view.builder';
 import { StoriesService } from '../services/stories.service';
 import { type RoundVotes, VotesService } from '../services/votes.service';
 import { RoomCommands } from './room-commands';
+import { RoomTour } from './room-tour';
 
 /** One write the page asked for, run in order with the others. */
 export interface IRoomAction {
@@ -95,6 +96,9 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   /** Every write the page offers, bound to this view model's state. */
   public readonly commands: RoomCommands;
 
+  /** The guided tour. */
+  public readonly tour: RoomTour;
+
   private readonly auth = inject(IAuthService);
   private readonly rooms = inject(RoomsService);
   private readonly participants = inject(ParticipantsService);
@@ -112,6 +116,7 @@ export class RoomViewModel extends ViewModel<IRoomState> {
     this.commands = new RoomCommands(this, (action) => {
       this.actions.next(action);
     });
+    this.tour = new RoomTour(this);
   }
 
   /** Changes only this person's view (dialogs, tabs). */
@@ -191,6 +196,7 @@ export class RoomViewModel extends ViewModel<IRoomState> {
 
   private apply(room: Room | null, change: Partial<IRoomState>): void {
     this.patch({ ...change, room, status: room === null ? RoomStatus.Missing : RoomStatus.Ready });
+    this.tour.offer();
     this.changes.next(this.view());
   }
 

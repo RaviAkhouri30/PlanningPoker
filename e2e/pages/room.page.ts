@@ -9,6 +9,8 @@ export class RoomPage extends BasePage {
   public readonly headerAddStoryButton: Locator;
   public readonly tableAddStoryButton: Locator;
   public readonly deckDisclosure: Locator;
+  public readonly tour: Locator;
+  public readonly tourButton: Locator;
   public readonly revealButton: Locator;
   public readonly results: Locator;
   public readonly inviteButton: Locator;
@@ -28,10 +30,18 @@ export class RoomPage extends BasePage {
     this.headerAddStoryButton = page.getByRole('banner').getByRole('button', { name: 'Add story' });
     this.tableAddStoryButton = page.getByRole('button', { name: 'Add a story' });
     this.deckDisclosure = page.getByText('Card deck');
+    this.tour = page.getByRole('dialog', { name: /./ }).filter({ hasText: /Step \d+ of \d+/ });
+    this.tourButton = page.getByRole('button', { name: 'Take the room tour' });
     this.revealButton = page.getByRole('button', { name: 'Reveal cards' });
     this.results = page.getByRole('region', { name: 'Results' });
     this.inviteButton = page.getByRole('banner').getByRole('button', { name: /Invite/ });
     this.inviteDialog = page.getByRole('dialog', { name: 'Invite your team' });
+  }
+
+  /** Closes the guided tour, which opens for the moderator on the first visit. */
+  public async skipTour(): Promise<void> {
+    await this.tour.getByRole('button', { name: 'Skip tour' }).click();
+    await this.tour.waitFor({ state: 'hidden' });
   }
 
   /** Adds a story, e.g. `PAY-214 Save cards`. */

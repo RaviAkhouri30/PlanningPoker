@@ -87,6 +87,25 @@ describe('RoomPageComponent', () => {
     expect(document.activeElement).toBe(page.querySelector('#new-story'));
   });
 
+  it('should open the tour for the moderator on the first visit, and close it on skip', async () => {
+    const page = await render();
+
+    expect(page.querySelector('app-room-tour')?.textContent).toContain('Step 1 of');
+    click(page, '.coach__skip');
+
+    expect(page.querySelector('app-room-tour')).toBeNull();
+  });
+
+  it('should let someone who is not the moderator replay the tour', async () => {
+    const page = await render('someone-else');
+    expect(page.querySelector('app-room-tour')).toBeNull();
+
+    click(page, '[aria-label="Take the room tour"]');
+    click(page, '.coach .btn--primary');
+
+    expect(page.querySelector('app-room-tour')?.textContent).toContain('Step 2 of');
+  });
+
   it('should hide moderator tools from others and tell spectators they are watching', async () => {
     const page = await render('someone-else', 'spectator');
 

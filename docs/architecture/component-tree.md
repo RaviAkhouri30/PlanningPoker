@@ -15,6 +15,7 @@ flowchart TB
 
   room --> rh[room-header] & sh[story-header] & pt[poker-table] & cd[card-deck]
   room --> mc[moderator-controls] & pp[players-panel] & sp[stories-panel] & id[invite-dialog]
+  room --> tour[room-tour: spotlight + step card]
   rh & pt -. "Add story: focus" .-> sp
   pt --> ts[table-seat] & res[results-panel]
   res --> cb[confetti-burst]

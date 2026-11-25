@@ -5,8 +5,12 @@ import { LogoComponent } from '@shared/components/logo/logo.component';
 import { IconName } from '@shared/enums/icon-name.enum';
 import { type Participant } from '@shared/models/participant.model';
 import { type Room } from '@shared/models/room.model';
+import { TourTarget } from '../../models/tour-target.enum';
 
-/** The room's sticky bar: name, who's online, the code, the round timer, "Add story" and "Invite". */
+/**
+ * The room's sticky bar: name, who's online, the code, the round timer, "Add story", "Invite" and
+ * the tour button.
+ */
 @Component({
   selector: 'app-room-header',
   imports: [LogoComponent, IconComponent, AvatarComponent],
@@ -28,8 +32,12 @@ export class RoomHeaderComponent {
   public readonly invite = output();
   /** Asked to go to the story field. */
   public readonly addStory = output();
+  /** Asked to replay the guided tour. */
+  public readonly tourStart = output();
 
   protected readonly clockIcon = IconName.Clock;
   protected readonly linkIcon = IconName.Link;
   protected readonly plusIcon = IconName.Plus;
+  protected readonly helpIcon = IconName.Help;
+  protected readonly targets = TourTarget;
 }
