@@ -35,9 +35,10 @@
         </ul>
       </article>
     </div>
-    <div class="compare">
+    <!-- Scrolls sideways on phones: focusable so keyboard users can scroll it too. -->
+    <div class="compare" role="region" aria-labelledby="compare-caption" tabindex="0">
       <table class="compare__table">
-        <caption class="compare__caption">
+        <caption class="compare__caption" id="compare-caption">
           How PlanningPoker compares
         </caption>
         <thead>
