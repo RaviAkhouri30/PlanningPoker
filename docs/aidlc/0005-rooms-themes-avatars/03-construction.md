@@ -15,6 +15,11 @@
    then the vote count; after the flip the results take the deck's place. `Deck.bandOf()` splits
    the number cards into thirds; seats show a coloured edge on their flipped card and the chart's
    bars use the same colours, with a grey "No vote" bar and a legend.
+4. **Facilitator mode**: "I'm facilitating and won't vote" on the create form seats the organiser
+   as a spectator; "I vote too" in the moderator controls switches back and forth
+   (`ParticipantsService.setRole`, allowed by the existing rules for one's own seat). Auto-reveal
+   already counts players only. The two-browser emulator journey checks the cards flip once the
+   only player votes.
 
 ## Decision log
 
@@ -25,4 +30,5 @@
 | 2026-11-25 | Theme toggle talks to `ThemeService` without a view model       | App-wide setting, no other state; a VM would only pass the call along                  |
 | 2026-11-25 | The flipped cards in the players row are each person's score; no second list | Avoids showing every card twice on a small screen                                       |
 | 2026-11-25 | Stage order lives in the markup, not CSS `order`                              | Keyboard and screen-reader order match what you see                                     |
+| 2026-11-25 | A facilitator is a spectator seat, labelled "Moderator · facilitator"           | No new role or rules change; auto-reveal and the vote rules already exclude spectators   |
 | 2026-11-25 | Announce only seats newer than one minute                       | Firestore may fill a listener from cache first, then the server; old seats aren't news |

@@ -6,7 +6,11 @@ import { type ILandingState } from '../../models/i-landing-state';
 
 /** The two form groups the hero edits. */
 export interface IHeroForms {
-  readonly create: FormGroup<{ name: FormControl<string>; roomName: FormControl<string> }>;
+  readonly create: FormGroup<{
+    name: FormControl<string>;
+    roomName: FormControl<string>;
+    facilitate: FormControl<boolean>;
+  }>;
   readonly code: FormGroup<{ code: FormControl<string> }>;
 }
 

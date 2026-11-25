@@ -51,4 +51,36 @@ test.describe('Firebase room', () => {
       await guestContext.close();
     }
   });
+
+  test('should flip by itself once the players vote when the moderator only facilitates', async ({
+    landing,
+    page,
+    browser,
+  }) => {
+    await landing.open();
+    await landing.createRoom('Alex Kim', 'Sprint 43', true);
+    const host = new RoomPage(page);
+    await host.skipTour();
+    await host.addStory('PAY-215 Export receipts');
+
+    const guestContext = await browser.newContext({ reducedMotion: 'reduce' });
+    try {
+      const guestPage = await guestContext.newPage();
+      const join = new JoinPage(guestPage, new URL(page.url()).pathname);
+      await join.open();
+      await join.join('Maya Patel');
+      const guest = new RoomPage(guestPage);
+      await expect(guest.storyTitle).toHaveText('Export receipts');
+
+      // The only player votes; the facilitator never does, and the cards still flip.
+      await guest.card('8').click();
+
+      for (const room of [host, guest]) {
+        await expect(room.results).toBeVisible();
+      }
+      await expect(host.acceptButton('8')).toBeVisible();
+    } finally {
+      await guestContext.close();
+    }
+  });
 });

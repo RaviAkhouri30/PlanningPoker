@@ -31,6 +31,8 @@ export class ModeratorControlsComponent {
   public readonly room = input.required<Room>();
   public readonly hasStory = input(false);
   public readonly votedCount = input(0);
+  /** Whether the moderator votes too; off means they only facilitate. */
+  public readonly voting = input(true);
 
   public readonly resetTimer = output();
   public readonly reveal = output();
@@ -38,6 +40,8 @@ export class ModeratorControlsComponent {
   public readonly skip = output();
   public readonly deckPick = output<DeckType>();
   public readonly autoRevealToggle = output();
+  /** Vote too, or only facilitate. */
+  public readonly votingToggle = output();
 
   protected readonly decks = DECK_OPTIONS;
   protected readonly icons = IconName;

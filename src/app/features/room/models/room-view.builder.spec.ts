@@ -116,4 +116,10 @@ describe('RoomView', () => {
     expect(RoomView.onlineCount(aState(), TEST_NOW)).toBe(2);
     expect(RoomView.onlineCount(aState(), TEST_NOW + 10 * 60_000)).toBe(0);
   });
+
+  it('should call a moderator who does not vote a facilitator', () => {
+    const state = aState({ people: [aPerson('mod', { role: 'spectator' })] });
+
+    expect(RoomView.seats(state, TEST_NOW)[0]?.roleLabel).toBe('Moderator · facilitator');
+  });
 });

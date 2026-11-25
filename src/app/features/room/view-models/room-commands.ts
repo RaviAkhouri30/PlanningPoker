@@ -3,9 +3,11 @@ import { EMPTY, type Observable, tap } from 'rxjs';
 import { IClipboardService } from '@core/interfaces/i-clipboard-service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
 import { type DeckType } from '@shared/enums/deck-type.enum';
+import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import { ToastTone } from '@shared/enums/toast-tone.enum';
 import { type Room } from '@shared/models/room.model';
 import { type Story } from '@shared/models/story.model';
+import { ParticipantsService } from '@shared/services/participants.service';
 import { ToastService } from '@shared/services/toast.service';
 import { type IRoomState, type StoryTab } from '../models/i-room-state';
 import { ROOM_MESSAGES } from '../models/room-messages.constants';
@@ -31,6 +33,7 @@ export class RoomCommands {
   private readonly votes = inject(VotesService);
   private readonly moderation = inject(ModerationService);
   private readonly stories = inject(StoriesService);
+  private readonly participants = inject(ParticipantsService);
   private readonly clipboard = inject(IClipboardService);
   private readonly toast = inject(ToastService);
   private readonly origin = inject(APP_ORIGIN);
@@ -105,6 +108,21 @@ export class RoomCommands {
     this.moderate('Changing auto-reveal', (room) =>
       this.moderation.setAutoReveal(room, !room.autoReveal),
     );
+  }
+
+  /**
+   * The moderator votes too, or only facilitates: as a spectator they don't vote, so auto-reveal
+   * waits for the players alone.
+   */
+  public toggleVoting(): void {
+    this.moderate('Changing how you take part', (room, state) => {
+      const me = RoomView.me(state);
+      if (me === null) {
+        return EMPTY;
+      }
+      const role = me.isPlayer ? ParticipantRole.Spectator : ParticipantRole.Player;
+      return this.participants.setRole(room.id, me.uid, role);
+    });
   }
 
   /** Chooses whether new people join as spectators. */

@@ -3,6 +3,7 @@ import { type Observable, map, switchMap, take } from 'rxjs';
 import { StoreWriteKind } from '@core/enums/store-write-kind.enum';
 import { IRealtimeStore, SERVER_TIME } from '@core/interfaces/i-realtime-store';
 import { STORE_PATHS } from '@shared/constants/store-paths.constants';
+import { type ParticipantRole } from '@shared/enums/participant-role.enum';
 import { type ISeatProfile } from '@shared/interfaces/i-seat-profile';
 import { Participant } from '@shared/models/participant.model';
 import { participantFields } from './participant-fields';
@@ -57,6 +58,17 @@ export class ParticipantsService {
         ]),
       ),
     );
+  }
+
+  /**
+   * Makes someone a player or a spectator; the moderator uses it on their own seat to vote or
+   * only facilitate.
+   * @returns Completes once stored.
+   */
+  public setRole(roomId: string, uid: string, role: ParticipantRole): Observable<void> {
+    return this.store.commit([
+      { kind: StoreWriteKind.Update, path: STORE_PATHS.participant(roomId, uid), fields: { role } },
+    ]);
   }
 
   /**

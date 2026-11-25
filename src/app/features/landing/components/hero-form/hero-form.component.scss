@@ -81,3 +81,27 @@
     flex-basis: 100%;
   }
 }
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: t.color('text-muted');
+  font-size: 14px;
+  line-height: 1.45;
+  cursor: pointer;
+
+  &__box {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin: 1px 0 0;
+    accent-color: t.color('accent');
+    cursor: pointer;
+  }
+
+  strong {
+    color: t.color('ink');
+    font-weight: 600;
+  }
+}

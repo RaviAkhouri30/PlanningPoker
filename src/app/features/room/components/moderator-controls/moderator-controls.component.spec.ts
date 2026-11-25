@@ -42,4 +42,21 @@ describe('ModeratorControlsComponent', () => {
     expect(details?.open).toBe(false);
     expect(details?.querySelector('summary')?.textContent).toContain('Modified Fibonacci');
   });
+
+  it('should show whether the moderator votes and ask to switch', () => {
+    const fixture = TestBed.createComponent(ModeratorControlsComponent);
+    fixture.componentRef.setInput('room', aRoom());
+    fixture.componentRef.setInput('voting', false);
+    const toggled = vi.fn();
+    fixture.componentInstance.votingToggle.subscribe(toggled);
+    fixture.detectChanges();
+    const voting = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>(
+      '[aria-label="I vote too"]',
+    );
+
+    voting?.click();
+
+    expect(voting?.getAttribute('aria-checked')).toBe('false');
+    expect(toggled).toHaveBeenCalled();
+  });
 });

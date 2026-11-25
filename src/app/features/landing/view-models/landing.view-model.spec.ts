@@ -40,7 +40,7 @@ describe('LandingViewModel', () => {
     expect(model.slugPreview()).toBe(LANDING_MESSAGES.slugPlaceholder);
     expect(model.createLabel()).toBe(LANDING_MESSAGES.createLabel);
 
-    model.createForm.setValue({ name: 'Alex Kim', roomName: 'Sprint 42!' });
+    model.createForm.setValue({ name: 'Alex Kim', roomName: 'Sprint 42!', facilitate: false });
 
     expect(model.slugPreview()).toBe('sprint-42');
     expect(model.createLabel()).toBe('Create room as Alex');
@@ -54,7 +54,7 @@ describe('LandingViewModel', () => {
   });
 
   it('should create the room with the guest as moderator and open it', async () => {
-    model.createForm.setValue({ name: ' Alex Kim ', roomName: 'Sprint 42' });
+    model.createForm.setValue({ name: ' Alex Kim ', roomName: 'Sprint 42', facilitate: false });
 
     model.createRoom();
 
@@ -69,12 +69,25 @@ describe('LandingViewModel', () => {
     expect(model.view().creating).toBe(false);
   });
 
+  it('should seat the organiser as a non-voting facilitator when they choose to', async () => {
+    model.createForm.setValue({ name: 'Sam Lee', roomName: 'Sprint 43', facilitate: true });
+
+    model.createRoom();
+
+    await vi.waitFor(() => {
+      expect(navigate).toHaveBeenCalled();
+    });
+    await expect(
+      stored('rooms/sprint-43-aaaaaa/participants/fake-guest-uid'),
+    ).resolves.toMatchObject({ role: 'spectator' });
+  });
+
   it('should say so when the room cannot be created', async () => {
     vi.spyOn(TestBed.inject(IRealtimeStore), 'commit').mockReturnValue(
       throwError(() => new Error('down')),
     );
     const show = vi.spyOn(TestBed.inject(ToastService), 'show');
-    model.createForm.setValue({ name: 'Alex', roomName: '' });
+    model.createForm.setValue({ name: 'Alex', roomName: '', facilitate: false });
 
     model.createRoom();
 

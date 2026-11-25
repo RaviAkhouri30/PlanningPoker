@@ -36,7 +36,7 @@ import { LANDING_MESSAGES } from '../models/landing-messages.constants';
  */
 @Injectable()
 export class LandingViewModel extends ViewModel<ILandingState> {
-  /** "Your name" and the optional room name. */
+  /** "Your name", the optional room name, and whether the organiser only facilitates. */
   public readonly createForm = new FormGroup({
     name: new FormControl('', {
       nonNullable: true,
@@ -46,6 +46,8 @@ export class LandingViewModel extends ViewModel<ILandingState> {
       nonNullable: true,
       validators: [TextValidators.maxTrimmed(LIMITS.roomName)],
     }),
+    /** The organiser runs the session without voting (a scrum master, say). */
+    facilitate: new FormControl(false, { nonNullable: true }),
   });
 
   /** "Got a code?" */
@@ -115,7 +117,9 @@ export class LandingViewModel extends ViewModel<ILandingState> {
   }
 
   private create(): Observable<string> {
-    const { name, roomName } = this.createForm.getRawValue();
+    const { name, roomName, facilitate } = this.createForm.getRawValue();
+    // A facilitator sits as a spectator, so auto-reveal waits only for the players.
+    const role = facilitate ? ParticipantRole.Spectator : ParticipantRole.Player;
     const displayName = name.trim();
     this.patch({ creating: true });
     return this.auth.signInAsGuest(displayName).pipe(
@@ -124,7 +128,7 @@ export class LandingViewModel extends ViewModel<ILandingState> {
         this.rooms.create({
           name: roomName,
           moderatorUid: user.uid,
-          moderator: { displayName, colour: 0, role: ParticipantRole.Player },
+          moderator: { displayName, colour: 0, role },
         }),
       ),
       tap((roomId) => {

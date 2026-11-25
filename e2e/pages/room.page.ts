@@ -15,6 +15,7 @@ export class RoomPage extends BasePage {
   public readonly results: Locator;
   public readonly inviteButton: Locator;
   public readonly inviteDialog: Locator;
+  public readonly votingSwitch: Locator;
   protected readonly path: string;
 
   /** @param roomPath The room's path, e.g. `/r/sprint-42-x7k2ab`. */
@@ -36,6 +37,7 @@ export class RoomPage extends BasePage {
     this.results = page.getByRole('region', { name: 'Results' });
     this.inviteButton = page.getByRole('banner').getByRole('button', { name: /Invite/ });
     this.inviteDialog = page.getByRole('dialog', { name: 'Invite your team' });
+    this.votingSwitch = page.getByRole('switch', { name: 'I vote too' });
   }
 
   /** Closes the guided tour, which opens for the moderator on the first visit. */

@@ -137,10 +137,12 @@ function slotOf(voted: boolean, revealed: boolean, hasStory: boolean): SeatSlot 
 }
 
 function roleLabelOf(person: Participant, room: Room): string {
-  const role = person.isPlayer ? ROOM_MESSAGES.player : ROOM_MESSAGES.spectator;
-  return room.isModeratedBy(person.uid)
-    ? `${ROOM_MESSAGES.moderator} · ${role.toLowerCase()}`
-    : role;
+  if (!room.isModeratedBy(person.uid)) {
+    return person.isPlayer ? ROOM_MESSAGES.player : ROOM_MESSAGES.spectator;
+  }
+  // A moderator who doesn't vote is running the session: a facilitator, not a watcher.
+  const role = person.isPlayer ? ROOM_MESSAGES.player : ROOM_MESSAGES.facilitator;
+  return `${ROOM_MESSAGES.moderator} · ${role.toLowerCase()}`;
 }
 
 interface IVoteFacts {

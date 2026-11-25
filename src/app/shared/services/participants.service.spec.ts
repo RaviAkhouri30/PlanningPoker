@@ -76,4 +76,17 @@ describe('ParticipantsService', () => {
       lastSeenAt: TEST_NOW,
     });
   });
+
+  it('should change the role on the seat when someone switches to facilitating', async () => {
+    await seed({ 'rooms/r1/participants/u1': participantFields({ role: 'player' }) });
+
+    await firstValueFrom(
+      TestBed.inject(ParticipantsService).setRole('r1', 'u1', ParticipantRole.Spectator),
+      { defaultValue: undefined },
+    );
+
+    await expect(stored('rooms/r1/participants/u1')).resolves.toMatchObject({
+      role: 'spectator',
+    });
+  });
 });

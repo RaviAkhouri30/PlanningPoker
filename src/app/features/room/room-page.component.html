@@ -56,12 +56,14 @@
               [room]="room"
               [hasStory]="model.activeStory() !== null"
               [votedCount]="model.votedCount()"
+              [voting]="model.isVoting()"
               (resetTimer)="model.commands.resetTimer()"
               (reveal)="model.commands.reveal()"
               (voteAgain)="model.commands.voteAgain()"
               (skip)="model.commands.skip()"
               (deckPick)="model.commands.setDeck($event)"
               (autoRevealToggle)="model.commands.toggleAutoReveal()"
+              (votingToggle)="model.commands.toggleVoting()"
             />
           }
           <app-players-panel

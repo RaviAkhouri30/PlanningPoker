@@ -60,4 +60,18 @@
       (click)="autoRevealToggle.emit()"
     ></button>
   </div>
+  <div class="toggle">
+    <div class="toggle__copy">
+      <span class="toggle__label">I vote too</span>
+      <span class="panel-card__note">Off: you facilitate, and only the players vote</span>
+    </div>
+    <button
+      class="switch"
+      type="button"
+      role="switch"
+      aria-label="I vote too"
+      [attr.aria-checked]="voting()"
+      (click)="votingToggle.emit()"
+    ></button>
+  </div>
 </section>

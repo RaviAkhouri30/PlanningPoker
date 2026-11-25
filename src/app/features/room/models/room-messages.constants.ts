@@ -14,6 +14,7 @@ export const ROOM_MESSAGES = {
   addFirstStory: 'Add a story',
   addAnotherStory: 'Add another story',
   spectating: 'You are watching as a spectator',
+  facilitating: 'You are facilitating. The players vote.',
   thinking: 'Thinking…',
   ready: 'Ready',
   voted: 'Voted',
@@ -22,6 +23,7 @@ export const ROOM_MESSAGES = {
   moderator: 'Moderator',
   player: 'Player',
   spectator: 'Spectator',
+  facilitator: 'Facilitator',
   joinedSuffix: ' joined the room',
   nameSeparator: ', ',
 } as const;

@@ -37,6 +37,13 @@
       />
     </div>
   </div>
+  <label class="check">
+    <input class="check__box" type="checkbox" formControlName="facilitate" />
+    <span class="check__copy"
+      ><strong>I'm facilitating and won't vote.</strong> Cards flip once the players have
+      voted.</span
+    >
+  </label>
   <div class="panel__row panel__row--center">
     <button class="btn btn--primary btn--lg panel__cta" type="submit" [disabled]="state().creating">
       {{ state().creating ? 'Creating your room…' : createLabel() }}

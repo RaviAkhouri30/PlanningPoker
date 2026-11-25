@@ -94,4 +94,23 @@ test.describe('Room flow', () => {
     await page.keyboard.press('Escape');
     await expect(room.inviteDialog).toBeHidden();
   });
+
+  test('should let the organiser facilitate without voting, then join the vote', async ({
+    landing,
+    page,
+  }) => {
+    await landing.open();
+    await landing.createRoom('Alex Kim', 'Sprint 42', true);
+    const room = new RoomPage(page);
+    await room.skipTour();
+    await room.addStory('PAY-214 Save cards for later');
+
+    await expect(page.getByText('You are facilitating. The players vote.')).toBeVisible();
+    await expect(room.card('5')).toBeDisabled();
+    await expect(room.votingSwitch).toHaveAttribute('aria-checked', 'false');
+
+    await room.votingSwitch.click();
+
+    await expect(room.card('5')).toBeEnabled();
+  });
 });

@@ -73,6 +73,8 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   public readonly now = signal(inject(CLOCK).now());
 
   public readonly me = computed(() => RoomView.me(this.view()));
+  /** Whether this person votes (a moderator may only facilitate). */
+  public readonly isVoting = computed(() => this.me()?.isPlayer ?? false);
   public readonly isModerator = computed(
     () => this.view().room?.isModeratedBy(this.view().uid) ?? false,
   );

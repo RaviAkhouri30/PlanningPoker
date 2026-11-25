@@ -17,6 +17,7 @@ describe('HeroFormComponent', () => {
           validators: [TextValidators.notBlank, TextValidators.maxTrimmed(3)],
         }),
         roomName: new FormControl('', { nonNullable: true }),
+        facilitate: new FormControl(false, { nonNullable: true }),
       }),
       code: new FormGroup({ code: new FormControl('', { nonNullable: true }) }),
     };
@@ -62,5 +63,13 @@ describe('HeroFormComponent', () => {
     expect(element.querySelector('[role="alert"]')?.textContent).toContain(
       'No room has that code.',
     );
+  });
+
+  it('should record that the organiser only facilitates when the box is ticked', () => {
+    const { element, forms } = render();
+
+    element.querySelector<HTMLInputElement>('input[type="checkbox"]')?.click();
+
+    expect(forms.create.controls.facilitate.value).toBe(true);
   });
 });

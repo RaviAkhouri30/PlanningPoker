@@ -58,8 +58,8 @@ export default class RoomPageComponent extends BaseComponent<IRoomState> {
     if (this.model.activeStory() === null) {
       return ROOM_MESSAGES.addStory;
     }
-    if (this.model.me()?.isPlayer !== true) {
-      return ROOM_MESSAGES.spectating;
+    if (!this.model.isVoting()) {
+      return this.model.isModerator() ? ROOM_MESSAGES.facilitating : ROOM_MESSAGES.spectating;
     }
     return this.model.view().myCard === null ? ROOM_MESSAGES.pickCard : ROOM_MESSAGES.voteIn;
   });

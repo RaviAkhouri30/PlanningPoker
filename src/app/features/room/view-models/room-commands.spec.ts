@@ -154,4 +154,19 @@ describe('RoomCommands', () => {
     expect(show).toHaveBeenCalledWith(ROOM_MESSAGES.linkCopied, expect.anything());
     expect(show).toHaveBeenCalledWith(ROOM_MESSAGES.copyFailed, expect.anything());
   });
+
+  it('should let the moderator stop voting to facilitate, and start again', async () => {
+    await start();
+
+    model.commands.toggleVoting();
+    await expect(stored(`rooms/r1/participants/${ME}`)).resolves.toMatchObject({
+      role: 'spectator',
+    });
+    expect(model.isVoting()).toBe(false);
+    model.commands.toggleVoting();
+
+    await expect(stored(`rooms/r1/participants/${ME}`)).resolves.toMatchObject({
+      role: 'player',
+    });
+  });
 });
