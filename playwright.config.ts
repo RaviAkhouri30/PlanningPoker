@@ -8,7 +8,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 // Own port, so e2e never reuses a developer's long-running (possibly stale) dev server on 4200.
 const PORT = 4210;
-const BASE_URL = `http://localhost:${PORT}`;
+const BASE_URL = `http://localhost:${String(PORT)}`;
 const isCi = Boolean(process.env['CI']);
 
 export default defineConfig({

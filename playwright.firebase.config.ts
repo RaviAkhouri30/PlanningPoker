@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Firebase smoke suite (CLAUDE.md §9): the real Firestore SDK against the local emulator, seeded
- * from a clean emulator. Separate from the main config, which stays on the deterministic Fake backend.
+ * Firebase suite (CLAUDE.md §9): the real Firestore and Auth SDKs against the local emulators,
+ * in two browsers. Separate from the main config, which stays on the deterministic Fake backend.
  * Needs Java for the emulator.
  */
 // E2E_FIREBASE_PORT moves the dev server when 4310 is taken by something else on the machine.
