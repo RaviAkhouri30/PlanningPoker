@@ -4,6 +4,38 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] — 2026-11-25
+
+### Added
+
+- **Light and dark themes**: a switch in every page header (system, light, dark), remembered per
+  browser, with no flash of the wrong theme on load.
+- **Animal avatars**: 16 animals to pick on the create and join forms (a random one by default),
+  shown on every seat. The Firestore rules accept only known avatar ids.
+- **Facilitate without voting**: the organiser can run the session as a facilitator (ticked by
+  default when creating a room) and switch to voting in the room; auto-reveal waits only for the
+  players.
+- **Add story dialog**: "Add story" in the top bar and on the empty table opens a dialog with the
+  story line and optional notes; "Add another" keeps it open.
+- **My rooms** (`/rooms`): every room this browser created or joined, with its code, your role
+  and the last visit, to open or forget. A guest who comes back to the home page lands there.
+- **A saved guest profile**: the create and join forms start with the name and avatar this
+  browser last used.
+- A notice that guest data (name, avatar, room list, moderator rights) lives in this browser.
+- **CSV backup**: download a room from its Stories panel, or one room or all rooms from My rooms.
+  UTF-8 with a header row, one row per story with the estimate and each voter's last revealed
+  card; formula-like cells are defused. Built in the browser; nothing is uploaded.
+- Join toasts in the room when a real person takes a seat ("Priya joined the room").
+- `IFileSaver` port (browser download and in-memory adapters).
+
+### Changed
+
+- The room is redesigned: a light stage with the cards in the centre, and results that show the
+  average, median, agreement, each person's card and a distribution coloured from low (green) to
+  high (red), with grey for no vote.
+- The Stories panel no longer has its own add field; adding goes through the dialog.
+- A tighter landing page hero with a smaller title.
+
 ## [1.3.0] — 2026-11-25
 
 ### Added
