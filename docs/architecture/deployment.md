@@ -23,7 +23,9 @@ flowchart LR
   `runtime-config.js` without caching.
 - The Firebase web config is never committed: CI writes `runtime-config.js` from the `FIREBASE_*`
   secrets; locally copy `public/runtime-config.example.js`.
-- The workflow needs the Static Web Apps deployment token secret, so it only runs once the Azure
-  resource exists.
+- The Static Web App is `brave-pond-019ab0610` (Free plan, linked to `RaviAkhouri30/PlanningPoker`,
+  branch `main`). Its deployment token is the `AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_POND_019AB0610`
+  secret. `azure-static-web-apps.yml` is the only deploy workflow: Azure's generated one was removed
+  because its Oryx build can't run Angular 22 and doesn't write `runtime-config.js`.
 - Before going live: deploy the rules, turn on Anonymous sign-in, add the site's domain to Auth's
   authorised domains, and consider App Check.

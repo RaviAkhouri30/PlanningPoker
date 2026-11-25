@@ -1,7 +1,9 @@
 name: Azure Static Web Apps CI/CD
 
-# Needs the AZURE_STATIC_WEB_APPS_API_TOKEN and FIREBASE_* repository secrets. Until the Static Web
-# App exists, the deploy step fails; the tests before it still run.
+# Needs the FIREBASE_* repository secrets and the Static Web App's deployment token, which Azure
+# stored as AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_POND_019AB0610 when the app (brave-pond-019ab0610)
+# was created. Azure's own generated workflow was removed: its Oryx build has a Node version that
+# Angular 22 rejects, and it doesn't write runtime-config.js. This file is the only deploy.
 on:
   push:
     branches:
@@ -63,7 +65,7 @@ jobs:
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_POND_019AB0610 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
           skip_app_build: true
@@ -81,5 +83,5 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_POND_019AB0610 }}
           action: 'close'
