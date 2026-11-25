@@ -30,12 +30,12 @@ flowchart TB
     S[Feature services: paths, DTO mapping, batches]
   end
   subgraph Ports
-    P[IRealtimeStore · IAuthService · IClipboardService · IPreferenceStore]
+    P[IRealtimeStore · IAuthService · IClipboardService · IPreferenceStore · IFileSaver]
   end
   subgraph Adapters
     F[Firebase adapters, lazy chunk]
     K[Fake adapters, in memory]
-    B[Browser clipboard]
+    B[Browser clipboard, storage, downloads]
   end
   C --> VM --> S --> P
   P --> F
@@ -52,13 +52,13 @@ flowchart TB
 
 ## Features
 
-| Feature    | Route             | What it does                                                          |
-| ---------- | ----------------- | --------------------------------------------------------------------- |
-| `landing`  | `/`               | Marketing page; create a room as a guest, or join by code             |
-| `my-rooms` | `/rooms`          | The rooms this browser has been in: open, forget; browser-data notice |
-| `join`     | `/r/:roomId/join` | Name, colour and role for someone opening a room link                 |
-| `room`     | `/r/:roomId`      | The table: stories, votes, the flip, results, moderator controls      |
-| `legal`    | `/terms`          | Terms of use: copyright, no account needed, data, warranty            |
+| Feature    | Route             | What it does                                                     |
+| ---------- | ----------------- | ---------------------------------------------------------------- |
+| `landing`  | `/`               | Marketing page; create a room as a guest, or join by code        |
+| `my-rooms` | `/rooms`          | The rooms this browser has been in: open, back up as CSV, forget |
+| `join`     | `/r/:roomId/join` | Name, colour and role for someone opening a room link            |
+| `room`     | `/r/:roomId`      | The table: stories, votes, the flip, results, moderator controls |
+| `legal`    | `/terms`          | Terms of use: copyright, no account needed, data, warranty       |
 
 `roomMemberGuard` sends anyone who is not yet in the room from `/r/:roomId` to the join form, so
 the one link works for everybody. `returningGuestGuard` sends a guest who arrives at `/` with rooms
@@ -67,6 +67,13 @@ saved in this browser to `/rooms`; links inside the app still reach the home pag
 The guest's name, avatar and room list live in this browser (`IPreferenceStore`, keys
 `planning-poker.profile` and `planning-poker.rooms`), through `LocalProfileService` and
 `MyRoomsService`. Clearing browser data empties them; the rooms stay in Firestore.
+
+**CSV backup.** `RoomBackupService` (shared) reads each room once (`RoomBackupReader`: the room,
+its people, stories and, per story, the votes of its last flipped round, as the rules allow), builds
+one UTF-8 CSV with `backupCsv` and hands it to `IFileSaver`. One row per story; columns: room, room
+code, key, story, notes, status, estimate, rounds, then one per voter. Cells that start like a
+formula (`= + - @`) get a leading `'` so a spreadsheet shows them as text. The room's Stories panel
+saves that room; My rooms saves one room or all of them in one file. Nothing is uploaded.
 
 ## Known limitations
 

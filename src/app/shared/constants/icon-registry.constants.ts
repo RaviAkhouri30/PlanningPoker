@@ -25,6 +25,7 @@ export const ICON_REGISTRY: Readonly<Record<IconName, readonly IconShape[]>> = {
     path('M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'),
   ],
   [IconName.Crown]: [path('m2 7 5 5 5-8 5 8 5-5-2 12H4L2 7z')],
+  [IconName.Download]: [path('M12 3v12M7 10l5 5 5-5M5 21h14')],
   [IconName.Eye]: [
     path('M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z'),
     { kind: 'circle', cx: 12, cy: 12, r: 3 },

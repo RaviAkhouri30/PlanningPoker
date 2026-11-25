@@ -28,6 +28,8 @@ describe('MyRoomsPageComponent', () => {
     expect(page.querySelector('h1')?.textContent).toBe('My rooms');
     expect(page.querySelector('app-browser-data-notice')).not.toBeNull();
     expect(page.querySelector('app-saved-room-list')?.textContent).toContain('Sprint 42');
+    expect(page.querySelector('.list-head')?.textContent).toContain('1 room');
+    expect(page.querySelector('.list-head')?.textContent).toContain('Back up all as CSV');
   });
 
   it('should offer to start a room when the list is empty', () => {

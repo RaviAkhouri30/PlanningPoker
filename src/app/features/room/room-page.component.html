@@ -81,6 +81,7 @@
             [isModerator]="model.isModerator()"
             (tabPick)="model.commands.showTab($event)"
             (storyPick)="model.commands.select($event)"
+            (downloadCsv)="model.commands.downloadCsv()"
           />
         </aside>
       </div>

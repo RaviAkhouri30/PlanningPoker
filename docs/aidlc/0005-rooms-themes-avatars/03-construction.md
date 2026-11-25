@@ -42,21 +42,33 @@
    with the saved name and avatar and save them on success. `/rooms` shows the rooms with Open
    and Forget and the browser-data warning (`app-browser-data-notice`); `returningGuestGuard`
    sends a guest who arrives at `/` with rooms there, and the home page header links to it.
+8. **CSV backup**: a new port, `IFileSaver` (`BrowserFileSaver` downloads a blob through a
+   temporary link; `FakeFileSaver` keeps the files for specs). `RoomBackupReader` reads a room
+   once; `backupCsv` builds the file (BOM, CRLF, quoted cells, formula-like cells defused, one
+   column per voter, duplicate names numbered, departed voters as "Former member");
+   `RoomBackupService` waits for the saved session, reads every room in parallel, leaves out the
+   rooms it can't read and names the file `planning-poker-<room or "rooms">-<date>.csv`. The Stories
+   panel's download button and My rooms' "CSV" and "Back up all as CSV" buttons use it, with a
+   toast naming the file. The e2e journey checks the downloaded file's name and rows.
 
 ## Decision log
 
-| Date       | Decision                                                                     | Why                                                                                           |
-| ---------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| 2026-11-25 | Home page join toasts stay demo data; the room shows real joins              | Owner's call: real names on the public home page would show strangers' names                  |
-| 2026-11-25 | People who arrive together share one toast                                   | The toast shows one message at a time; separate ones would replace each other                 |
-| 2026-11-25 | Theme toggle talks to `ThemeService` without a view model                    | App-wide setting, no other state; a VM would only pass the call along                         |
-| 2026-11-25 | The flipped cards in the players row are each person's score; no second list | Avoids showing every card twice on a small screen                                             |
-| 2026-11-25 | Stage order lives in the markup, not CSS `order`                             | Keyboard and screen-reader order match what you see                                           |
-| 2026-11-25 | A facilitator is a spectator seat, labelled "Moderator · facilitator"        | No new role or rules change; auto-reveal and the vote rules already exclude spectators        |
-| 2026-11-25 | "I'm facilitating and won't vote" is ticked by default                       | Owner's call: most rooms are created by whoever runs the session                              |
-| 2026-11-25 | The add-story dialog keeps its own draft form                                | UI-only state that dies with the dialog; the page's commands decide what adding means         |
-| 2026-11-25 | Only arriving at `/` redirects to My rooms                                   | "New room" and the logo must still reach the create form; `Router.navigated` tells them apart |
-| 2026-11-25 | "Forget" removes the room from this list only                                | The room is shared; deleting it is a moderator action for later, not a list chore             |
-| 2026-11-25 | Avatar faces are path data in TypeScript, not SVG files or markup            | No `innerHTML` and no `bypassSecurityTrust*` (strict CSP), no extra requests, themable tones  |
-| 2026-11-25 | The picker reports picks; the form's view model owns the value               | Same pattern as the colour swatches; no ControlValueAccessor needed for one field             |
-| 2026-11-25 | Announce only seats newer than one minute                                    | Firestore may fill a listener from cache first, then the server; old seats aren't news        |
+| Date       | Decision                                                                      | Why                                                                                           |
+| ---------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 2026-11-25 | Home page join toasts stay demo data; the room shows real joins               | Owner's call: real names on the public home page would show strangers' names                  |
+| 2026-11-25 | People who arrive together share one toast                                    | The toast shows one message at a time; separate ones would replace each other                 |
+| 2026-11-25 | Theme toggle talks to `ThemeService` without a view model                     | App-wide setting, no other state; a VM would only pass the call along                         |
+| 2026-11-25 | The flipped cards in the players row are each person's score; no second list  | Avoids showing every card twice on a small screen                                             |
+| 2026-11-25 | Stage order lives in the markup, not CSS `order`                              | Keyboard and screen-reader order match what you see                                           |
+| 2026-11-25 | A facilitator is a spectator seat, labelled "Moderator · facilitator"         | No new role or rules change; auto-reveal and the vote rules already exclude spectators        |
+| 2026-11-25 | "I'm facilitating and won't vote" is ticked by default                        | Owner's call: most rooms are created by whoever runs the session                              |
+| 2026-11-25 | The add-story dialog keeps its own draft form                                 | UI-only state that dies with the dialog; the page's commands decide what adding means         |
+| 2026-11-25 | Only arriving at `/` redirects to My rooms                                    | "New room" and the logo must still reach the create form; `Router.navigated` tells them apart |
+| 2026-11-25 | "Forget" removes the room from this list only                                 | The room is shared; deleting it is a moderator action for later, not a list chore             |
+| 2026-11-25 | Avatar faces are path data in TypeScript, not SVG files or markup             | No `innerHTML` and no `bypassSecurityTrust*` (strict CSP), no extra requests, themable tones  |
+| 2026-11-25 | The picker reports picks; the form's view model owns the value                | Same pattern as the colour swatches; no ControlValueAccessor needed for one field             |
+| 2026-11-25 | CSV backup is built in the browser, not by an Azure Function                  | No server reads, no new cloud resource or rules change; the rules already allow these reads   |
+| 2026-11-25 | A backup holds each story's last flipped round, not every round               | The estimate came from it; earlier rounds would add rows nobody asked for                     |
+| 2026-11-25 | Formula-like cells get a leading `'`                                          | CSV injection: a story title like `=HYPERLINK(…)` must not run when opened in a spreadsheet   |
+| 2026-11-25 | The browser saver releases a blob on the next save, not right after the click | Safari reads the blob after the click returns; revoking at once can cancel the download       |
+| 2026-11-25 | Announce only seats newer than one minute                                     | Firestore may fill a listener from cache first, then the server; old seats aren't news        |

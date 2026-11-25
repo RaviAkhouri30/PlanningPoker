@@ -8,7 +8,7 @@ flowchart TB
   app --> room["/r/:roomId RoomPage (roomMemberGuard)"]
   app --> terms["/terms TermsPage"]
   app --> mine["/rooms MyRoomsPage (returningGuestGuard on /)"]
-  mine --> bdn[browser-data-notice] & srl[saved-room-list]
+  mine --> bdn[browser-data-notice] & srl["saved-room-list: Open, CSV, Forget"]
 
   landing --> lh[landing-header] & hf[hero-form] & hs[hero-stage] & hiw[how-it-works]
   hs --> hfl[hero-floats: demo join toasts]
@@ -18,7 +18,7 @@ flowchart TB
 
   room --> rh[room-header] & sh[story-header] & pt["poker-table: the light stage"]
   pt -. "projects, while voting" .-> cd[card-deck]
-  room --> mc[moderator-controls] & pp[players-panel] & sp[stories-panel] & id[invite-dialog]
+  room --> mc[moderator-controls] & pp[players-panel] & sp["stories-panel: Download CSV"] & id[invite-dialog]
   room --> asd["add-story-dialog (moderator)"]
   room --> tour[room-tour: spotlight + step card]
   rh & pt -. "Add story: opens" .-> asd

@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { BrowserClipboardService } from '@core/backends/browser/browser-clipboard.service';
+import { BrowserFileSaver } from '@core/backends/browser/browser-file-saver';
 import { BrowserPreferenceStore } from '@core/backends/browser/browser-preference-store';
 import { FakeAuthService } from '@core/backends/fake/fake-auth.service';
 import { FakeRealtimeStore } from '@core/backends/fake/fake-realtime-store';
@@ -9,6 +10,7 @@ import { BackendType } from '@core/enums/backend-type.enum';
 import { APP_ENVIRONMENT } from '@core/tokens/app-environment.token';
 import { authServiceFactory } from './auth-service.factory';
 import { clipboardServiceFactory } from './clipboard-service.factory';
+import { fileSaverFactory } from './file-saver.factory';
 import { preferenceStoreFactory } from './preference-store.factory';
 import { realtimeStoreFactory } from './realtime-store.factory';
 
@@ -57,5 +59,9 @@ describe('adapter factories', () => {
     expect(inEnvironment(BackendType.Fake, preferenceStoreFactory)).toBeInstanceOf(
       BrowserPreferenceStore,
     );
+  });
+
+  it('should provide the browser file saver', () => {
+    expect(inEnvironment(BackendType.Fake, fileSaverFactory)).toBeInstanceOf(BrowserFileSaver);
   });
 });

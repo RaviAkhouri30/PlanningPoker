@@ -1,11 +1,17 @@
 import { TestBed } from '@angular/core/testing';
+import { type Subscription, throwError } from 'rxjs';
+import { type FakeFileSaver } from '@core/backends/fake/fake-file-saver';
+import { IFileSaver } from '@core/interfaces/i-file-saver';
+import { LoggerService } from '@core/services/logger.service';
 import { CLOCK } from '@core/tokens/clock.token';
+import { BACKUP_MESSAGES } from '@shared/constants/backup-messages.constants';
 import { Animal } from '@shared/enums/animal.enum';
 import { RoomRole } from '@shared/enums/room-role.enum';
 import { LocalProfileService } from '@shared/services/local-profile.service';
 import { MyRoomsService } from '@shared/services/my-rooms.service';
+import { RoomBackupService } from '@shared/services/room-backup.service';
 import { ToastService } from '@shared/services/toast.service';
-import { testBackendProviders } from '@shared/testing/test-backend';
+import { roomFields, seed, testBackendProviders } from '@shared/testing/test-backend';
 import { MY_ROOMS_MESSAGES } from '../models/my-rooms-messages.constants';
 import { MyRoomsViewModel } from './my-rooms.view-model';
 
@@ -70,5 +76,84 @@ describe('MyRoomsViewModel', () => {
 
     expect(model.cards()).toEqual([]);
     expect(show).toHaveBeenCalledWith(MY_ROOMS_MESSAGES.forgotten, expect.anything());
+  });
+
+  describe('backups', () => {
+    let subscription: Subscription | undefined;
+
+    function remember(id: string): void {
+      TestBed.inject(MyRoomsService).remember({
+        id,
+        name: id,
+        code: '',
+        role: RoomRole.Player,
+        lastVisit: now,
+      });
+    }
+
+    async function startWithRooms(): Promise<MyRoomsViewModel> {
+      const model = start();
+      vi.spyOn(TestBed.inject(LoggerService), 'error').mockImplementation(() => undefined);
+      await seed({ 'rooms/r1': roomFields(), 'rooms/r2': roomFields() });
+      remember('r1');
+      remember('r2');
+      subscription = model.init().subscribe();
+      return model;
+    }
+
+    afterEach(() => {
+      subscription?.unsubscribe();
+      vi.restoreAllMocks();
+    });
+
+    it('should save one room and name the file when a room is backed up', async () => {
+      const model = await startWithRooms();
+      const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+
+      model.backUp('r1');
+
+      await vi.waitFor(() => {
+        expect(show).toHaveBeenCalledWith(
+          expect.stringContaining('planning-poker-r1-'),
+          expect.anything(),
+        );
+      });
+      expect(model.backingUp()).toBe(false);
+    });
+
+    it('should save every room in one file when all are backed up', async () => {
+      const model = await startWithRooms();
+
+      model.backUpAll();
+
+      await vi.waitFor(() => {
+        expect((TestBed.inject(IFileSaver) as FakeFileSaver).saved.at(0)?.name).toContain(
+          'planning-poker-rooms-',
+        );
+      });
+    });
+
+    it('should say the backup failed when no room can be read', async () => {
+      const model = await startWithRooms();
+      const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+      vi.spyOn(TestBed.inject(RoomBackupService), 'download').mockReturnValue(
+        throwError(() => new Error('denied')),
+      );
+
+      model.backUpAll();
+
+      expect(show).toHaveBeenCalledWith(BACKUP_MESSAGES.failed, expect.anything());
+      expect(model.backingUp()).toBe(false);
+    });
+
+    it('should count the rooms in words when there is one or several', () => {
+      const model = start();
+      remember('r1');
+      expect(model.countLabel()).toBe(MY_ROOMS_MESSAGES.oneRoom);
+
+      remember('r2');
+
+      expect(model.countLabel()).toBe(MY_ROOMS_MESSAGES.manyRooms);
+    });
   });
 });

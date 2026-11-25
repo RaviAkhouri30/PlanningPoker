@@ -15,7 +15,18 @@
   </div>
   <app-browser-data-notice />
   @if (model.cards().length > 0) {
-    <app-saved-room-list [rooms]="model.cards()" (forgetRoom)="model.forget($event)" />
+    <div class="list-head">
+      <h2 class="list-head__title">{{ model.cards().length }} {{ model.countLabel() }}</h2>
+      <button class="btn" type="button" [disabled]="model.backingUp()" (click)="model.backUpAll()">
+        <app-icon [name]="downloadIcon" [size]="18" />Back up all as CSV
+      </button>
+    </div>
+    <app-saved-room-list
+      [rooms]="model.cards()"
+      [busy]="model.backingUp()"
+      (forgetRoom)="model.forget($event)"
+      (backupRoom)="model.backUp($event)"
+    />
   } @else {
     <div class="empty">
       <h2 class="empty__title">No rooms yet</h2>

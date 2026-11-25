@@ -44,6 +44,12 @@ classDiagram
   IClipboardService <|-- FakeClipboardService
   IPreferenceStore <|-- BrowserPreferenceStore
   IPreferenceStore <|-- FakePreferenceStore
+  class IFileSaver {
+    <<abstract>>
+    +save(file) Observable~void~
+  }
+  IFileSaver <|-- BrowserFileSaver
+  IFileSaver <|-- FakeFileSaver
 
   ViewModel <|-- LandingViewModel
   ViewModel <|-- JoinViewModel
@@ -55,6 +61,12 @@ classDiagram
   RoomCommands ..> ModerationService
   RoomCommands ..> VotesService
   RoomCommands ..> StoriesService
+  RoomCommands ..> RoomBackupService : Download CSV
+  ViewModel <|-- MyRoomsViewModel
+  MyRoomsViewModel ..> RoomBackupService : Back up
+  RoomBackupService ..> RoomBackupReader : one read per room
+  RoomBackupService ..> IFileSaver
+  RoomBackupReader ..> IRealtimeStore
   RoomViewModel ..> RoomsService
   RoomViewModel ..> ParticipantsService
   ModerationService ..> IRealtimeStore

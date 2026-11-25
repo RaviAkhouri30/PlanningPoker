@@ -3,11 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { FakeAuthService } from '@core/backends/fake/fake-auth.service';
 import { FakeClipboardService } from '@core/backends/fake/fake-clipboard.service';
+import { FakeFileSaver } from '@core/backends/fake/fake-file-saver';
 import { FakePreferenceStore } from '@core/backends/fake/fake-preference-store';
 import { FakeRealtimeStore } from '@core/backends/fake/fake-realtime-store';
 import { StoreWriteKind } from '@core/enums/store-write-kind.enum';
 import { IAuthService } from '@core/interfaces/i-auth-service';
 import { IClipboardService } from '@core/interfaces/i-clipboard-service';
+import { IFileSaver } from '@core/interfaces/i-file-saver';
 import { IPreferenceStore } from '@core/interfaces/i-preference-store';
 import { IRealtimeStore, type StoreFields } from '@core/interfaces/i-realtime-store';
 import { CLOCK } from '@core/tokens/clock.token';
@@ -31,6 +33,7 @@ export function testBackendProviders(): Provider[] {
     { provide: IAuthService, useFactory: () => new FakeAuthService() },
     { provide: IClipboardService, useFactory: () => new FakeClipboardService() },
     { provide: IPreferenceStore, useFactory: () => new FakePreferenceStore() },
+    { provide: IFileSaver, useFactory: () => new FakeFileSaver() },
   ];
 }
 

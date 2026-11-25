@@ -10,6 +10,7 @@ export enum IconName {
   Coffee = 'coffee',
   Copy = 'copy',
   Crown = 'crown',
+  Download = 'download',
   Eye = 'eye',
   Help = 'help',
   Link = 'link',

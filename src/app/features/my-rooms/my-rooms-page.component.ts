@@ -28,4 +28,5 @@ import { type IMyRoomsState, MyRoomsViewModel } from './view-models/my-rooms.vie
 export default class MyRoomsPageComponent extends BaseComponent<IMyRoomsState> {
   protected override readonly model = inject(MyRoomsViewModel);
   protected readonly plusIcon = IconName.Plus;
+  protected readonly downloadIcon = IconName.Download;
 }

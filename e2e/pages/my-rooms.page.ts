@@ -7,6 +7,7 @@ export class MyRoomsPage extends BasePage {
   public readonly newRoomLink: Locator;
   public readonly notice: Locator;
   public readonly emptyState: Locator;
+  public readonly backUpAllButton: Locator;
   protected readonly path = '/rooms';
 
   public constructor(page: Page) {
@@ -15,6 +16,7 @@ export class MyRoomsPage extends BasePage {
     this.newRoomLink = page.getByRole('link', { name: 'New room' });
     this.notice = page.getByRole('complementary', { name: 'Saved in this browser' });
     this.emptyState = page.getByRole('heading', { name: 'No rooms yet' });
+    this.backUpAllButton = page.getByRole('button', { name: 'Back up all as CSV' });
   }
 
   /** The card of the room called `name`. */

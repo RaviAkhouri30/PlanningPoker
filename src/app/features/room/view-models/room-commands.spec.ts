@@ -3,10 +3,14 @@ import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/route
 import { type Subscription, firstValueFrom, throwError } from 'rxjs';
 import { FAKE_GUEST_UID } from '@core/backends/fake/fake-auth.service';
 import { IAuthService } from '@core/interfaces/i-auth-service';
+import { type FakeFileSaver } from '@core/backends/fake/fake-file-saver';
 import { IClipboardService } from '@core/interfaces/i-clipboard-service';
+import { IFileSaver } from '@core/interfaces/i-file-saver';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
+import { BACKUP_MESSAGES } from '@shared/constants/backup-messages.constants';
 import { DeckType } from '@shared/enums/deck-type.enum';
+import { RoomBackupService } from '@shared/services/room-backup.service';
 import { ToastService } from '@shared/services/toast.service';
 import {
   participantFields,
@@ -178,5 +182,35 @@ describe('RoomCommands', () => {
     await expect(stored(`rooms/r1/participants/${ME}`)).resolves.toMatchObject({
       role: 'player',
     });
+  });
+
+  it('should save the room as a CSV file and name it when Download CSV is pressed', async () => {
+    await start();
+    const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+
+    model.commands.downloadCsv();
+
+    await vi.waitFor(() => {
+      expect((TestBed.inject(IFileSaver) as FakeFileSaver).saved).toHaveLength(1);
+    });
+    expect(show).toHaveBeenCalledWith(
+      expect.stringContaining('planning-poker-r1-'),
+      expect.anything(),
+    );
+  });
+
+  it('should say the backup failed when the room cannot be read', async () => {
+    await start();
+    const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+    vi.spyOn(TestBed.inject(RoomBackupService), 'download').mockReturnValue(
+      throwError(() => new Error('denied')),
+    );
+
+    model.commands.downloadCsv();
+
+    await vi.waitFor(() => {
+      expect(show).toHaveBeenCalledWith(BACKUP_MESSAGES.failed, expect.anything());
+    });
+    expect(show).not.toHaveBeenCalledWith(ROOM_MESSAGES.actionFailed, expect.anything());
   });
 });

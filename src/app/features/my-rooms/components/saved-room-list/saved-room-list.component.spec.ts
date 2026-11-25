@@ -13,17 +13,24 @@ describe('SavedRoomListComponent', () => {
     open: ['/', 'r', 'r1'],
   };
 
-  function render(rooms: readonly IRoomCard[]): {
+  function render(
+    rooms: readonly IRoomCard[],
+    busy = false,
+  ): {
     element: HTMLElement;
     forgotten: string[];
+    backedUp: string[];
   } {
     TestBed.configureTestingModule({ providers: [provideRouter([])] });
     const fixture = TestBed.createComponent(SavedRoomListComponent);
     const forgotten: string[] = [];
+    const backedUp: string[] = [];
     fixture.componentInstance.forgetRoom.subscribe((id) => forgotten.push(id));
+    fixture.componentInstance.backupRoom.subscribe((id) => backedUp.push(id));
     fixture.componentRef.setInput('rooms', rooms);
+    fixture.componentRef.setInput('busy', busy);
     fixture.detectChanges();
-    return { element: fixture.nativeElement as HTMLElement, forgotten };
+    return { element: fixture.nativeElement as HTMLElement, forgotten, backedUp };
   }
 
   it('should show the name, role, last visit, code and a link to the room', () => {
@@ -46,5 +53,21 @@ describe('SavedRoomListComponent', () => {
     element.querySelector<HTMLButtonElement>('button')?.click();
 
     expect(forgotten).toEqual(['r1']);
+  });
+
+  it('should ask to back the room up when its CSV button is pressed', () => {
+    const { element, backedUp } = render([room]);
+
+    element.querySelector<HTMLButtonElement>('[aria-label="Back up Sprint 42 as CSV"]')?.click();
+
+    expect(backedUp).toEqual(['r1']);
+  });
+
+  it('should hold the CSV button when a backup is being made', () => {
+    const { element } = render([room], true);
+
+    expect(
+      element.querySelector<HTMLButtonElement>('[aria-label="Back up Sprint 42 as CSV"]')?.disabled,
+    ).toBe(true);
   });
 });

@@ -7,6 +7,8 @@ export const MY_ROOMS_MESSAGES = {
   untitled: 'Untitled room',
   openedPrefix: 'Opened ',
   forgotten: 'Removed from My rooms. The room itself is still there.',
+  oneRoom: 'room',
+  manyRooms: 'rooms',
 } as const;
 
 /** How each role reads on a room card. */

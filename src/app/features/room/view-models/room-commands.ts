@@ -1,14 +1,18 @@
 import { inject } from '@angular/core';
-import { EMPTY, type Observable, tap } from 'rxjs';
+import { EMPTY, type Observable, catchError, tap } from 'rxjs';
 import { IClipboardService } from '@core/interfaces/i-clipboard-service';
+import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
+import { BACKUP_MESSAGES } from '@shared/constants/backup-messages.constants';
 import { type DeckType } from '@shared/enums/deck-type.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import { ToastTone } from '@shared/enums/toast-tone.enum';
 import { type Room } from '@shared/models/room.model';
 import { type Story } from '@shared/models/story.model';
 import { ParticipantsService } from '@shared/services/participants.service';
+import { RoomBackupService } from '@shared/services/room-backup.service';
 import { ToastService } from '@shared/services/toast.service';
+import { backupNotice } from '@shared/utils/backup-notice.util';
 import { type IRoomState, type StoryTab } from '../models/i-room-state';
 import { ROOM_MESSAGES } from '../models/room-messages.constants';
 import { RoomView } from '../models/room-view.builder';
@@ -37,6 +41,8 @@ export class RoomCommands {
   private readonly clipboard = inject(IClipboardService);
   private readonly toast = inject(ToastService);
   private readonly origin = inject(APP_ORIGIN);
+  private readonly backup = inject(RoomBackupService);
+  private readonly logger = inject(LoggerService);
 
   /**
    * @param host The view model.
@@ -182,6 +188,28 @@ export class RoomCommands {
             error: () => {
               this.toast.show(ROOM_MESSAGES.copyFailed, ToastTone.Error);
             },
+          }),
+        ),
+    });
+  }
+
+  /**
+   * Saves the room's stories, estimates and last votes as a CSV file. Queued like a write so it
+   * reads the room after any write already asked for; it only reads, so it is quick.
+   */
+  public downloadCsv(): void {
+    this.queue({
+      label: 'Backing up the room',
+      run: () =>
+        this.backup.download([this.host.roomId]).pipe(
+          tap((result) => {
+            this.toast.show(backupNotice(result), ToastTone.Success);
+          }),
+          // Handled here, not by the queue, so the toast says what failed.
+          catchError((error: unknown) => {
+            this.logger.error('Backing up the room', error);
+            this.toast.show(BACKUP_MESSAGES.failed, ToastTone.Error);
+            return EMPTY;
           }),
         ),
     });

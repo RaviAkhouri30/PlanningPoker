@@ -52,6 +52,19 @@
   }
 }
 
+.list-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  &__title {
+    font: 700 16px t.$font-display;
+    color: t.color('ink');
+  }
+}
+
 .empty {
   display: flex;
   flex-direction: column;

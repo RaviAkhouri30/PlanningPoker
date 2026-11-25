@@ -24,6 +24,15 @@
         >
           Forget
         </button>
+        <button
+          class="btn"
+          type="button"
+          [attr.aria-label]="'Back up ' + room.name + ' as CSV'"
+          [disabled]="busy()"
+          (click)="backupRoom.emit(room.id)"
+        >
+          <app-icon [name]="downloadIcon" [size]="18" />CSV
+        </button>
         <a class="btn btn--primary" [routerLink]="room.open" [attr.aria-label]="'Open ' + room.name"
           >Open <app-icon [name]="arrowIcon" [size]="18"
         /></a>

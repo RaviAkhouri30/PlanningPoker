@@ -46,4 +46,14 @@ describe('StoriesPanelComponent', () => {
   it('should say when a tab is empty', () => {
     expect(render(true, []).textContent).toContain('Nothing here yet.');
   });
+
+  it('should ask for a CSV file when the download button is pressed', () => {
+    const element = render(false);
+    let asked = 0;
+    fixture.componentInstance.downloadCsv.subscribe(() => (asked += 1));
+
+    element.querySelector<HTMLButtonElement>('[aria-label="Download the stories as CSV"]')?.click();
+
+    expect(asked).toBe(1);
+  });
 });

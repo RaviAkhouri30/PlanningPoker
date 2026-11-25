@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { IconName } from '@shared/enums/icon-name.enum';
 import { StoryStatus } from '@shared/enums/story-status.enum';
 import { type Story } from '@shared/models/story.model';
 import { StoryTab } from '../../models/i-room-state';
@@ -10,9 +12,10 @@ export interface IStoryCounts {
   readonly all: number;
 }
 
-/** The story list with its tabs; the moderator can pick the next story. */
+/** The story list with its tabs; the moderator can pick the next story, anyone can save a CSV. */
 @Component({
   selector: 'app-stories-panel',
+  imports: [IconComponent],
   templateUrl: './stories-panel.component.html',
   styleUrl: './stories-panel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,6 +30,8 @@ export class StoriesPanelComponent {
 
   public readonly tabPick = output<StoryTab>();
   public readonly storyPick = output<Story>();
+  /** Asked to save the room's stories as a CSV file. */
+  public readonly downloadCsv = output();
 
   protected readonly tabs = [
     { tab: StoryTab.Active, label: 'Active', key: 'active' },
@@ -34,4 +39,5 @@ export class StoriesPanelComponent {
     { tab: StoryTab.All, label: 'All', key: 'all' },
   ] as const;
   protected readonly skipped = StoryStatus.Skipped;
+  protected readonly downloadIcon = IconName.Download;
 }
