@@ -67,6 +67,8 @@ export function roomFields(change: StoreFields = {}): StoreFields {
     deck: 'mfib',
     autoReveal: true,
     spectatorsByDefault: false,
+    timerSeconds: 60,
+    lockOnTimeUp: true,
     activeStoryId: null,
     round: 1,
     revealed: false,

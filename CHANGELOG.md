@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] — 2026-11-25
+
+### Added
+
+- **Round countdown**: the timer counts down from one minute, turns amber with a warning toast
+  at 20 seconds and red with a "time's up" toast at zero.
+- **Lock voting at time up** (on by default): at zero the cards are disabled until the moderator
+  presses "Reset timer". The Firestore rules refuse late votes too.
+- The moderator sets the countdown from 00:30 to 10:00 in 30-second steps, and can turn the lock
+  off so votes still count until the cards flip.
+
+### Changed
+
+- The header timer shows the time left instead of the time spent.
+
 ## [1.5.0] — 2026-11-25
 
 ### Added

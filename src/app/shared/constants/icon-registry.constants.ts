@@ -39,6 +39,7 @@ export const ICON_REGISTRY: Readonly<Record<IconName, readonly IconShape[]>> = {
     path('M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5'),
     path('M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5'),
   ],
+  [IconName.Minus]: [path('M5 12h14')],
   [IconName.Monitor]: [
     { kind: 'rect', x: 2, y: 3, width: 20, height: 14, rx: 2 },
     path('M8 21h8M12 17v4'),

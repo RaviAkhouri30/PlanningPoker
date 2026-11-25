@@ -107,9 +107,19 @@ export class ModerationService {
     return this.update(room, { spectatorsByDefault });
   }
 
-  /** Starts the round timer again. */
+  /** Starts the countdown again, which also opens voting again after time ran out. */
   public resetTimer(room: Room): Observable<void> {
     return this.update(room, { roundStartedAt: SERVER_TIME });
+  }
+
+  /** Sets how long the countdown runs; a longer one also gives the current round more time. */
+  public setTimerSeconds(room: Room, timerSeconds: number): Observable<void> {
+    return this.update(room, { timerSeconds });
+  }
+
+  /** Chooses whether voting closes when the countdown reaches zero. */
+  public setLockOnTimeUp(room: Room, lockOnTimeUp: boolean): Observable<void> {
+    return this.update(room, { lockOnTimeUp });
   }
 
   private update(room: Room, fields: StoreFields): Observable<void> {

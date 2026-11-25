@@ -9,7 +9,8 @@ rules_version = '2';
 // in the moderator's tab.
 //
 // Mirrors in code: decks (decks.constants.ts), limits (limits.constants.ts), palette size
-// (palette.constants.ts), paths (store-paths.constants.ts). Tests: tests/rules.
+// (palette.constants.ts), the countdown (timer.constants.ts), paths (store-paths.constants.ts).
+// Tests: tests/rules.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -71,11 +72,20 @@ service cloud.firestore {
 
     // ---- Rooms ---------------------------------------------------------------------------
 
+    // The round countdown: 30 s to 10 min, a minute by default; voting locks at zero unless
+    // the moderator turned the lock off. Rooms from before the countdown have neither field.
+    function validTimer(data) {
+      let seconds = data.get('timerSeconds', 60);
+      return seconds is int && seconds >= 30 && seconds <= 600
+        && data.get('lockOnTimeUp', true) is bool;
+    }
+
     function validNewRoom(roomId, data) {
       return data.keys().hasOnly(['name', 'code', 'moderatorUid', 'moderatorName', 'deck',
           'autoReveal', 'spectatorsByDefault', 'activeStoryId', 'round', 'revealed',
-          'roundStartedAt', 'createdAt'])
+          'roundStartedAt', 'timerSeconds', 'lockOnTimeUp', 'createdAt'])
         && data.moderatorUid == request.auth.uid
+        && validTimer(data)
         && isText(data.name, 1, 60)
         && isText(data.moderatorName, 1, 40)
         && data.code is string && data.code.matches('^[A-Z2-9]{4}-[A-Z2-9]{2}$')
@@ -103,8 +113,9 @@ service cloud.firestore {
         && (after.revealed == before.revealed
           || (after.revealed == true && existsAfter(roundPath(roomId, string(before.round)))));
       return changedOnly(['deck', 'autoReveal', 'spectatorsByDefault', 'activeStoryId', 'round',
-          'revealed', 'roundStartedAt'])
+          'revealed', 'roundStartedAt', 'timerSeconds', 'lockOnTimeUp'])
         && (nextRound || sameRound)
+        && validTimer(after)
         && isDeck(after.deck)
         && after.autoReveal is bool
         && after.spectatorsByDefault is bool
@@ -198,10 +209,20 @@ service cloud.firestore {
           && request.resource.data.revealedAt == request.time;
         allow update, delete: if false;
 
+        // With the lock on, votes stop when the countdown runs out. Two seconds of grace cover
+        // the trip from a browser whose clock runs a little behind; resetting the timer (a new
+        // `roundStartedAt`) or lengthening it opens voting again.
+        function beforeTimeUp(room) {
+          return room.get('lockOnTimeUp', true) == false
+            || request.time < room.roundStartedAt
+              + duration.value(room.get('timerSeconds', 60) + 2, 's');
+        }
+
         function roundIsOpen() {
           let room = get(roomPath(roomId)).data;
           return round == string(room.round) && room.revealed == false
-            && !exists(roundPath(roomId, round));
+            && !exists(roundPath(roomId, round))
+            && beforeTimeUp(room);
         }
 
         match /votes/{uid} {

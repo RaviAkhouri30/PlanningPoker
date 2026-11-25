@@ -83,3 +83,18 @@
     }
   }
 }
+
+// The countdown turns amber for the last seconds and red at zero.
+.bar__timer {
+  &[data-phase='warning'] {
+    background: t.color('warning-wash');
+    border-color: t.color('warning');
+    color: t.color('warning-text');
+  }
+
+  &[data-phase='up'] {
+    background: t.color('danger-wash');
+    border-color: t.color('danger');
+    color: t.color('danger-text');
+  }
+}

@@ -4,6 +4,7 @@ import { IClipboardService } from '@core/interfaces/i-clipboard-service';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
 import { BACKUP_MESSAGES } from '@shared/constants/backup-messages.constants';
+import { TIMER_LIMITS } from '@shared/constants/timer.constants';
 import { type DeckType } from '@shared/enums/deck-type.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
 import { ToastTone } from '@shared/enums/toast-tone.enum';
@@ -138,9 +139,29 @@ export class RoomCommands {
     );
   }
 
-  /** Starts the timer again. */
+  /** Starts the countdown again (and opens voting again after time ran out). */
   public resetTimer(): void {
     this.moderate('Resetting the timer', (room) => this.moderation.resetTimer(room));
+  }
+
+  /** Sets how long the countdown runs, kept within `TIMER_LIMITS`. */
+  public setTimerSeconds(seconds: number): void {
+    const timerSeconds = Math.min(
+      TIMER_LIMITS.maxSeconds,
+      Math.max(TIMER_LIMITS.minSeconds, Math.round(seconds)),
+    );
+    this.moderate('Changing the countdown', (room) =>
+      room.timerSeconds === timerSeconds
+        ? EMPTY
+        : this.moderation.setTimerSeconds(room, timerSeconds),
+    );
+  }
+
+  /** Turns the lock at zero on or off. */
+  public toggleLockOnTimeUp(): void {
+    this.moderate('Changing the lock at time up', (room) =>
+      this.moderation.setLockOnTimeUp(room, !room.lockOnTimeUp),
+    );
   }
 
   /** Adds a story from the "Add a story" dialog; the first one added becomes the current story. */

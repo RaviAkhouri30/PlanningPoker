@@ -1,6 +1,6 @@
+import { MS_PER_SECOND } from '@shared/constants/timer.constants';
 /** Seconds in a minute, and the width of each clock part. */
 const SECONDS_PER_MINUTE = 60;
-const MS_PER_SECOND = 1000;
 const CLOCK_DIGITS = 2;
 
 /** Most initials an avatar shows. */

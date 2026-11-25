@@ -51,3 +51,19 @@ sequenceDiagram
   Store-->>Maya: everyone's cards
   Alex->>Store: Accept 5: commit([story done + estimate, next story active, round + 1])
 ```
+
+## Countdown and time up
+
+```mermaid
+sequenceDiagram
+  actor Alex as Alex (moderator)
+  actor Maya
+  participant Store as Firestore
+  Note over Alex,Maya: deadline = roundStartedAt + timerSeconds, ticked once a second per tab
+  Maya-->>Maya: 20 s left: warning toast
+  Maya-->>Maya: 00:00 with lockOnTimeUp: time's up toast, deck disabled
+  Maya->>Store: late vote
+  Store-->>Maya: denied (rules: beforeTimeUp, 2 s grace)
+  Alex->>Store: Reset timer: room.roundStartedAt = server time (or a longer timerSeconds)
+  Store-->>Maya: countdown restarts, voting open
+```

@@ -42,6 +42,6 @@ describe('ToastComponent', () => {
     const shown = (fixture.nativeElement as HTMLElement).querySelectorAll('.toast');
     expect(shown).toHaveLength(1);
     expect(shown[0]?.textContent).toContain('Second');
-    expect(shown[0]?.classList).toContain('toast--error');
+    expect(shown[0]?.getAttribute('data-tone')).toBe(ToastTone.Error);
   });
 });

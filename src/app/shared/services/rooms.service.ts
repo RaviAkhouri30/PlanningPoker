@@ -11,6 +11,7 @@ import { Room } from '@shared/models/room.model';
 import { FieldReader } from '@shared/utils/fields.util';
 import { createRoomCode, createRoomId } from '@shared/utils/room-id.util';
 import { participantFields } from './participant-fields';
+import { TIMER_LIMITS } from '@shared/constants/timer.constants';
 
 /** A room to create, and its moderator's seat. */
 export interface INewRoom {
@@ -84,6 +85,8 @@ export class RoomsService {
           round: 1,
           revealed: false,
           roundStartedAt: SERVER_TIME,
+          timerSeconds: TIMER_LIMITS.defaultSeconds,
+          lockOnTimeUp: true,
           createdAt: SERVER_TIME,
         },
       },

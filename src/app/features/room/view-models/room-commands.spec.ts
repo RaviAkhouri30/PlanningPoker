@@ -118,6 +118,20 @@ describe('RoomCommands', () => {
     });
   });
 
+  it('should change the countdown within its limits and its lock when asked', async () => {
+    await start();
+
+    model.commands.setTimerSeconds(90);
+    expect(model.view().room?.timerSeconds).toBe(90);
+    model.commands.setTimerSeconds(90);
+    model.commands.setTimerSeconds(5);
+    expect(model.view().room?.timerSeconds).toBe(30);
+    model.commands.setTimerSeconds(10_000);
+    model.commands.toggleLockOnTimeUp();
+
+    expect(model.view().room).toMatchObject({ timerSeconds: 600, lockOnTimeUp: false });
+  });
+
   it('should add stories, making the first one active', async () => {
     await start(roomFields({ moderatorUid: ME, activeStoryId: null }));
 

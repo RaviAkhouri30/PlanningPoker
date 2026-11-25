@@ -19,6 +19,8 @@ erDiagram
     string deck
     bool autoReveal
     bool spectatorsByDefault
+    int timerSeconds
+    bool lockOnTimeUp
     string activeStoryId
     int round
     bool revealed
@@ -62,7 +64,7 @@ erDiagram
 
 | Path                                        | Fields and limits                                                                                                                                                                     |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `rooms/{roomId}`                            | `roomId` = slug of the name + 6 random characters. `name` 1–60, `moderatorName` 1–40, `deck` one of `mfib`, `fib`, `tshirt`, `pow2`; `round` starts at 1                              |
+| `rooms/{roomId}`                            | `roomId` = slug of the name + 6 random characters. `name` 1–60, `moderatorName` 1–40, `deck` one of `mfib`, `fib`, `tshirt`, `pow2`; `round` starts at 1; `timerSeconds` 30–600 and `lockOnTimeUp` (optional: older rooms read 60 and true)                              |
 | `roomCodes/{code}`                          | `{ roomId }`. Code `XXXX-XX` from `ABCDEFGHJKMNPQRSTUVWXYZ23456789` (no 0, O, 1, I, L)                                                                                                |
 | `rooms/{roomId}/participants/{uid}`         | `displayName` 1–40, `colour` 0–5, `role` `player` or `spectator`, `avatar` one of the 16 animal ids (optional: older seats have none), `votedRound` = the round you voted in, or null |
 | `rooms/{roomId}/stories/{storyId}`          | `key` 1–16, `title` 1–200, `description` ≤ 2000, `status` `pending`, `done` or `skipped`, `estimate` a card or null                                                                   |

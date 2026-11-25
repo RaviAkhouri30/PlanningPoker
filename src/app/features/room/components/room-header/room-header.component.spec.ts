@@ -2,6 +2,7 @@ import { testBackendProviders } from '@shared/testing/test-backend';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { aPerson, aRoom } from '../../testing/room-fixtures';
+import { TimerPhase } from '../../models/timer-phase.enum';
 import { RoomHeaderComponent } from './room-header.component';
 
 describe('RoomHeaderComponent', () => {
@@ -40,6 +41,18 @@ describe('RoomHeaderComponent', () => {
       ?.click();
 
     expect(tourStart).toHaveBeenCalled();
+  });
+
+  it('should mark the countdown’s phase when time is running out', () => {
+    TestBed.configureTestingModule({ providers: [provideRouter([]), testBackendProviders()] });
+    const fixture = TestBed.createComponent(RoomHeaderComponent);
+    fixture.componentRef.setInput('room', aRoom());
+    fixture.componentRef.setInput('timerPhase', TimerPhase.Warning);
+    fixture.detectChanges();
+
+    const timer = (fixture.nativeElement as HTMLElement).querySelector('[role="timer"]');
+
+    expect(timer?.getAttribute('data-phase')).toBe(TimerPhase.Warning);
   });
 
   it('should show "Add story" and ask for the story field when the viewer moderates', () => {

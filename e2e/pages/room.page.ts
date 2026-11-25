@@ -21,6 +21,13 @@ export class RoomPage extends BasePage {
   public readonly inviteDialog: Locator;
   public readonly votingSwitch: Locator;
   public readonly downloadCsvButton: Locator;
+  public readonly timer: Locator;
+  public readonly toast: Locator;
+  public readonly resetTimerButton: Locator;
+  public readonly longerButton: Locator;
+  public readonly shorterButton: Locator;
+  public readonly countdownValue: Locator;
+  public readonly lockSwitch: Locator;
   protected readonly path: string;
 
   /** @param roomPath The room's path, e.g. `/r/sprint-42-x7k2ab`. */
@@ -49,6 +56,13 @@ export class RoomPage extends BasePage {
     this.inviteDialog = page.getByRole('dialog', { name: 'Invite your team' });
     this.votingSwitch = page.getByRole('switch', { name: 'I vote too' });
     this.downloadCsvButton = page.getByRole('button', { name: 'Download the stories as CSV' });
+    this.timer = page.getByRole('timer', { name: 'Time left' });
+    this.toast = page.locator('.toast-region');
+    this.resetTimerButton = page.getByRole('button', { name: 'Reset timer' });
+    this.longerButton = page.getByRole('button', { name: '30 seconds longer' });
+    this.shorterButton = page.getByRole('button', { name: '30 seconds shorter' });
+    this.countdownValue = page.getByRole('group', { name: 'Countdown' });
+    this.lockSwitch = page.getByRole('switch', { name: 'Lock voting at time up' });
   }
 
   /** Closes the guided tour, which opens for the moderator on the first visit. */

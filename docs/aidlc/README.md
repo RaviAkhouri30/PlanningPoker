@@ -11,6 +11,7 @@ the owner's approval before the next starts (CLAUDE.md §11).
 | 0004 | [Room tour](0004-room-tour/01-inception.md) | 1.3.0 | Done, deployed |
 | 0005 | [Rooms, themes and avatars](0005-rooms-themes-avatars/01-inception.md) | 1.4.0 | Done, deployed |
 | 0006 | [Stories table](0006-stories-table/01-inception.md) | 1.5.0 | Done, deployed |
+| 0007 | [Round countdown](0007-round-countdown/01-inception.md) | 1.6.0 | Done, deployed |
 
 Next candidates: discussion threads, session summary (copy as text), accounts (email, Google,
 GitHub, guest linking), dashboard and history, integrations.

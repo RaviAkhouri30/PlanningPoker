@@ -60,6 +60,11 @@ export default class RoomPageComponent extends BaseComponent<IRoomState> {
     if (this.model.activeStory() === null) {
       return ROOM_MESSAGES.addStory;
     }
+    if (this.model.countdown.locked()) {
+      return this.model.isModerator()
+        ? ROOM_MESSAGES.votingClosedModerator
+        : ROOM_MESSAGES.votingClosed;
+    }
     if (!this.model.isVoting()) {
       return this.model.isModerator() ? ROOM_MESSAGES.facilitating : ROOM_MESSAGES.spectating;
     }

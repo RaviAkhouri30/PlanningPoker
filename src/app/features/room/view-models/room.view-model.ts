@@ -38,7 +38,6 @@ import { MyRoomsService } from '@shared/services/my-rooms.service';
 import { ParticipantsService } from '@shared/services/participants.service';
 import { RoomsService } from '@shared/services/rooms.service';
 import { ToastService } from '@shared/services/toast.service';
-import { formatClock } from '@shared/utils/display.util';
 import { type IRoomState, LOADING_ROOM, NO_VOTES, RoomStatus } from '../models/i-room-state';
 import { ROOM_MESSAGES } from '../models/room-messages.constants';
 import { RoomView } from '../models/room-view.builder';
@@ -47,6 +46,7 @@ import { type RoundVotes, VotesService } from '../services/votes.service';
 import { JoinNotices } from './join-notices';
 import { RoomCommands } from './room-commands';
 import { RoomTour } from './room-tour';
+import { RoundCountdown } from './round-countdown';
 
 /** One write the page asked for, run in order with the others. */
 export interface IRoomAction {
@@ -88,16 +88,15 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   public readonly votedCount = computed(() => RoomView.votedCount(this.view()));
   public readonly playerCount = computed(() => RoomView.players(this.view()).length);
   public readonly onlineCount = computed(() => RoomView.onlineCount(this.view(), this.now()));
+  /** The round countdown: its label, phase, toasts and the lock at zero. */
+  public readonly countdown: RoundCountdown = new RoundCountdown(this);
   public readonly canVote = computed(
     () =>
       (this.me()?.isPlayer ?? false) &&
       this.activeStory() !== null &&
-      this.view().room?.revealed === false,
+      this.view().room?.revealed === false &&
+      !this.countdown.locked(),
   );
-  public readonly timerLabel = computed(() => {
-    const startedAt = this.view().room?.roundStartedAt ?? null;
-    return startedAt === null ? formatClock(0) : formatClock(this.now() - startedAt);
-  });
 
   /** Every write the page offers, bound to this view model's state. */
   public readonly commands: RoomCommands;
@@ -232,6 +231,7 @@ export class RoomViewModel extends ViewModel<IRoomState> {
     return timer(0, TIMER_TICK_MS).pipe(
       tap(() => {
         this.now.set(this.clock.now());
+        this.countdown.check();
       }),
     );
   }

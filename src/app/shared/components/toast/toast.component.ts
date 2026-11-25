@@ -17,7 +17,7 @@ import { ToastViewModel } from './toast.view-model';
 })
 export class ToastComponent extends BaseComponent<IToast | null> {
   protected override readonly model = inject(ToastViewModel);
-  protected readonly error = ToastTone.Error;
+  protected readonly success = ToastTone.Success;
   protected readonly checkIcon = IconName.Check;
   protected readonly alertIcon = IconName.Alert;
 }

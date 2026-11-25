@@ -5,10 +5,12 @@ import { FAKE_GUEST_UID } from '@core/backends/fake/fake-auth.service';
 import { IAuthService } from '@core/interfaces/i-auth-service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
 import {
+  TEST_NOW,
   participantFields,
   roomFields,
   seed,
   testBackendProviders,
+  testClock,
 } from '@shared/testing/test-backend';
 import RoomPageComponent from './room-page.component';
 import { ROOM_MESSAGES } from './models/room-messages.constants';
@@ -16,6 +18,10 @@ import { storyFields } from './testing/room-fixtures';
 
 describe('RoomPageComponent', () => {
   let fixture: ComponentFixture<RoomPageComponent>;
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   async function render(moderatorUid = FAKE_GUEST_UID, role = 'player'): Promise<HTMLElement> {
     TestBed.configureTestingModule({
@@ -104,6 +110,24 @@ describe('RoomPageComponent', () => {
     click(page, '.coach .btn--primary');
 
     expect(page.querySelector('app-room-tour')?.textContent).toContain('Step 2 of');
+  });
+
+  it('should close voting and tell the moderator to reset the timer when time is up', async () => {
+    vi.spyOn(testClock, 'now').mockReturnValue(TEST_NOW + 61_000);
+    const page = await render();
+
+    expect(page.textContent).toContain(ROOM_MESSAGES.votingClosedModerator);
+    expect(page.querySelector<HTMLButtonElement>('button[aria-label="Vote 5"]')?.disabled).toBe(
+      true,
+    );
+    expect(page.querySelector('[role="timer"]')?.getAttribute('data-phase')).toBe('up');
+  });
+
+  it('should tell a player that voting closed when time is up', async () => {
+    vi.spyOn(testClock, 'now').mockReturnValue(TEST_NOW + 61_000);
+    const page = await render('someone-else');
+
+    expect(page.textContent).toContain(ROOM_MESSAGES.votingClosed);
   });
 
   it('should hide moderator tools from others and tell spectators they are watching', async () => {

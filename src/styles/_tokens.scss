@@ -61,6 +61,11 @@ $palette: (
   // Destructive buttons ("Close" in the add-story dialog): white text passes AA on both.
   'danger': #d33a31,
   'danger-hover': #b52f27,
+  // The countdown's warning and time-up states: text on its wash passes AA.
+  'warning-wash': #fff3dc,
+  'warning-text': #8a5300,
+  'danger-wash': #fdecea,
+  'danger-text': #b52f27,
   'mint-bright': #7ce0b4,
   'consensus': #3dd598,
   'warning': #ffb547,
@@ -120,6 +125,10 @@ $palette-dark: (
   'on-contrast': #111318,
   'success-text': #3ccf92,
   'success-wash': #13291f,
+  'warning-wash': #2f2410,
+  'warning-text': #ffc670,
+  'danger-wash': #3a1716,
+  'danger-text': #ff8a80,
   'switch-off': #4a4f5e,
   'band-low': #34c48a,
   'band-mid': #f5c04a,

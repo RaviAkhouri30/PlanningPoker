@@ -30,6 +30,11 @@ export const ROOM_MESSAGES = {
   noStoriesPlayer: 'No stories yet. The moderator adds them.',
   noStoriesInTab: 'Nothing here yet.',
   storyAddedPrefix: 'Story added: ',
+  timeWarningSuffix: ' seconds left to vote',
+  timeUpLocked: 'Time’s up. Voting is closed until the moderator resets the timer.',
+  timeUpOpen: 'Time’s up. Votes still count until the cards flip.',
+  votingClosed: 'Time’s up. Voting is closed.',
+  votingClosedModerator: 'Time’s up. Reset the timer to open voting again.',
 } as const;
 
 /** Stagger between seats when the cards flip, in ms. */

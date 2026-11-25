@@ -27,8 +27,12 @@
     color: t.color('mint-bright');
   }
 
-  &--error &__icon {
+  &[data-tone='error'] &__icon {
     color: t.color('coral');
+  }
+
+  &[data-tone='warning'] &__icon {
+    color: t.color('warning');
   }
 }
 

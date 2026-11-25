@@ -13,14 +13,10 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import { STORE_PATHS } from '@shared/constants/store-paths.constants';
-
-/** What the emulator rejects a read or write with when the rules don't allow it. */
-const DENIED = { code: 'permission-denied' };
+import { CODE, DENIED, ROOM, cast, createRoom, reveal, room, seat, story } from './rules-fixtures';
 
 /** Runs against the emulator started by `npm run test:rules` (project `demo-planning-poker`). */
 describe('firestore.rules · rooms', () => {
-  const ROOM = 'sprint-42-aaaaaa';
-  const CODE = 'X7K2-92';
   let env: RulesTestEnvironment;
 
   /** Signed-in clients: the moderator, a player, a spectator and a stranger (not in the room). */
@@ -29,81 +25,6 @@ describe('firestore.rules · rooms', () => {
   let sam: Firestore;
   let stranger: Firestore;
   let visitor: Firestore;
-
-  function room(): Record<string, unknown> {
-    return {
-      name: 'Sprint 42',
-      code: CODE,
-      moderatorUid: 'mod',
-      moderatorName: 'Alex Kim',
-      deck: 'mfib',
-      autoReveal: true,
-      spectatorsByDefault: false,
-      activeStoryId: null,
-      round: 1,
-      revealed: false,
-      roundStartedAt: serverTimestamp(),
-      createdAt: serverTimestamp(),
-    };
-  }
-
-  function seat(role = 'player'): Record<string, unknown> {
-    return {
-      displayName: 'Alex Kim',
-      colour: 0,
-      role,
-      avatar: 'fox',
-      votedRound: null,
-      joinedAt: serverTimestamp(),
-      lastSeenAt: serverTimestamp(),
-    };
-  }
-
-  function story(): Record<string, unknown> {
-    return {
-      key: 'PAY-214',
-      title: 'Save cards',
-      description: '',
-      order: 1,
-      status: 'pending',
-      estimate: null,
-      rounds: 0,
-      createdAt: serverTimestamp(),
-    };
-  }
-
-  /** The batch `RoomsService.create` commits. */
-  function createRoom(db: Firestore, uid = 'mod', data = room()): Promise<void> {
-    const batch = writeBatch(db);
-    batch.set(doc(db, STORE_PATHS.room(ROOM)), data);
-    batch.set(doc(db, STORE_PATHS.roomCode(CODE)), { roomId: ROOM });
-    batch.set(doc(db, STORE_PATHS.participant(ROOM, uid)), seat());
-    return batch.commit();
-  }
-
-  /** The batch `VotesService.cast` commits. */
-  function cast(db: Firestore, uid: string, card: string, round = 2): Promise<void> {
-    const batch = writeBatch(db);
-    batch.set(doc(db, STORE_PATHS.vote(ROOM, round, uid)), {
-      value: card,
-      castAt: serverTimestamp(),
-    });
-    batch.update(doc(db, STORE_PATHS.participant(ROOM, uid)), { votedRound: round });
-    return batch.commit();
-  }
-
-  /** The batch `ModerationService.reveal` commits. */
-  function reveal(db: Firestore, round = 2): Promise<void> {
-    const batch = writeBatch(db);
-    batch.set(doc(db, STORE_PATHS.round(ROOM, round)), {
-      storyId: 's1',
-      revealed: true,
-      revealedAt: serverTimestamp(),
-    });
-    batch.update(doc(db, STORE_PATHS.room(ROOM)), { revealed: true });
-    batch.update(doc(db, STORE_PATHS.story(ROOM, 's1')), { rounds: 1 });
-    return batch.commit();
-  }
 
   beforeAll(async () => {
     env = await initializeTestEnvironment({
@@ -144,6 +65,16 @@ describe('firestore.rules · rooms', () => {
         DENIED,
       );
       await expect(setDoc(doc(mod, STORE_PATHS.room(ROOM)), room())).rejects.toMatchObject(DENIED);
+    });
+
+    it('should take a countdown in range, and rooms from before the countdown', async () => {
+      await expect(createRoom(mod, 'mod', { ...room(), timerSeconds: 5 })).rejects.toMatchObject(
+        DENIED,
+      );
+      const older = room();
+      delete older['timerSeconds'];
+      delete older['lockOnTimeUp'];
+      await expect(createRoom(mod, 'mod', older)).resolves.not.toEqual(DENIED);
     });
 
     it('should refuse visitors, room listing and taking over a code', async () => {

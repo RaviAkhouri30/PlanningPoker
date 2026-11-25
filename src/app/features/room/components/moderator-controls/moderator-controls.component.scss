@@ -40,6 +40,47 @@
     opacity: 0.45;
     cursor: not-allowed;
   }
+
+  // Time ran out with the lock on: this is the button that opens voting again.
+  &--alert {
+    border-color: t.color('danger');
+    background: t.color('danger-wash');
+    color: t.color('danger-text');
+
+    app-icon {
+      color: inherit;
+    }
+  }
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &__button {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 1px solid t.color('line');
+    border-radius: 10px;
+    background: t.color('surface');
+    color: t.color('ink');
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  &__value {
+    min-width: 52px;
+    text-align: center;
+    font: 600 15px t.$font-display;
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 .group {

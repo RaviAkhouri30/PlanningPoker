@@ -5,7 +5,8 @@
         [room]="room"
         [me]="model.me()"
         [onlineCount]="model.onlineCount()"
-        [timer]="model.timerLabel()"
+        [timer]="model.countdown.label()"
+        [timerPhase]="model.countdown.phase()"
         [canAddStory]="model.isModerator()"
         (invite)="model.commands.setInviteOpen(true)"
         (addStory)="model.commands.setAddStoryOpen(true)"
@@ -69,6 +70,7 @@
               [hasStory]="model.activeStory() !== null"
               [votedCount]="model.votedCount()"
               [voting]="model.isVoting()"
+              [timeUp]="model.countdown.locked()"
               (resetTimer)="model.commands.resetTimer()"
               (reveal)="model.commands.reveal()"
               (voteAgain)="model.commands.voteAgain()"
@@ -76,6 +78,8 @@
               (deckPick)="model.commands.setDeck($event)"
               (autoRevealToggle)="model.commands.toggleAutoReveal()"
               (votingToggle)="model.commands.toggleVoting()"
+              (timerChange)="model.commands.setTimerSeconds($event)"
+              (lockToggle)="model.commands.toggleLockOnTimeUp()"
             />
           }
           <app-players-panel

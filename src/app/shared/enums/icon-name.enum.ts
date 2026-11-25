@@ -14,6 +14,7 @@ export enum IconName {
   Eye = 'eye',
   Help = 'help',
   Link = 'link',
+  Minus = 'minus',
   Monitor = 'monitor',
   Moon = 'moon',
   Plus = 'plus',

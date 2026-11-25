@@ -72,4 +72,43 @@ describe('data models', () => {
     expect(story.estimate).toBe('5');
     expect(new Story('s2', {}).isPending).toBe(true);
   });
+
+  describe('room countdown', () => {
+    const start = 1_000_000;
+
+    it('should count down from a minute with the lock on when the room predates the countdown', () => {
+      const room = new Room('r1', { roundStartedAt: start });
+
+      expect([room.timerSeconds, room.lockOnTimeUp]).toEqual([60, true]);
+      expect(room.secondsLeft(start)).toBe(60);
+      expect(room.secondsLeft(start + 40_500)).toBe(20);
+    });
+
+    it('should lock voting when the countdown reaches zero', () => {
+      const room = new Room('r1', { roundStartedAt: start, timerSeconds: 30 });
+
+      expect(room.isVotingLocked(start + 29_999)).toBe(false);
+      expect(room.secondsLeft(start + 31_000)).toBe(0);
+      expect(room.isVotingLocked(start + 30_000)).toBe(true);
+    });
+
+    it('should keep voting open at zero when the lock is off or the cards are flipped', () => {
+      const late = start + 90_000;
+
+      expect(
+        new Room('r1', { roundStartedAt: start, lockOnTimeUp: false }).isVotingLocked(late),
+      ).toBe(false);
+      expect(new Room('r1', { roundStartedAt: start, revealed: true }).isVotingLocked(late)).toBe(
+        false,
+      );
+    });
+
+    it('should show the full countdown when the server has not stamped the start yet', () => {
+      expect(new Room('r1', { timerSeconds: 120 }).secondsLeft(start)).toBe(120);
+    });
+
+    it('should never show more than the countdown when the start is a moment ahead', () => {
+      expect(new Room('r1', { roundStartedAt: start + 800 }).secondsLeft(start)).toBe(60);
+    });
+  });
 });

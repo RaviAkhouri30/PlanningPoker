@@ -6,6 +6,7 @@ import { LogoComponent } from '@shared/components/logo/logo.component';
 import { IconName } from '@shared/enums/icon-name.enum';
 import { type Participant } from '@shared/models/participant.model';
 import { type Room } from '@shared/models/room.model';
+import { TimerPhase } from '../../models/timer-phase.enum';
 import { TourTarget } from '../../models/tour-target.enum';
 
 /**
@@ -24,8 +25,10 @@ export class RoomHeaderComponent {
   /** The signed-in person's seat, or `null`. */
   public readonly me = input<Participant | null>(null);
   public readonly onlineCount = input(0);
-  /** `mm:ss` since the round started. */
+  /** `mm:ss` left on the round countdown. */
   public readonly timer = input('00:00');
+  /** Where the countdown stands, for its colour. */
+  public readonly timerPhase = input(TimerPhase.Idle);
   /** Whether to show "Add story": only the moderator adds stories. */
   public readonly canAddStory = input(false);
 

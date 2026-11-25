@@ -98,15 +98,15 @@ describe('RoomViewModel', () => {
     expect(remember).toHaveBeenCalledWith(expect.objectContaining({ role: RoomRole.Spectator }));
   });
 
-  it('should tick the timer and count who is online', () => {
-    const now = vi.spyOn(testClock, 'now').mockReturnValue(TEST_NOW + 65_000);
+  it('should count the timer down and who is online when the clock ticks', () => {
+    const now = vi.spyOn(testClock, 'now').mockReturnValue(TEST_NOW + 15_000);
     const model = start();
 
-    expect(model.timerLabel()).toBe('01:05');
+    expect(model.countdown.label()).toBe('00:45');
     expect(model.onlineCount()).toBe(2);
-    now.mockReturnValue(TEST_NOW + 66_000);
+    now.mockReturnValue(TEST_NOW + 16_000);
     vi.advanceTimersByTime(1000);
-    expect(model.timerLabel()).toBe('01:06');
+    expect(model.countdown.label()).toBe('00:44');
   });
 
   it('should show my vote and, once revealed, everyone’s cards and the stats', async () => {

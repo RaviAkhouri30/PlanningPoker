@@ -24,11 +24,60 @@ describe('ModeratorControlsComponent', () => {
       button.click();
     });
     element.querySelectorAll<HTMLButtonElement>('.deck')[2]?.click();
-    element.querySelector<HTMLButtonElement>('.switch')?.click();
+    element.querySelector<HTMLButtonElement>('[aria-label="Auto-reveal"]')?.click();
 
     expect(calls).toEqual(['timer', 'reveal', 'again', 'skip', DeckType.TShirt, 'auto']);
     expect(element.querySelector('.deck--on')?.textContent).toContain('Modified Fibonacci');
-    expect(element.querySelector('.switch')?.getAttribute('aria-checked')).toBe('true');
+    expect(element.querySelector('[aria-label="Auto-reveal"]')?.getAttribute('aria-checked')).toBe(
+      'true',
+    );
+  });
+
+  it('should ask for a countdown a step shorter or longer when the stepper is pressed', () => {
+    const fixture = TestBed.createComponent(ModeratorControlsComponent);
+    fixture.componentRef.setInput('room', aRoom({ timerSeconds: 90 }));
+    const asked: number[] = [];
+    fixture.componentInstance.timerChange.subscribe((seconds) => asked.push(seconds));
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+
+    element.querySelector<HTMLButtonElement>('[aria-label="30 seconds shorter"]')?.click();
+    element.querySelector<HTMLButtonElement>('[aria-label="30 seconds longer"]')?.click();
+
+    expect(asked).toEqual([60, 120]);
+    expect(element.querySelector('.stepper__value')?.textContent).toContain('01:30');
+  });
+
+  it('should disable the stepper at its limits when the countdown is shortest or longest', () => {
+    const fixture = TestBed.createComponent(ModeratorControlsComponent);
+    fixture.componentRef.setInput('room', aRoom({ timerSeconds: 30 }));
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const button = (label: string): HTMLButtonElement | null =>
+      element.querySelector<HTMLButtonElement>(`[aria-label="30 seconds ${label}"]`);
+
+    expect(button('shorter')?.disabled).toBe(true);
+    expect(button('longer')?.disabled).toBe(false);
+    fixture.componentRef.setInput('room', aRoom({ timerSeconds: 600 }));
+    fixture.detectChanges();
+    expect(button('longer')?.disabled).toBe(true);
+  });
+
+  it('should show the lock at time up and highlight "Reset timer" when time ran out', () => {
+    const fixture = TestBed.createComponent(ModeratorControlsComponent);
+    fixture.componentRef.setInput('room', aRoom({ lockOnTimeUp: false }));
+    fixture.componentRef.setInput('timeUp', true);
+    const toggled = vi.fn();
+    fixture.componentInstance.lockToggle.subscribe(toggled);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const lock = element.querySelector<HTMLButtonElement>('[aria-label="Lock voting at time up"]');
+
+    lock?.click();
+
+    expect(lock?.getAttribute('aria-checked')).toBe('false');
+    expect(toggled).toHaveBeenCalled();
+    expect(element.querySelector('.control')?.classList).toContain('control--alert');
   });
 
   it('should keep the deck choice collapsed and name the current deck when first shown', () => {

@@ -2,4 +2,6 @@
 export enum ToastTone {
   Success = 'success',
   Error = 'error',
+  /** Heads-up, not a failure: "20 seconds left". */
+  Warning = 'warning',
 }

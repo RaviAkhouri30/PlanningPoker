@@ -6,7 +6,12 @@
     <span class="panel-card__note">Only you see these</span>
   </div>
   <div class="controls">
-    <button class="control" type="button" (click)="resetTimer.emit()">
+    <button
+      class="control"
+      type="button"
+      [class.control--alert]="timeUp()"
+      (click)="resetTimer.emit()"
+    >
       <app-icon [name]="icons.Clock" />Reset timer
     </button>
     <button
@@ -23,6 +28,47 @@
     <button class="control" type="button" [disabled]="!hasStory()" (click)="skip.emit()">
       <app-icon [name]="icons.Skip" />Skip story
     </button>
+  </div>
+  <div class="toggle">
+    <div class="toggle__copy">
+      <span class="toggle__label" id="countdown-label">Countdown</span>
+      <span class="panel-card__note">Each round counts down from this</span>
+    </div>
+    <div class="stepper" role="group" aria-labelledby="countdown-label">
+      <button
+        class="stepper__button"
+        type="button"
+        [attr.aria-label]="shorterLabel"
+        [disabled]="shorter() < limits.minSeconds"
+        (click)="timerChange.emit(shorter())"
+      >
+        <app-icon [name]="icons.Minus" [size]="16" />
+      </button>
+      <span class="stepper__value" aria-live="polite">{{ duration() }}</span>
+      <button
+        class="stepper__button"
+        type="button"
+        [attr.aria-label]="longerLabel"
+        [disabled]="longer() > limits.maxSeconds"
+        (click)="timerChange.emit(longer())"
+      >
+        <app-icon [name]="icons.Plus" [size]="16" />
+      </button>
+    </div>
+  </div>
+  <div class="toggle">
+    <div class="toggle__copy">
+      <span class="toggle__label">Lock voting at time up</span>
+      <span class="panel-card__note">Votes stop at 00:00 until you reset the timer</span>
+    </div>
+    <button
+      class="switch"
+      type="button"
+      role="switch"
+      aria-label="Lock voting at time up"
+      [attr.aria-checked]="room().lockOnTimeUp"
+      (click)="lockToggle.emit()"
+    ></button>
   </div>
   <!-- A native disclosure: collapsed by default, keyboard and screen-reader support built in. -->
   <details class="group">
