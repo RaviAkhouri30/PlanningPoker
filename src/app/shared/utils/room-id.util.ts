@@ -44,7 +44,7 @@ export function createRoomId(name: string, random: RandomSource): string {
 
 /**
  * @param random The random source.
- * @returns A code to read aloud, e.g. `X7K2-91`.
+ * @returns A code to read aloud, e.g. `X7K2-92`.
  */
 export function createRoomCode(random: RandomSource): string {
   return `${randomCharacters(CODE_HEAD_LENGTH, random)}-${randomCharacters(CODE_TAIL_LENGTH, random)}`;

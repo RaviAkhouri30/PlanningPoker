@@ -93,8 +93,8 @@ describe('LandingViewModel', () => {
   });
 
   it('should open the room a code belongs to', async () => {
-    await seed({ 'roomCodes/X7K2-91': { roomId: 'r1' } });
-    model.codeForm.setValue({ code: 'x7k291' });
+    await seed({ 'roomCodes/X7K2-92': { roomId: 'r1' } });
+    model.codeForm.setValue({ code: 'x7k292' });
 
     model.joinByCode();
 
@@ -105,7 +105,7 @@ describe('LandingViewModel', () => {
   });
 
   it('should say when no room has the code', async () => {
-    model.codeForm.setValue({ code: 'X7K2-91' });
+    model.codeForm.setValue({ code: 'X7K2-92' });
 
     model.joinByCode();
 
@@ -118,7 +118,7 @@ describe('LandingViewModel', () => {
     vi.spyOn(TestBed.inject(IAuthService), 'signInAsGuest').mockReturnValue(
       throwError(() => new Error('offline')),
     );
-    model.codeForm.setValue({ code: 'X7K2-91' });
+    model.codeForm.setValue({ code: 'X7K2-92' });
 
     model.joinByCode();
 

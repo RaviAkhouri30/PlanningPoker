@@ -64,10 +64,10 @@ describe('RoomsService', () => {
   });
 
   it('should find a room id by code, and null for an unknown code', async () => {
-    await seed({ 'roomCodes/X7K2-91': { roomId: 'r1' } });
+    await seed({ 'roomCodes/X7K2-92': { roomId: 'r1' } });
     const rooms = TestBed.inject(RoomsService);
 
-    await expect(firstValueFrom(rooms.findRoomId('X7K2-91'))).resolves.toBe('r1');
+    await expect(firstValueFrom(rooms.findRoomId('X7K2-92'))).resolves.toBe('r1');
     await expect(firstValueFrom(rooms.findRoomId('ZZZZ-ZZ'))).resolves.toBeNull();
   });
 });

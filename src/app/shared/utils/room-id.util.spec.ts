@@ -35,8 +35,8 @@ describe('room ids and codes', () => {
   });
 
   it.each([
-    ['x7k2-91', 'X7K2-91'],
-    [' X7K291 ', 'X7K2-91'],
+    ['x7k2-92', 'X7K2-92'],
+    [' X7K292 ', 'X7K2-92'],
   ])('should normalise %s to %s', (input, code) => {
     expect(normaliseRoomCode(input)).toBe(code);
   });

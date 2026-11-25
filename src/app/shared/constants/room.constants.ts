@@ -1,7 +1,7 @@
 /** Letters and digits for codes and ids: no 0/O, 1/I/L, so a code read aloud is unambiguous. */
 export const CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 
-/** A code is four characters, a dash, then two more: `X7K2-91`. */
+/** A code is four characters, a dash, then two more: `X7K2-92`. */
 export const CODE_HEAD_LENGTH = 4;
 export const CODE_TAIL_LENGTH = 2;
 

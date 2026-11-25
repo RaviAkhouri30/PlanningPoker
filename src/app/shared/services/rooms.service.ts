@@ -57,7 +57,7 @@ export class RoomsService {
   }
 
   /**
-   * @param code A normalised room code, e.g. `X7K2-91`.
+   * @param code A normalised room code, e.g. `X7K2-92`.
    * @returns The id of the room with that code, or `null`; once.
    */
   public findRoomId(code: string): Observable<string | null> {
