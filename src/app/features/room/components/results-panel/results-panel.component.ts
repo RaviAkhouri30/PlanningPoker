@@ -6,17 +6,18 @@ import { IconName } from '@shared/enums/icon-name.enum';
 import { type VotingStats } from '@shared/models/voting-stats.model';
 import { SCORE_LEGEND } from '../../models/score-legend.constants';
 import { ConfettiBurstComponent } from '../confetti-burst/confetti-burst.component';
+import { CustomEstimateComponent } from '../custom-estimate/custom-estimate.component';
 
 /** The agreement ring's circumference (r = 34), from the design. */
 const RING_LENGTH = 213.6;
 
 /**
  * After the flip: average, the votes per card coloured by their third of the deck (grey for no
- * vote), agreement, the hint, and the moderator's choices.
+ * vote), agreement, the hint, and the moderator's choices, including an estimate of their own.
  */
 @Component({
   selector: 'app-results-panel',
-  imports: [IconComponent, WidthPercentDirective, ConfettiBurstComponent],
+  imports: [IconComponent, WidthPercentDirective, ConfettiBurstComponent, CustomEstimateComponent],
   templateUrl: './results-panel.component.html',
   styleUrl: './results-panel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,7 +29,7 @@ export class ResultsPanelComponent {
   /** Whether the moderator's buttons show. */
   public readonly isModerator = input(false);
 
-  /** Accept a card as the estimate. */
+  /** Accept a card, or a value the moderator typed, as the estimate. */
   public readonly accept = output<string>();
   /** Vote on the same story again. */
   public readonly voteAgain = output();

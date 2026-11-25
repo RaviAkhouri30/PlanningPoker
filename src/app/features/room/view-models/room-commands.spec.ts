@@ -118,6 +118,21 @@ describe('RoomCommands', () => {
     });
   });
 
+  it('should settle on a value the moderator typed, and ignore a blank or long one', async () => {
+    await start();
+    model.commands.reveal();
+
+    model.commands.accept('   ');
+    model.commands.accept('123456789');
+    expect(model.view().room?.activeStoryId).toBe('s1');
+    model.commands.accept(' 6 ');
+
+    await expect(stored('rooms/r1/stories/s1')).resolves.toMatchObject({
+      status: 'done',
+      estimate: '6',
+    });
+  });
+
   it('should change the countdown within its limits and its lock when asked', async () => {
     await start();
 

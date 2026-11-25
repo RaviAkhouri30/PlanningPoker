@@ -4,6 +4,7 @@ import { IClipboardService } from '@core/interfaces/i-clipboard-service';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
 import { BACKUP_MESSAGES } from '@shared/constants/backup-messages.constants';
+import { LIMITS } from '@shared/constants/limits.constants';
 import { TIMER_LIMITS } from '@shared/constants/timer.constants';
 import { type DeckType } from '@shared/enums/deck-type.enum';
 import { ParticipantRole } from '@shared/enums/participant-role.enum';
@@ -86,9 +87,15 @@ export class RoomCommands {
     this.moderate('Starting a new round', (room) => this.moderation.voteAgain(room));
   }
 
-  /** Accepts `card` as the story's estimate and moves to the next story. */
-  public accept(card: string): void {
-    this.settle(card);
+  /**
+   * Accepts `estimate` (a card, or a value the moderator typed) as the story's estimate and moves
+   * to the next story. Checked here as well as in the rules: blank or too long is ignored.
+   */
+  public accept(estimate: string): void {
+    const value = estimate.trim();
+    if (value !== '' && value.length <= LIMITS.estimate) {
+      this.settle(value);
+    }
   }
 
   /** Skips the current story. */

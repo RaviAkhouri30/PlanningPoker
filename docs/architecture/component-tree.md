@@ -24,6 +24,7 @@ flowchart TB
   room --> tour[room-tour: spotlight + step card]
   rh & pt & st -. "Add story: opens" .-> asd
   pt --> ts[table-seat: card coloured by band] & res[results-panel: band-coloured chart]
+  res --> ce[custom-estimate: the moderator's own value]
   res --> cb[confetti-burst]
 ```
 

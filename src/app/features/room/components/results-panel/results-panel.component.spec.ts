@@ -53,10 +53,24 @@ describe('ResultsPanelComponent', () => {
     expect(again).toHaveBeenCalled();
   });
 
+  it('should accept an estimate the moderator types when the votes did not settle it', () => {
+    const { element, accept } = render(['3', '13'], true);
+    const field = element.querySelector<HTMLInputElement>('#custom-estimate');
+
+    if (field !== null) {
+      field.value = '6';
+      field.dispatchEvent(new Event('input'));
+    }
+    element.querySelector<HTMLFormElement>('app-custom-estimate form')?.requestSubmit();
+
+    expect(accept).toHaveBeenCalledWith('6');
+  });
+
   it('should leave the decision to the moderator', () => {
-    expect(render(['5'], false).element.textContent).toContain(
-      'The moderator settles the estimate.',
-    );
+    const { element } = render(['5'], false);
+
+    expect(element.textContent).toContain('The moderator settles the estimate.');
+    expect(element.querySelector('app-custom-estimate')).toBeNull();
   });
 
   it('should colour each card by its third of the deck when the cards are flipped', () => {

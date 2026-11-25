@@ -28,6 +28,8 @@ export class RoomPage extends BasePage {
   public readonly shorterButton: Locator;
   public readonly countdownValue: Locator;
   public readonly lockSwitch: Locator;
+  public readonly customEstimateField: Locator;
+  public readonly setEstimateButton: Locator;
   protected readonly path: string;
 
   /** @param roomPath The room's path, e.g. `/r/sprint-42-x7k2ab`. */
@@ -63,6 +65,8 @@ export class RoomPage extends BasePage {
     this.shorterButton = page.getByRole('button', { name: '30 seconds shorter' });
     this.countdownValue = page.getByRole('group', { name: 'Countdown' });
     this.lockSwitch = page.getByRole('switch', { name: 'Lock voting at time up' });
+    this.customEstimateField = this.results.getByLabel('Or settle on another value');
+    this.setEstimateButton = this.results.getByRole('button', { name: 'Set estimate' });
   }
 
   /** Closes the guided tour, which opens for the moderator on the first visit. */

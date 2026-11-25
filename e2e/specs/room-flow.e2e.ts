@@ -30,6 +30,30 @@ test.describe('Room flow', () => {
     await expect(room.results).toBeHidden();
   });
 
+  test('should settle on an estimate the moderator types after the discussion', async ({
+    landing,
+    page,
+    axe,
+  }) => {
+    await landing.open();
+    await landing.createRoom('Alex Kim', 'Sprint 42');
+    const room = new RoomPage(page);
+    await room.skipTour();
+    await room.addStory('PAY-214 Save cards for later');
+    await room.card('5').click();
+    await expect(room.results).toBeVisible();
+    expect((await axe().analyze()).violations).toEqual([]);
+
+    await room.setEstimateButton.click();
+    await expect(room.results.getByText('up to 8 characters')).toBeVisible();
+    await room.customEstimateField.fill('6');
+    await room.customEstimateField.press('Enter');
+
+    await expect(room.results).toBeHidden();
+    await room.storiesTable.getByRole('tab', { name: /Completed/ }).click();
+    await expect(room.storiesTable.getByRole('row', { name: /Save cards/ })).toContainText('6');
+  });
+
   test('should add stories through the dialog from the empty table and the header', async ({
     landing,
     page,

@@ -1,0 +1,22 @@
+<form class="custom" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <label class="field-label" for="custom-estimate">Or settle on another value</label>
+  <div class="custom__row">
+    <input
+      id="custom-estimate"
+      class="field custom__field"
+      type="text"
+      placeholder="e.g. 6"
+      autocomplete="off"
+      formControlName="value"
+      [attr.maxlength]="limits.estimate"
+      aria-describedby="custom-estimate-error"
+      [attr.aria-invalid]="value.invalid && value.touched"
+    />
+    <button class="btn" type="submit"><app-icon [name]="checkIcon" />Set estimate</button>
+  </div>
+  @if (value.touched && value.errors) {
+    <span class="field-error" id="custom-estimate-error">
+      Type the agreed estimate, up to {{ limits.estimate }} characters.
+    </span>
+  }
+</form>

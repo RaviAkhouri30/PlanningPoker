@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] — 2026-11-25
+
+### Added
+
+- **Settle on another value**: after the flip the moderator can type the estimate the team agreed
+  on in discussion (another card, or a value outside the deck such as "6", up to 8 characters)
+  and set it with "Set estimate" or Enter, instead of accepting the suggested card.
+
 ## [1.6.0] — 2026-11-25
 
 ### Added

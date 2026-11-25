@@ -89,6 +89,7 @@
         <app-icon [name]="refreshIcon" />Vote again
       </button>
     </div>
+    <app-custom-estimate class="rise" (estimateSet)="accept.emit($event)" />
   } @else {
     <p class="waiting">The moderator settles the estimate.</p>
   }
