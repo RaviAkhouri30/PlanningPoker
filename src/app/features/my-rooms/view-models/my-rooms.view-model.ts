@@ -23,6 +23,8 @@ export interface IMyRoomsState {
   readonly now: number;
   /** A backup is being made, so the backup buttons wait. */
   readonly backingUp: boolean;
+  /** The room waiting on "Forget room?" to be confirmed, if any. */
+  readonly forgetting: string | null;
 }
 
 /**
@@ -51,6 +53,12 @@ export class MyRoomsViewModel extends ViewModel<IMyRoomsState> {
   /** A backup is being made. */
   public readonly backingUp = computed(() => this.data()?.backingUp === true);
 
+  /** The room the guest asked to forget, while they confirm; `null` otherwise. */
+  public readonly forgetting = computed(() => {
+    const roomId = this.data()?.forgetting ?? null;
+    return this.cards().find((card) => card.id === roomId) ?? null;
+  });
+
   // Read lazily by the computeds above, so declaring them after is safe.
   private readonly myRooms = inject(MyRoomsService);
   private readonly profiles = inject(LocalProfileService);
@@ -61,7 +69,7 @@ export class MyRoomsViewModel extends ViewModel<IMyRoomsState> {
 
   public constructor() {
     super();
-    this.setData({ now: inject(CLOCK).now(), backingUp: false });
+    this.setData({ now: inject(CLOCK).now(), backingUp: false, forgetting: null });
   }
 
   private static card(room: ISavedRoom, now: number): IRoomCard {
@@ -85,8 +93,23 @@ export class MyRoomsViewModel extends ViewModel<IMyRoomsState> {
     this.backups.next(this.myRooms.rooms().map((room) => room.id));
   }
 
-  /** Takes the room off this browser's list. */
-  public forget(roomId: string): void {
+  /** Asks "Forget room?" first: a guest has no account to bring the room back from. */
+  public askToForget(roomId: string): void {
+    this.patch({ forgetting: roomId });
+  }
+
+  /** Keeps the room: the guest backed out of "Forget room?". */
+  public keepRoom(): void {
+    this.patch({ forgetting: null });
+  }
+
+  /** Takes the room waiting on "Forget room?" off this browser's list. */
+  public confirmForget(): void {
+    const roomId = this.data()?.forgetting ?? null;
+    this.patch({ forgetting: null });
+    if (roomId === null) {
+      return;
+    }
     this.myRooms.forget(roomId);
     this.toast.show(MY_ROOMS_MESSAGES.forgotten, ToastTone.Success);
   }
@@ -114,6 +137,15 @@ export class MyRoomsViewModel extends ViewModel<IMyRoomsState> {
   }
 
   private setBusy(backingUp: boolean): void {
-    this.updateData((current) => ({ now: current?.now ?? 0, backingUp }));
+    this.patch({ backingUp });
+  }
+
+  private patch(change: Partial<IMyRoomsState>): void {
+    this.updateData((current) => ({
+      now: current?.now ?? 0,
+      backingUp: current?.backingUp ?? false,
+      forgetting: current?.forgetting ?? null,
+      ...change,
+    }));
   }
 }

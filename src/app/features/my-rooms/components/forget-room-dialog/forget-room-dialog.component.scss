@@ -1,0 +1,26 @@
+@use 'tokens' as t;
+
+.modal__text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.keep {
+  padding: 12px 14px;
+  border-radius: t.$radius-sm;
+  background: t.color('warning-wash');
+  color: t.color('warning-text');
+
+  &__code {
+    font-family: t.$font-display;
+    letter-spacing: 0.04em;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}

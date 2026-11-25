@@ -31,6 +31,13 @@ test.describe('My rooms', () => {
     await expect(landing.nameField).toHaveValue('Alex Kim');
     await page.getByRole('link', { name: 'My rooms' }).click();
 
+    // Forget warns first, since a guest has no account to get the room back from.
+    await myRooms.askToForget('Sprint 42');
+    await expect(myRooms.forgetDialog).toContainText("can't be undone");
+    expect((await axe().analyze()).violations).toEqual([]);
+    await myRooms.forgetDialog.getByRole('button', { name: 'Keep it' }).click();
+    await expect(myRooms.room('Sprint 42')).toBeVisible();
+
     await myRooms.forget('Sprint 42');
 
     await expect(myRooms.emptyState).toBeVisible();

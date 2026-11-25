@@ -2,7 +2,8 @@
 
 - **Status:** Accepted
 - **Date:** 2026-11-26
-- **Version:** 1.10.0 (wired as classic reCAPTCHA v3); 1.10.1 switched to reCAPTCHA Enterprise
+- **Version:** 1.10.0 (wired as classic reCAPTCHA v3); 1.10.1 switched to reCAPTCHA Enterprise;
+  enforced on Cloud Firestore 2026-11-26
 
 ## Context
 

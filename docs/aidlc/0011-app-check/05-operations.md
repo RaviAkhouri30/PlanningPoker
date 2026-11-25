@@ -3,6 +3,18 @@
 ## Release
 
 - Version: **1.10.0** (2026-11-26). The code ships dark: no site key, no behaviour change until the owner sets the key and enforces.
+- **1.10.1** (2026-11-26): the reCAPTCHA Enterprise provider and the CI secret pass-through. The
+  owner set the key the same day; the live site sends App Check tokens.
+- **Enforced** on Cloud Firestore by the owner on 2026-11-26, and the rejection test passed
+  (`04-verification.md`). Authentication is still on monitoring (100 % verified at the time).
+
+## Monitoring
+
+- Firebase console → App Check → APIs: the verified share for Cloud Firestore should climb toward
+  100 % as old tabs (opened before 1.10.1, the "outdated client" requests) are closed or reloaded.
+- A sudden rise in unverified or invalid requests means a scripted client is being refused, which is
+  the point; a drop in verified requests with user reports of rooms not loading means reCAPTCHA is
+  failing for real users (check the CSP and the key's domains first).
 
 ## Turning it on (owner)
 

@@ -9,7 +9,7 @@ limiter is not possible." Follows the DoS / denial-of-wallet finding in the secu
 There is no server of ours in front of Firestore to rate-limit, and anonymous sign-in is open, so
 a script could exhaust the project's daily free quota (an outage until reset on Spark, a bill on
 Blaze). The rules bound each write but cannot throttle requests. Close the hole with the right
-CAPTCHA for an API-backed app: **App Check with reCAPTCHA Enterprise**, which attests *every* request
+CAPTCHA for an API-backed app: **App Check with reCAPTCHA Enterprise**, which attests _every_ request
 invisibly — not a visible challenge on one form.
 
 ## User stories

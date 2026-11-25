@@ -9,6 +9,7 @@ flowchart TB
   app --> terms["/terms TermsPage"]
   app --> mine["/rooms MyRoomsPage (returningGuestGuard on /)"]
   mine --> bdn[browser-data-notice] & srl["saved-room-list: Open, CSV, Forget"]
+  srl -. "Forget: asks first" .-> frd["forget-room-dialog: can't be undone, note the code"]
 
   landing --> lh[landing-header] & hf[hero-form] & hs[hero-stage] & hiw[how-it-works]
   hs --> hfl[hero-floats: demo join toasts]
@@ -21,7 +22,7 @@ flowchart TB
   room --> mc[moderator-controls] & pp[players-panel] & id[invite-dialog]
   room --> st["stories-table: under the cards; tabs, Add story, Vote, CSV"]
   room --> asd["add-story-dialog (moderator)"]
-  room --> tour[room-tour: spotlight + step card]
+  room --> tour["room-tour: spotlight + step card in the inverse theme"]
   rh & pt & st -. "Add story: opens" .-> asd
   pt --> ts[table-seat: card coloured by band] & res[results-panel: band-coloured chart]
   res --> ce[custom-estimate: the moderator's own value]

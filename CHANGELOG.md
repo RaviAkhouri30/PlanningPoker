@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.2] — 2026-11-26
+
+### Fixed
+
+- The room tour's step card now uses the opposite theme to the page (light on a dark site, dark on
+  a light one), so it no longer blends into the dimmed room behind it.
+- **Forget** on My rooms now asks first. Guests have no account, so the warning says it can't be
+  undone and shows the room's code to note down, since that or the link is the only way back in.
+
+### Security
+
+- App Check enforcement is on for Cloud Firestore (owner, in the console): a request without a
+  valid App Check token is refused (ADR-0012, AIDLC 0011).
+
 ## [1.10.1] — 2026-11-26
 
 ### Changed

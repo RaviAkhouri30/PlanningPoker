@@ -59,13 +59,16 @@ Classic reCAPTCHA is **deprecated** in App Check, so use **Fraud Defense (reCAPT
       `appCheckSiteKey`; both gateways route through it, and it's a no-op without a key (so
       `npm start`, the emulators and the Fake backend are untouched). The deploy workflow passes
       the `FIREBASE_APP_CHECK_SITE_KEY` secret to the config writer (1.10.1).
-- [ ] After you set the key and deploy, confirm the app still loads (reCAPTCHA under the CSP);
-      the `strict-dynamic` policy should allow the SDK-injected script (ADR-0012).
+- [x] After you set the key and deploy, confirm the app still loads (reCAPTCHA under the CSP);
+      the `strict-dynamic` policy should allow the SDK-injected script (ADR-0012). Done
+      2026-11-26 (1.10.1): tokens on every Firestore channel, no CSP errors.
 
 ### 2c. Enforce (owner, console) — after 2b is deployed
 
-- [ ] Watch **App Check → your app → Metrics** for a day. When nearly all requests show as
-      **verified**, click **Enforce** for **Cloud Firestore**.
+- [x] Watch **App Check → your app → Metrics** for a day. When nearly all requests show as
+      **verified**, click **Enforce** for **Cloud Firestore**. Enforced 2026-11-26; a request
+      without a token is refused, one with it succeeds (AIDLC 0011, `04-verification.md`).
+- [ ] Optional, later: enforce **Authentication** too once its metrics stay at ~100 % verified.
 - [ ] If legitimate traffic were still unverified, enforcing would lock users out — that's why
       you enforce only after the metrics look clean.
 

@@ -21,3 +21,26 @@
     color-scheme: dark;
   }
 }
+
+// The other theme, for a surface that should stand out from the page (the room tour's card):
+// dark tokens on a light page, light tokens on a dark one. Only the tokens the themes disagree on
+// are re-set; the rest are the same in both.
+.theme-inverse {
+  @include t.palette-vars(t.$palette-dark);
+
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] .theme-inverse {
+  @include t.palette-vars(t.light-of(t.$palette-dark));
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .theme-inverse {
+    @include t.palette-vars(t.light-of(t.$palette-dark));
+
+    color-scheme: light;
+  }
+}

@@ -11,10 +11,10 @@
 
 ## Decision log
 
-| Date       | Decision                                                      | Why                                                                 |
-| ---------- | ------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 2026-11-26 | App Check / reCAPTCHA Enterprise, not a visible CAPTCHA               | Attests every read and write, not one form; covers the quota vector |
-| 2026-11-26 | reCAPTCHA **Enterprise** (Fraud Defense), not classic v3        | Firebase deprecated the classic provider; 1.10.0 shipped v3, 1.10.1 switched to `ReCaptchaEnterpriseProvider` |
-| 2026-11-26 | Site key optional in `runtime-config.js`, stripped before `initializeApp` | Ship dark; keep it off locally; don't leak a non-SDK field to the SDK |
-| 2026-11-26 | Start App Check in one shared `getFirebaseApp`, guarded by a `WeakSet` | Both gateways init the app; start App Check exactly once            |
-| 2026-11-26 | Enforcement left to the console after metrics look clean      | Enforcing early would lock real users out                           |
+| Date       | Decision                                                                  | Why                                                                                                           |
+| ---------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 2026-11-26 | App Check / reCAPTCHA Enterprise, not a visible CAPTCHA                   | Attests every read and write, not one form; covers the quota vector                                           |
+| 2026-11-26 | reCAPTCHA **Enterprise** (Fraud Defense), not classic v3                  | Firebase deprecated the classic provider; 1.10.0 shipped v3, 1.10.1 switched to `ReCaptchaEnterpriseProvider` |
+| 2026-11-26 | Site key optional in `runtime-config.js`, stripped before `initializeApp` | Ship dark; keep it off locally; don't leak a non-SDK field to the SDK                                         |
+| 2026-11-26 | Start App Check in one shared `getFirebaseApp`, guarded by a `WeakSet`    | Both gateways init the app; start App Check exactly once                                                      |
+| 2026-11-26 | Enforcement left to the console after metrics look clean                  | Enforcing early would lock real users out                                                                     |

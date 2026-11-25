@@ -52,13 +52,13 @@ flowchart TB
 
 ## Features
 
-| Feature    | Route             | What it does                                                     |
-| ---------- | ----------------- | ---------------------------------------------------------------- |
-| `landing`  | `/`               | Marketing page; create a room as a guest, or join by code        |
-| `my-rooms` | `/rooms`          | The rooms this browser has been in: open, back up as CSV, forget |
-| `join`     | `/r/:roomId/join` | Name, colour and role for someone opening a room link            |
-| `room`     | `/r/:roomId`      | The table: stories, votes, the flip, results, moderator controls |
-| `legal`    | `/terms`          | Terms of use: copyright, no account needed, data, warranty       |
+| Feature    | Route             | What it does                                                                       |
+| ---------- | ----------------- | ---------------------------------------------------------------------------------- |
+| `landing`  | `/`               | Marketing page; create a room as a guest, or join by code                          |
+| `my-rooms` | `/rooms`          | The rooms this browser has been in: open, back up as CSV, forget (after a warning) |
+| `join`     | `/r/:roomId/join` | Name, colour and role for someone opening a room link                              |
+| `room`     | `/r/:roomId`      | The table: stories, votes, the flip, results, moderator controls                   |
+| `legal`    | `/terms`          | Terms of use: copyright, no account needed, data, warranty                         |
 
 `roomMemberGuard` sends anyone who is not yet in the room from `/r/:roomId` to the join form, so
 the one link works for everybody. `returningGuestGuard` sends a guest who arrives at `/` with rooms

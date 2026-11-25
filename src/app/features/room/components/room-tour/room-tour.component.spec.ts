@@ -42,6 +42,12 @@ describe('RoomTourComponent', () => {
     expect(document.activeElement?.textContent.trim()).toBe('Next');
   });
 
+  it('should draw the card in the other theme so it stands out from the page', async () => {
+    const element = await render(1);
+
+    expect(element.querySelector('.coach')?.classList).toContain('theme-inverse');
+  });
+
   it('should dim the page when the step has nothing to point at', async () => {
     const element = await render(1);
 

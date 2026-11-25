@@ -24,7 +24,7 @@
     <app-saved-room-list
       [rooms]="model.cards()"
       [busy]="model.backingUp()"
-      (forgetRoom)="model.forget($event)"
+      (forgetRoom)="model.askToForget($event)"
       (backupRoom)="model.backUp($event)"
     />
   } @else {
@@ -35,3 +35,8 @@
     </div>
   }
 </main>
+<app-forget-room-dialog
+  [room]="model.forgetting()"
+  (confirmForget)="model.confirmForget()"
+  (closed)="model.keepRoom()"
+/>

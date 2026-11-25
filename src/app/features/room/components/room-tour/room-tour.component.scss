@@ -25,6 +25,7 @@
   pointer-events: none;
 }
 
+// The card carries `theme-inverse`, so it reads against the dimmed page in either theme.
 .coach {
   position: fixed;
   z-index: t.$z-tour;

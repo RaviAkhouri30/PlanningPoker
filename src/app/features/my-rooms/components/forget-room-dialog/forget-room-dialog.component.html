@@ -1,0 +1,37 @@
+<dialog
+  class="modal"
+  role="alertdialog"
+  [appModal]="room() !== null"
+  aria-labelledby="forget-title"
+  aria-describedby="forget-text"
+  (close)="closed.emit()"
+  (cancel)="closed.emit()"
+>
+  @if (room(); as current) {
+    <div class="modal__copy">
+      <h2 class="modal__title" id="forget-title">Forget {{ current.name }}?</h2>
+      <div class="modal__text" id="forget-text">
+        <p>
+          This can't be undone. You're signed in as a guest, with no account, so this list is the
+          only place this browser remembers the room.
+        </p>
+        @if (current.code) {
+          <p class="keep">
+            To get back in later you'll need its link or the code
+            <strong class="keep__code">{{ current.code }}</strong
+            >. Note it down first.
+          </p>
+        } @else {
+          <p class="keep">To get back in later you'll need its link. Copy it first.</p>
+        }
+      </div>
+    </div>
+    <div class="actions">
+      <!-- Cancel takes the focus: the safe choice is the one Enter picks. -->
+      <button class="btn" type="button" autofocus (click)="closed.emit()">Keep it</button>
+      <button class="btn btn--danger" type="button" (click)="confirmForget.emit()">
+        Forget room
+      </button>
+    </div>
+  }
+</dialog>

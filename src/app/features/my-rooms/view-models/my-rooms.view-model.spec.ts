@@ -61,9 +61,7 @@ describe('MyRoomsViewModel', () => {
     expect(model.title()).toBe('Welcome back, Maya');
   });
 
-  it('should drop the room and say so when it is forgotten', () => {
-    const model = start();
-    const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+  function rememberSprint(): void {
     TestBed.inject(MyRoomsService).remember({
       id: 'r1',
       name: 'Sprint',
@@ -71,11 +69,51 @@ describe('MyRoomsViewModel', () => {
       role: RoomRole.Player,
       lastVisit: now,
     });
+  }
 
-    model.forget('r1');
+  it('should ask first and keep the room when Forget is pressed', () => {
+    const model = start();
+    rememberSprint();
+
+    model.askToForget('r1');
+
+    expect(model.forgetting()?.id).toBe('r1');
+    expect(model.cards()).toHaveLength(1);
+  });
+
+  it('should drop the room and say so when the forget is confirmed', () => {
+    const model = start();
+    const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+    rememberSprint();
+    model.askToForget('r1');
+
+    model.confirmForget();
 
     expect(model.cards()).toEqual([]);
+    expect(model.forgetting()).toBeNull();
     expect(show).toHaveBeenCalledWith(MY_ROOMS_MESSAGES.forgotten, expect.anything());
+  });
+
+  it('should keep the room when the guest backs out of the forget', () => {
+    const model = start();
+    rememberSprint();
+    model.askToForget('r1');
+
+    model.keepRoom();
+
+    expect(model.forgetting()).toBeNull();
+    expect(model.cards()).toHaveLength(1);
+  });
+
+  it('should do nothing when a forget is confirmed with none asked', () => {
+    const model = start();
+    const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+    rememberSprint();
+
+    model.confirmForget();
+
+    expect(model.cards()).toHaveLength(1);
+    expect(show).not.toHaveBeenCalled();
   });
 
   describe('backups', () => {

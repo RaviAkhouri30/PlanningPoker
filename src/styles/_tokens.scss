@@ -152,6 +152,20 @@ $palette-dark: (
   @return map.get($palette, $name);
 }
 
+/// @return The light values of the tokens named in `$map` (for the inverse of the dark theme).
+@function light-of($map) {
+  $out: ();
+  @each $name, $value in $map {
+    $out: map.merge(
+      $out,
+      (
+        $name: map.get($palette, $name),
+      )
+    );
+  }
+  @return $out;
+}
+
 /// Emits every token in `$map` as a `--pp-*` custom property.
 @mixin palette-vars($map) {
   @each $name, $value in $map {

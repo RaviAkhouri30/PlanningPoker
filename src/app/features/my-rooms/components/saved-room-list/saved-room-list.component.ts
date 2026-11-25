@@ -19,7 +19,7 @@ export class SavedRoomListComponent {
   /** A backup is being made, so Back up waits. */
   public readonly busy = input(false);
 
-  /** Asked to take a room (by id) off the list. */
+  /** Asked to take a room (by id) off the list; the page confirms first. */
   public readonly forgetRoom = output<string>();
 
   /** Asked to save a room (by id) as a CSV file. */

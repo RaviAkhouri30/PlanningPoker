@@ -8,6 +8,8 @@ export class MyRoomsPage extends BasePage {
   public readonly notice: Locator;
   public readonly emptyState: Locator;
   public readonly backUpAllButton: Locator;
+  /** The "Forget …?" warning. */
+  public readonly forgetDialog: Locator;
   protected readonly path = '/rooms';
 
   public constructor(page: Page) {
@@ -17,6 +19,7 @@ export class MyRoomsPage extends BasePage {
     this.notice = page.getByRole('complementary', { name: 'Saved in this browser' });
     this.emptyState = page.getByRole('heading', { name: 'No rooms yet' });
     this.backUpAllButton = page.getByRole('button', { name: 'Back up all as CSV' });
+    this.forgetDialog = page.getByRole('alertdialog');
   }
 
   /** The card of the room called `name`. */
@@ -26,8 +29,14 @@ export class MyRoomsPage extends BasePage {
       .filter({ has: this.page.getByRole('heading', { name }) });
   }
 
-  /** Takes the room called `name` off the list. */
-  public async forget(name: string): Promise<void> {
+  /** Presses Forget on the room called `name`, which opens the warning. */
+  public async askToForget(name: string): Promise<void> {
     await this.page.getByRole('button', { name: `Forget ${name}` }).click();
+  }
+
+  /** Takes the room called `name` off the list, through the warning. */
+  public async forget(name: string): Promise<void> {
+    await this.askToForget(name);
+    await this.forgetDialog.getByRole('button', { name: 'Forget room' }).click();
   }
 }
