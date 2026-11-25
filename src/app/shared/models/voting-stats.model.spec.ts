@@ -82,9 +82,17 @@ describe('VotingStats', () => {
 
   it('should count every card in deck order with its voters', () => {
     expect(stats(['8', '5', 'break', '5']).distribution).toEqual([
-      { card: '5', label: '5', count: 2, percent: 100, isTop: true, voters: 'B, D' },
-      { card: '8', label: '8', count: 1, percent: 50, isTop: false, voters: 'A' },
-      { card: 'break', label: 'Break', count: 1, percent: 50, isTop: false, voters: 'C' },
+      { card: '5', label: '5', count: 2, percent: 100, isTop: true, voters: 'B, D', band: 'mid' },
+      { card: '8', label: '8', count: 1, percent: 50, isTop: false, voters: 'A', band: 'mid' },
+      {
+        card: 'break',
+        label: 'Break',
+        count: 1,
+        percent: 50,
+        isTop: false,
+        voters: 'C',
+        band: 'none',
+      },
     ]);
   });
 

@@ -5,82 +5,67 @@
   display: block;
 }
 
-.table {
-  background: t.color('table');
-  border-radius: 22px;
-  padding: 26px 16px;
+.stage {
+  background: t.color('surface');
+  border: 1px solid t.color('line');
+  border-radius: t.$radius-xl;
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 18px;
   position: relative;
   overflow: hidden;
 
-  &__row {
+  &__seats {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 16px;
+    justify-content: center;
+    gap: 14px 8px;
   }
 
   &__middle {
-    min-height: 210px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
     text-align: center;
-    padding: 8px;
     position: relative;
   }
 }
 
-.waiting {
+.status {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 14px;
-
-  &__label {
-    color: t.color('table-text-muted');
-    font: 600 13px t.$font-body;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
+  justify-content: center;
+  gap: 10px 16px;
+  text-align: left;
 
   &__count {
-    color: t.color('white');
-    font: 700 52px/1 t.$font-display;
+    color: t.color('ink');
+    font: 700 34px/1 t.$font-display;
     font-variant-numeric: tabular-nums;
   }
 
   &__of {
     color: t.color('text-faint');
+    font-size: 22px;
   }
 
-  &__dots {
+  &__copy {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__label {
+    color: t.color('ink');
+    font: 600 15px t.$font-body;
   }
 
   &__hint {
-    color: t.color('table-text-muted');
+    color: t.color('text-muted');
     font-size: 13px;
-  }
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: t.color('table-line');
-  transition:
-    background 0.3s,
-    transform 0.3s t.$ease-spring;
-
-  &--on {
-    background: t.color('accent-light');
-    transform: scale(1.25);
   }
 }
 
@@ -90,6 +75,7 @@
   align-items: center;
   gap: 10px;
   max-width: 420px;
+  padding: 24px 8px;
 
   &__icon {
     width: 56px;
@@ -99,18 +85,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: t.color('table-raised');
-    border: 1px solid t.color('table-line');
-    color: t.color('accent-pale');
+    background: t.color('accent-tint');
+    color: t.color('accent-text');
   }
 
   &__title {
-    color: t.color('white');
+    color: t.color('ink');
     font: 700 30px t.$font-display;
   }
 
   &__text {
-    color: t.color('table-text-muted');
+    color: t.color('text-muted');
     font-size: 15px;
     line-height: 1.5;
   }

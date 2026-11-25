@@ -1,4 +1,5 @@
 import { DeckType } from '@shared/enums/deck-type.enum';
+import { ScoreBand } from '@shared/enums/score-band.enum';
 import { Deck } from './deck.model';
 
 describe('Deck', () => {
@@ -47,5 +48,18 @@ describe('Deck', () => {
     expect(deck.has('5')).toBe(false);
     expect(deck.rankOf('L')).toBe(3);
     expect(deck.rankOf('?')).toBe(-1);
+  });
+
+  it.each([
+    ['0', ScoreBand.Low],
+    ['2', ScoreBand.Low],
+    ['3', ScoreBand.Mid],
+    ['13', ScoreBand.Mid],
+    ['20', ScoreBand.High],
+    ['100', ScoreBand.High],
+    ['?', ScoreBand.None],
+    [null, ScoreBand.None],
+  ])('should put %s in the %s band of the Fibonacci deck', (card, band) => {
+    expect(new Deck(DeckType.ModifiedFibonacci).bandOf(card)).toBe(band);
   });
 });

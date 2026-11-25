@@ -53,16 +53,13 @@ export default class RoomPageComponent extends BaseComponent<IRoomState> {
       all: state.stories.length,
     };
   });
+  // The deck is hidden once the cards flip, so its prompt only covers an open round.
   protected readonly prompt = computed(() => {
-    const room = this.model.view().room;
     if (this.model.activeStory() === null) {
       return ROOM_MESSAGES.addStory;
     }
     if (this.model.me()?.isPlayer !== true) {
       return ROOM_MESSAGES.spectating;
-    }
-    if (room?.revealed === true) {
-      return ROOM_MESSAGES.revealed;
     }
     return this.model.view().myCard === null ? ROOM_MESSAGES.pickCard : ROOM_MESSAGES.voteIn;
   });

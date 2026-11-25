@@ -1,9 +1,15 @@
 import { HALF_CARD, HALF_CARD_VALUE, TSHIRT_POINTS } from '@shared/constants/cards.constants';
 import { deckDefinition } from '@shared/constants/decks.constants';
 import { DeckType } from '@shared/enums/deck-type.enum';
+import { ScoreBand } from '@shared/enums/score-band.enum';
 
 /** Slack for comparing floating-point distances, so ties are recognised as ties. */
 const EPSILON = 1e-9;
+
+/** The number cards split into this many bands: low, middle, high. */
+const BANDS = 3;
+const MID_BAND = 1;
+const HIGH_BAND = 2;
 
 /** A deck of cards with the numeric meaning the stats need (ported from Room.dc.html). */
 export class Deck {
@@ -69,5 +75,21 @@ export class Deck {
   /** @returns The position of `card` among the numeric cards, or -1. */
   public rankOf(card: string): number {
     return this.numericCards.indexOf(card);
+  }
+
+  /**
+   * @param card A card label, or `null` for no vote.
+   * @returns Its third of the deck's number cards; `None` for `?`, the break card or no vote.
+   */
+  public bandOf(card: string | null): ScoreBand {
+    const rank = card === null ? -1 : this.rankOf(card);
+    if (rank < 0) {
+      return ScoreBand.None;
+    }
+    const band = Math.floor((rank * BANDS) / this.numericCards.length);
+    if (band >= HIGH_BAND) {
+      return ScoreBand.High;
+    }
+    return band === MID_BAND ? ScoreBand.Mid : ScoreBand.Low;
   }
 }

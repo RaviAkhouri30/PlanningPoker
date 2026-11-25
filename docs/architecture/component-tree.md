@@ -14,11 +14,12 @@ flowchart TB
 
   join --> rp[room-preview] & gjf[guest-join-form]
 
-  room --> rh[room-header] & sh[story-header] & pt[poker-table] & cd[card-deck]
+  room --> rh[room-header] & sh[story-header] & pt["poker-table: the light stage"]
+  pt -. "projects, while voting" .-> cd[card-deck]
   room --> mc[moderator-controls] & pp[players-panel] & sp[stories-panel] & id[invite-dialog]
   room --> tour[room-tour: spotlight + step card]
   rh & pt -. "Add story: focus" .-> sp
-  pt --> ts[table-seat] & res[results-panel]
+  pt --> ts[table-seat: card coloured by band] & res[results-panel: band-coloured chart]
   res --> cb[confetti-burst]
 ```
 

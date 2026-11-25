@@ -10,6 +10,7 @@ describe('ResultsPanelComponent', () => {
   function render(
     cards: string[],
     isModerator: boolean,
+    noVoteCount = 0,
   ): { element: HTMLElement; accept: ReturnType<typeof vi.fn>; again: ReturnType<typeof vi.fn> } {
     const fixture = TestBed.createComponent(ResultsPanelComponent);
     const ballots = cards.map((card, index) => ({
@@ -19,6 +20,7 @@ describe('ResultsPanelComponent', () => {
     }));
     fixture.componentRef.setInput('stats', new VotingStats(deck, ballots));
     fixture.componentRef.setInput('isModerator', isModerator);
+    fixture.componentRef.setInput('noVoteCount', noVoteCount);
     const accept = vi.fn();
     const again = vi.fn();
     fixture.componentInstance.accept.subscribe(accept);
@@ -41,7 +43,9 @@ describe('ResultsPanelComponent', () => {
     const { element, accept, again } = render(['3', '13', '5'], true);
 
     element.querySelector<HTMLButtonElement>('.chip-btn')?.click();
-    element.querySelector<HTMLButtonElement>('.btn--ghost-dark')?.click();
+    [...element.querySelectorAll<HTMLButtonElement>('button')]
+      .find((button) => button.textContent.includes('Vote again'))
+      ?.click();
 
     expect(element.querySelector('app-confetti-burst')).toBeNull();
     expect(element.querySelector('.hint')).not.toBeNull();
@@ -53,5 +57,28 @@ describe('ResultsPanelComponent', () => {
     expect(render(['5'], false).element.textContent).toContain(
       'The moderator settles the estimate.',
     );
+  });
+
+  it('should colour each card by its third of the deck when the cards are flipped', () => {
+    const rows = render(['1', '5', '20', '?'], false).element.querySelectorAll('.bars__row');
+
+    expect([...rows].map((row) => row.getAttribute('data-band'))).toEqual([
+      'low',
+      'mid',
+      'high',
+      'none',
+    ]);
+  });
+
+  it('should add a grey bar, capped at the longest, for players without a card', () => {
+    const element = render(['5'], false, 3).element;
+    const row = element.querySelector('.bars__row[data-band="none"]');
+
+    expect(row?.textContent).toContain('No vote');
+    expect(row?.querySelector<HTMLElement>('.bars__fill')?.style.width).toBe('100%');
+  });
+
+  it('should leave the grey bar out when everyone voted', () => {
+    expect(render(['5'], false).element.querySelector('.bars__row[data-band="none"]')).toBeNull();
   });
 });

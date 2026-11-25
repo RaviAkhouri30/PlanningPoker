@@ -20,7 +20,7 @@
               [deckLabel]="room.deck.label"
             />
           }
-          <section class="table-card" aria-label="Poker table">
+          <section aria-label="Poker table">
             <app-poker-table
               [attr.data-tour]="targets.Table"
               [seats]="model.tableSeats()"
@@ -35,15 +35,18 @@
               (accept)="model.commands.accept($event)"
               (voteAgain)="model.commands.voteAgain()"
               (addStory)="focusStoryField()"
-            />
-            <app-card-deck
-              [attr.data-tour]="targets.Deck"
-              [cards]="room.deck.cards"
-              [picked]="model.view().myCard"
-              [enabled]="model.canVote()"
-              [prompt]="prompt()"
-              (pick)="model.commands.pick($event)"
-            />
+            >
+              @if (!room.revealed) {
+                <app-card-deck
+                  [attr.data-tour]="targets.Deck"
+                  [cards]="room.deck.cards"
+                  [picked]="model.view().myCard"
+                  [enabled]="model.canVote()"
+                  [prompt]="prompt()"
+                  (pick)="model.commands.pick($event)"
+                />
+              }
+            </app-poker-table>
           </section>
         </main>
         <aside class="layout__side">

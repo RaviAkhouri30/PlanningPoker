@@ -7,10 +7,10 @@ import { ROOM_MESSAGES } from '../../models/room-messages.constants';
 import { ResultsPanelComponent } from '../results-panel/results-panel.component';
 import { TableSeatComponent } from '../table-seat/table-seat.component';
 
-/** Seats in the top row; the rest sit along the bottom. */
-const TOP_ROW = 3;
-
-/** The dark table: players around it, and in the middle the vote count or the results. */
+/**
+ * The room's stage: the players in a row, then the deck (projected by the page while the round
+ * is open) with the vote count under it, or the results once the cards are flipped.
+ */
 @Component({
   selector: 'app-poker-table',
   imports: [IconComponent, TableSeatComponent, ResultsPanelComponent],
@@ -37,8 +37,10 @@ export class PokerTableComponent {
   /** The moderator asked to add a story from the empty table. */
   public readonly addStory = output();
 
-  protected readonly top = computed(() => this.seats().slice(0, TOP_ROW));
-  protected readonly bottom = computed(() => this.seats().slice(TOP_ROW));
+  /** Players with no card once the cards are flipped: the grey part of the chart. */
+  protected readonly noVoteCount = computed(
+    () => this.seats().filter((seat) => seat.card === null).length,
+  );
   protected readonly waitLabel = computed(() =>
     this.seats().length > 0 && this.votedCount() === this.seats().length
       ? ROOM_MESSAGES.everyone
@@ -52,9 +54,6 @@ export class PokerTableComponent {
   });
   protected readonly addLabel = computed(() =>
     this.settledCount() > 0 ? ROOM_MESSAGES.addAnotherStory : ROOM_MESSAGES.addFirstStory,
-  );
-  protected readonly dots = computed(() =>
-    this.seats().map((_, index) => index < this.votedCount()),
   );
   protected readonly eyeIcon = IconName.Eye;
   protected readonly cardsIcon = IconName.Cards;

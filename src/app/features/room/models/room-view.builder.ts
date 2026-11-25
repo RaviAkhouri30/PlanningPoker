@@ -123,6 +123,7 @@ function seatOf(person: Participant, context: ISeatContext): ISeatView {
     online: person.isOnline(context.now, ONLINE_WINDOW_MS),
     slot: slotOf(voted, room.revealed, context.hasStory),
     card,
+    band: room.deck.bandOf(card),
     status: statusOf(person, { voted, card, revealed: room.revealed, hasStory: context.hasStory }),
     flipDelay: context.index * FLIP_STAGGER_MS,
   };

@@ -60,15 +60,15 @@ describe('RoomPageComponent', () => {
     expect(page.textContent).toContain(ROOM_MESSAGES.pickCard);
   });
 
-  it('should vote, reveal and show the results', async () => {
+  it('should vote, reveal and show the results in place of the deck', async () => {
     const page = await render();
 
     click(page, 'button[aria-label="Vote 5"]');
     expect(page.textContent).toContain(ROOM_MESSAGES.voteIn);
-    click(page, '.waiting .btn--primary');
+    click(page, '.status .btn--primary');
 
     expect(page.querySelector('app-results-panel')).not.toBeNull();
-    expect(page.textContent).toContain(ROOM_MESSAGES.revealed);
+    expect(page.querySelector('app-card-deck')).toBeNull();
   });
 
   it('should open the invite dialog from the header', async () => {

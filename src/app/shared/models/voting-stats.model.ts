@@ -9,6 +9,7 @@ import {
   STAT_PRECISION,
 } from '@shared/constants/voting.constants';
 import { AgreementLevel } from '@shared/enums/agreement-level.enum';
+import { type ScoreBand } from '@shared/enums/score-band.enum';
 import { type IBallot } from '@shared/interfaces/i-ballot';
 import { Deck } from './deck.model';
 
@@ -29,6 +30,8 @@ export interface IDistributionBar {
   readonly isTop: boolean;
   /** Who voted it, comma-separated. */
   readonly voters: string;
+  /** Its third of the deck, for the bar's colour. */
+  readonly band: ScoreBand;
 }
 
 /**
@@ -144,6 +147,7 @@ export class VotingStats {
           percent: Math.round((count / top) * FULL_PERCENT),
           isTop: count === top,
           voters: this.votersOf(card),
+          band: this.deck.bandOf(card),
         };
       });
   }

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { ScoreBand } from '@shared/enums/score-band.enum';
 import { type ISeatView, SeatSlot } from '../../models/i-seat-view';
 import { TableSeatComponent } from './table-seat.component';
 
@@ -14,6 +15,7 @@ describe('TableSeatComponent', () => {
     online: true,
     slot: SeatSlot.Card,
     card: '5',
+    band: ScoreBand.Mid,
     status: 'Voted 5',
     flipDelay: 110,
   };
@@ -31,6 +33,10 @@ describe('TableSeatComponent', () => {
 
     expect(element.querySelector('.flip--up')?.textContent).toContain('5');
     expect(element.textContent).toContain('Maya');
+  });
+
+  it('should mark the seat with the colour band of its card when revealed', () => {
+    expect(render({ band: ScoreBand.High }).dataset['band']).toBe('high');
   });
 
   it('should show the break card as a coffee cup', () => {

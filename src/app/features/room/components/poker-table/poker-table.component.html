@@ -1,11 +1,11 @@
-<div class="table">
-  <div class="table__row">
-    @for (seat of top(); track seat.uid) {
-      <app-table-seat [seat]="seat" [revealed]="revealed()" />
+<div class="stage">
+  <div class="stage__seats" role="list" aria-label="Players">
+    @for (seat of seats(); track seat.uid) {
+      <app-table-seat role="listitem" [seat]="seat" [revealed]="revealed()" />
     }
   </div>
-  <div class="table__middle">
-    @if (!hasStory()) {
+  @if (!hasStory()) {
+    <div class="stage__middle">
       <div class="empty rise">
         <span class="empty__icon" aria-hidden="true"
           ><app-icon [name]="cardsIcon" [size]="26"
@@ -31,41 +31,41 @@
           </button>
         }
       </div>
-    } @else if (revealed() && stats(); as results) {
-      <app-results-panel
-        [stats]="results"
-        [isModerator]="isModerator()"
-        (accept)="accept.emit($event)"
-        (voteAgain)="voteAgain.emit()"
-      />
-    } @else {
-      <div class="waiting rise" aria-live="polite">
-        <span class="waiting__label">{{ waitLabel() }}</span>
-        <span class="waiting__count"
-          >{{ votedCount() }}<span class="waiting__of"> / {{ seats().length }}</span></span
-        >
-        <div class="waiting__dots" aria-hidden="true">
-          @for (on of dots(); track $index) {
-            <span class="dot" [class.dot--on]="on"></span>
+    </div>
+  }
+  <!-- The deck, while the round is open: the room's main area. -->
+  <ng-content />
+  @if (hasStory()) {
+    <div class="stage__middle">
+      @if (revealed() && stats(); as results) {
+        <app-results-panel
+          [stats]="results"
+          [noVoteCount]="noVoteCount()"
+          [isModerator]="isModerator()"
+          (accept)="accept.emit($event)"
+          (voteAgain)="voteAgain.emit()"
+        />
+      } @else {
+        <div class="status" aria-live="polite">
+          <span class="status__count"
+            >{{ votedCount() }}<span class="status__of"> / {{ seats().length }}</span></span
+          >
+          <span class="status__copy">
+            <span class="status__label">{{ waitLabel() }}</span>
+            <span class="status__hint">{{ hint() }}</span>
+          </span>
+          @if (isModerator()) {
+            <button
+              class="btn btn--primary"
+              type="button"
+              [disabled]="votedCount() === 0"
+              (click)="reveal.emit()"
+            >
+              <app-icon [name]="eyeIcon" />Reveal cards
+            </button>
           }
         </div>
-        @if (isModerator()) {
-          <button
-            class="btn btn--primary btn--lg"
-            type="button"
-            [disabled]="votedCount() === 0"
-            (click)="reveal.emit()"
-          >
-            <app-icon [name]="eyeIcon" />Reveal cards
-          </button>
-        }
-        <span class="waiting__hint">{{ hint() }}</span>
-      </div>
-    }
-  </div>
-  <div class="table__row">
-    @for (seat of bottom(); track seat.uid) {
-      <app-table-seat [seat]="seat" [revealed]="revealed()" [below]="true" />
-    }
-  </div>
+      }
+    </div>
+  }
 </div>

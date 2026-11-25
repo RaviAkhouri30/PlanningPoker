@@ -10,7 +10,6 @@ export const ROOM_MESSAGES = {
   waitingModerator: 'The moderator flips the cards',
   pickCard: 'Pick your card',
   voteIn: 'Your vote is in. Tap it again to take it back.',
-  revealed: 'Cards are revealed',
   addStory: 'Add a story to start voting',
   addFirstStory: 'Add a story',
   addAnotherStory: 'Add another story',

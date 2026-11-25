@@ -62,7 +62,12 @@ $palette: (
   'warning': #ffb547,
   'coral': #ff7a59,
   'hint-text': #ffd5c2,
-  'switch-off': #c9ccd6
+  'switch-off': #c9ccd6,
+  // Result colours: the deck's thirds (low, middle, high) and no vote.
+  'band-low': #1fa968,
+  'band-mid': #f2b32a,
+  'band-high': #e5534b,
+  'band-none': #b9bdc9
 );
 
 // Dark theme: only the tokens that change. The dark table, the status colours and pure white
@@ -95,6 +100,10 @@ $palette-dark: (
   'on-contrast': #111318,
   'success-text': #3ccf92,
   'switch-off': #4a4f5e,
+  'band-low': #34c48a,
+  'band-mid': #f5c04a,
+  'band-high': #f0675f,
+  'band-none': #4b5162,
 );
 
 /// @return The colour token `$name`, as a CSS variable so the theme can change it at run time.

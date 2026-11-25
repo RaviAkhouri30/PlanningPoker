@@ -4,12 +4,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: 104px;
-}
-
-:host(.seat--below) {
-  flex-direction: column-reverse;
+  gap: 8px;
+  width: 92px;
 }
 
 .slot {
@@ -22,11 +18,11 @@
     position: absolute;
     inset: 0;
     border-radius: 12px;
-    border: 2px dashed t.color('table-dash');
+    border: 2px dashed t.color('line-strong');
     display: flex;
     align-items: center;
     justify-content: center;
-    color: t.color('table-text-faint');
+    color: t.color('text-faint');
     font: 600 18px t.$font-display;
   }
 
@@ -62,7 +58,7 @@
     background: t.color('accent')
       repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.14) 0 6px, transparent 6px 12px);
     border: 3px solid t.color('white');
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    box-shadow: t.$shadow-hover;
   }
 
   &__front {
@@ -71,7 +67,21 @@
     border: 1.5px solid t.color('line-strong');
     color: t.color('card-ink');
     font: 700 26px t.$font-display;
-    box-shadow: t.$shadow-card;
+    box-shadow: t.$shadow-hover;
+    // The card's third of the deck: green, yellow, red, or grey for ? and break.
+    border-bottom: 6px solid t.color('band-none');
+
+    :host([data-band='low']) & {
+      border-bottom-color: t.color('band-low');
+    }
+
+    :host([data-band='mid']) & {
+      border-bottom-color: t.color('band-mid');
+    }
+
+    :host([data-band='high']) & {
+      border-bottom-color: t.color('band-high');
+    }
   }
 }
 
@@ -79,9 +89,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: t.color('table-text');
+  color: t.color('text');
   font: 600 13px t.$font-body;
-  max-width: 104px;
+  max-width: 92px;
 
   &__text {
     overflow: hidden;
@@ -98,7 +108,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: t.color('table-text-faint');
+    background: t.color('text-faint');
     animation: dot 1.2s infinite ease-in-out;
 
     &:nth-child(2) {

@@ -6,21 +6,20 @@ import { DelayDirective } from '@shared/directives/delay.directive';
 import { IconName } from '@shared/enums/icon-name.enum';
 import { type ISeatView, SeatSlot } from '../../models/i-seat-view';
 
-/** One player at the table: their card (face down until the flip) and their name. */
+/** One player on the stage: their card (face down until the flip, then coloured) and name. */
 @Component({
   selector: 'app-table-seat',
   imports: [AvatarComponent, IconComponent, DelayDirective],
   templateUrl: './table-seat.component.html',
   styleUrl: './table-seat.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { '[class.seat--below]': 'below()' },
+  // The card's colour band, read by the styles once the cards are flipped.
+  host: { '[attr.data-band]': 'seat().band' },
 })
 export class TableSeatComponent {
   public readonly seat = input.required<ISeatView>();
   /** Whether the cards are face up. */
   public readonly revealed = input(false);
-  /** Bottom row: the name sits above the card. */
-  public readonly below = input(false);
 
   protected readonly slots = SeatSlot;
   protected readonly breakCard = BREAK_CARD;

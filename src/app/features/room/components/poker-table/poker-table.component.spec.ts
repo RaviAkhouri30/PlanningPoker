@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DeckType } from '@shared/enums/deck-type.enum';
+import { ScoreBand } from '@shared/enums/score-band.enum';
 import { Deck } from '@shared/models/deck.model';
 import { VotingStats } from '@shared/models/voting-stats.model';
 import { type ISeatView, SeatSlot } from '../../models/i-seat-view';
@@ -18,6 +19,7 @@ function seat(uid: string): ISeatView {
     online: true,
     slot: SeatSlot.Thinking,
     card: null,
+    band: ScoreBand.None,
     status: '',
     flipDelay: 0,
   };
@@ -40,16 +42,14 @@ describe('PokerTableComponent', () => {
     return { element: fixture.nativeElement as HTMLElement, reveal };
   }
 
-  it('should seat three on top and the rest below, and count votes', () => {
+  it('should seat everyone in one row and count votes when the round is open', () => {
     const { element, reveal } = render({ isModerator: true, votedCount: 4 });
 
     element.querySelector<HTMLButtonElement>('.btn--primary')?.click();
 
-    expect(
-      element.querySelectorAll('.table__row')[0]?.querySelectorAll('app-table-seat'),
-    ).toHaveLength(3);
+    expect(element.querySelectorAll('.stage__seats app-table-seat')).toHaveLength(4);
+    expect(element.querySelector('.status__count')?.textContent).toContain('4 / 4');
     expect(element.textContent).toContain(ROOM_MESSAGES.everyone);
-    expect(element.querySelectorAll('.dot--on')).toHaveLength(4);
     expect(reveal).toHaveBeenCalled();
   });
 
@@ -67,14 +67,17 @@ describe('PokerTableComponent', () => {
     );
   });
 
-  it('should show results once revealed', () => {
+  it('should show results with a grey bar for players without a card when revealed', () => {
     const stats = new VotingStats(new Deck(DeckType.Fibonacci), [
       { voterName: 'a', isMine: false, card: '5' },
     ]);
 
-    expect(
-      render({ revealed: true, stats }).element.querySelector('app-results-panel'),
-    ).not.toBeNull();
+    const element = render({ revealed: true, stats }).element;
+
+    expect(element.querySelector('app-results-panel')).not.toBeNull();
+    expect(element.querySelector('.bars__row[data-band="none"] .bars__count')?.textContent).toBe(
+      '4',
+    );
   });
 
   it('should explain an empty table, and a finished session', () => {

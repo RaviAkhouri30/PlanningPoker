@@ -1,3 +1,5 @@
+import { type ScoreBand } from '@shared/enums/score-band.enum';
+
 /** What a seat's card slot shows. */
 export enum SeatSlot {
   /** Still choosing: animated dots. */
@@ -24,6 +26,8 @@ export interface ISeatView {
   readonly slot: SeatSlot;
   /** The card, once revealed. */
   readonly card: string | null;
+  /** The card's third of the deck once revealed; `None` before the flip or with no vote. */
+  readonly band: ScoreBand;
   /** e.g. "Voted 5", "Thinking…". */
   readonly status: string;
   /** Stagger for the flip, in ms. */

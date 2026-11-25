@@ -10,21 +10,33 @@
         >Median {{ stats().medianLabel }} · {{ stats().numericCount }} votes</span
       >
     </div>
-    <ul class="bars" aria-label="Votes per card">
-      @for (bar of stats().distribution; track bar.card) {
-        <li class="bars__row" [attr.title]="bar.voters">
-          <span class="bars__card">{{ bar.label }}</span>
-          <span class="bars__track"
-            ><span
-              class="bars__fill"
-              [class.bars__fill--top]="bar.isTop"
-              [appWidthPercent]="bar.percent"
-            ></span
-          ></span>
-          <span class="bars__count">{{ bar.count }}</span>
-        </li>
-      }
-    </ul>
+    <div class="chart">
+      <ul class="bars" aria-label="Votes per card">
+        @for (bar of stats().distribution; track bar.card) {
+          <li class="bars__row" [attr.data-band]="bar.band" [attr.title]="bar.voters">
+            <span class="bars__card">{{ bar.label }}</span>
+            <span class="bars__track"
+              ><span class="bars__fill" [appWidthPercent]="bar.percent"></span
+            ></span>
+            <span class="bars__count">{{ bar.count }}</span>
+          </li>
+        }
+        @if (noVoteCount() > 0) {
+          <li class="bars__row" data-band="none">
+            <span class="bars__card bars__card--none">No vote</span>
+            <span class="bars__track"
+              ><span class="bars__fill" [appWidthPercent]="noVotePercent()"></span
+            ></span>
+            <span class="bars__count">{{ noVoteCount() }}</span>
+          </li>
+        }
+      </ul>
+      <p class="legend" aria-hidden="true">
+        @for (item of legend; track item.band) {
+          <span class="legend__item" [attr.data-band]="item.band">{{ item.label }}</span>
+        }
+      </p>
+    </div>
     <div class="agreement">
       <svg
         width="84"
@@ -73,7 +85,7 @@
           {{ card }}
         </button>
       }
-      <button class="btn btn--ghost-dark btn--lg" type="button" (click)="voteAgain.emit()">
+      <button class="btn btn--lg" type="button" (click)="voteAgain.emit()">
         <app-icon [name]="refreshIcon" />Vote again
       </button>
     </div>
