@@ -27,6 +27,13 @@ button {
   font-family: inherit;
 }
 
+// Until the first page arrives (a lazily loaded chunk), the footer would sit at the top and then
+// be pushed down: a layout shift Lighthouse counted. The router inserts the page right after the
+// outlet, so the footer shows from then on and appears below the page instead of moving.
+router-outlet + app-site-footer {
+  display: none;
+}
+
 :focus-visible {
   outline: 3px solid t.color('accent');
   outline-offset: 2px;

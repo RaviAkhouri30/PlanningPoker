@@ -1,0 +1,51 @@
+// Fallback faces sized to match the web fonts, so the page doesn't move when Inter and Space
+// Grotesk arrive (Lighthouse measured a 0.24 layout shift from the swap on mobile). Each face is
+// Arial (or the metric-compatible Arimo) scaled to the web font's average width, with the web
+// font's ascent and descent. The numbers were measured in Chrome with canvas `measureText` over a
+// pangram and digits, as next/font and Capsize do: size-adjust = web width / Arial width, and the
+// overrides are the web font's metrics divided by that. Bold gets its own face because Arial Bold
+// is wider than Arial, unlike the web fonts' weights.
+
+// Space Grotesk 400–600 (labels, panel titles): ascent 0.984, descent 0.292.
+@font-face {
+  font-family: 'Space Grotesk Fallback';
+  font-weight: 400 600;
+  src: local('Arial'), local('ArialMT'), local('Arimo');
+  size-adjust: 109.4%;
+  ascent-override: 89.95%;
+  descent-override: 26.69%;
+  line-gap-override: 0%;
+}
+
+// Space Grotesk 700 (the hero and section titles).
+@font-face {
+  font-family: 'Space Grotesk Fallback';
+  font-weight: 700 900;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Arimo Bold');
+  size-adjust: 102.29%;
+  ascent-override: 96.2%;
+  descent-override: 28.55%;
+  line-gap-override: 0%;
+}
+
+// Inter 400–500 (body text): ascent 0.969, descent 0.241.
+@font-face {
+  font-family: 'Inter Fallback';
+  font-weight: 100 500;
+  src: local('Arial'), local('ArialMT'), local('Arimo');
+  size-adjust: 106.95%;
+  ascent-override: 90.6%;
+  descent-override: 22.53%;
+  line-gap-override: 0%;
+}
+
+// Inter 600–700 (buttons, eyebrows).
+@font-face {
+  font-family: 'Inter Fallback';
+  font-weight: 600 900;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Arimo Bold');
+  size-adjust: 101.93%;
+  ascent-override: 95.06%;
+  descent-override: 23.64%;
+  line-gap-override: 0%;
+}

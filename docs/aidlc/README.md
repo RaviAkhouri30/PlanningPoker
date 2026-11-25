@@ -14,6 +14,7 @@ the owner's approval before the next starts (CLAUDE.md §11).
 | 0007 | [Round countdown](0007-round-countdown/01-inception.md) | 1.6.0 | Done, deployed |
 | 0008 | [Manual estimate](0008-manual-estimate/01-inception.md) | 1.7.0 | Done, deployed |
 | 0009 | [Accessibility pass and a better room tour](0009-accessibility-and-tour/01-inception.md) | 1.8.0 | Done, deployed |
+| 0010 | [Performance hardening and security audit](0010-performance-and-security/01-inception.md) | 1.9.0   | Done, deployed               |
 
 Next candidates: discussion threads, session summary (copy as text), accounts (email, Google,
 GitHub, guest linking), dashboard and history, integrations.

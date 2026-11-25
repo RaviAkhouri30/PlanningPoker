@@ -10,6 +10,7 @@ how the system is built.
 | [architecture/component-tree.md](architecture/component-tree.md)       | Routes and component hierarchy                           |
 | [architecture/sequence-diagrams.md](architecture/sequence-diagrams.md) | Create, join, vote, flip, settle                         |
 | [architecture/data-model.md](architecture/data-model.md)               | Firestore documents, who may read and write them         |
+| [performance/2026-11-25-capacity-and-performance.md](performance/2026-11-25-capacity-and-performance.md) | Free-tier capacity, load and room stress tests, Lighthouse, AdSense needs |
 | [architecture/deployment.md](architecture/deployment.md)               | Environments, CI pipeline, hosting                       |
 | [architecture/adr/](architecture/adr/)                                 | Architecture Decision Records                            |
 | [tooling.md](tooling.md)                                               | Lint, tests, coverage, rules tests, e2e — how they are wired |

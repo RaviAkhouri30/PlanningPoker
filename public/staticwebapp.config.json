@@ -4,13 +4,55 @@
   },
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/icons/*", "/api/*", "*.{js,css,svg,png,jpg,jpeg,webp,ico,json,webmanifest,txt,xml,map}"]
+    "exclude": [
+      "/icons/*",
+      "/api/*",
+      "*.{js,css,svg,png,jpg,jpeg,webp,ico,json,webmanifest,txt,xml,map}"
+    ]
+  },
+  "globalHeaders": {
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy": "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Strict-Transport-Security": "max-age=63072000",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()"
   },
   "routes": [
     {
       "route": "/runtime-config.js",
       "headers": {
         "cache-control": "no-cache"
+      }
+    },
+    {
+      "route": "/main-*",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/chunk-*",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/styles-*",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/polyfills-*",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/media/*",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
       }
     }
   ]

@@ -19,8 +19,11 @@ flowchart LR
 | Live (local) | The real Firebase project, alias `live`, config from `public/runtime-config.js` | `npm run start:live` |
 | Production  | The real Firebase project    | Azure Static Web Apps, config from GitHub secrets |
 
-- `public/staticwebapp.config.json` falls back to `/index.html`, so `/r/<id>` links work, and serves
-  `runtime-config.js` without caching.
+- `public/staticwebapp.config.json` falls back to `/index.html`, so `/r/<id>` links work, serves
+  `runtime-config.js` without caching, and caches the hashed build files (`main-*`, `chunk-*`,
+  `styles-*`, `media/*`) for a year as `immutable`: a new build has new names, so returning
+  visitors never re-check them. `index.html` keeps Azure's short default, so a deploy shows up
+  within a minute.
 - The Firebase web config is never committed: CI writes `runtime-config.js` from the `FIREBASE_*`
   secrets; locally copy `public/runtime-config.example.js`.
 - The Static Web App is `brave-pond-019ab0610` (Free plan, linked to `RaviAkhouri30/PlanningPoker`,

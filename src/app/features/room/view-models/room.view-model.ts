@@ -23,6 +23,7 @@ import { IAuthService, type IAuthUser } from '@core/interfaces/i-auth-service';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
 import { CLOCK } from '@core/tokens/clock.token';
+import { PAGE_VISIBLE } from '@core/tokens/page-visible.token';
 import { ViewModel } from '@shared/base/view-model';
 import {
   AUTO_REVEAL_DELAY_MS,
@@ -110,6 +111,7 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   private readonly stories = inject(StoriesService);
   private readonly votes = inject(VotesService);
   private readonly clock = inject(CLOCK);
+  private readonly visible = inject(PAGE_VISIBLE);
   private readonly toast = inject(ToastService);
   private readonly logger = inject(LoggerService);
   private readonly actions = new Subject<IRoomAction>();
@@ -236,10 +238,27 @@ export class RoomViewModel extends ViewModel<IRoomState> {
     );
   }
 
+  /**
+   * Beats once a minute while the tab is on screen. A hidden tab stays quiet, so a room left open
+   * in the background costs nothing, and after a while its seat shows as away, which it is.
+   * Coming back picks the minute up where it was: at once if it has passed, so the seat is back
+   * soon, but never more often, so switching tabs back and forth doesn't add writes.
+   */
   private heartbeat(uid: string): Observable<unknown> {
-    // exhaustMap: a slow write is never stacked behind another.
-    return timer(HEARTBEAT_INTERVAL_MS, HEARTBEAT_INTERVAL_MS).pipe(
-      exhaustMap(() => this.participants.heartbeat(this.roomId, uid).pipe(catchError(() => EMPTY))),
+    // Joining has just stamped the seat, so the first beat is a full interval away.
+    let lastBeat = this.clock.now();
+    return this.visible.pipe(
+      distinctUntilChanged(),
+      // switchMap: hiding the tab cancels the beat, showing it starts a new one.
+      switchMap((visible) => {
+        const wait = Math.max(0, lastBeat + HEARTBEAT_INTERVAL_MS - this.clock.now());
+        return visible ? timer(wait, HEARTBEAT_INTERVAL_MS) : EMPTY;
+      }),
+      // exhaustMap: a slow write is never stacked behind another.
+      exhaustMap(() => {
+        lastBeat = this.clock.now();
+        return this.participants.heartbeat(this.roomId, uid).pipe(catchError(() => EMPTY));
+      }),
     );
   }
 

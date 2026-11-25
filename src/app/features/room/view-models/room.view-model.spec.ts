@@ -2,12 +2,13 @@ import { RoomRole } from '@shared/enums/room-role.enum';
 import { MyRoomsService } from '@shared/services/my-rooms.service';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
-import { type Subscription, firstValueFrom, throwError } from 'rxjs';
+import { BehaviorSubject, type Subscription, firstValueFrom, throwError } from 'rxjs';
 import { FAKE_GUEST_UID } from '@core/backends/fake/fake-auth.service';
 import { IAuthService } from '@core/interfaces/i-auth-service';
 import { IRealtimeStore } from '@core/interfaces/i-realtime-store';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
+import { PAGE_VISIBLE } from '@core/tokens/page-visible.token';
 import { AUTO_REVEAL_DELAY_MS, HEARTBEAT_INTERVAL_MS } from '@shared/constants/room.constants';
 import {
   TEST_NOW,
@@ -18,6 +19,7 @@ import {
   testBackendProviders,
   testClock,
 } from '@shared/testing/test-backend';
+import { ParticipantsService } from '@shared/services/participants.service';
 import { RoomStatus } from '../models/i-room-state';
 import { storyFields } from '../testing/room-fixtures';
 import { RoomViewModel } from './room.view-model';
@@ -27,9 +29,11 @@ const ME = FAKE_GUEST_UID;
 
 describe('RoomViewModel', () => {
   let subscription: Subscription | undefined;
+  let visible: BehaviorSubject<boolean>;
 
   beforeEach(async () => {
     vi.useFakeTimers({ toFake: ['setInterval', 'setTimeout', 'clearInterval', 'clearTimeout'] });
+    visible = new BehaviorSubject(true);
     TestBed.configureTestingModule({
       providers: [
         ...testBackendProviders(),
@@ -39,6 +43,7 @@ describe('RoomViewModel', () => {
           provide: ActivatedRoute,
           useValue: { snapshot: { paramMap: convertToParamMap({ roomId: 'r1' }) } },
         },
+        { provide: PAGE_VISIBLE, useFactory: () => visible },
         RoomViewModel,
       ],
     });
@@ -146,6 +151,41 @@ describe('RoomViewModel', () => {
     await expect(stored(`rooms/r1/participants/${ME}`)).resolves.toMatchObject({
       lastSeenAt: TEST_NOW,
     });
+  });
+
+  it('should not tell the room anything when the tab is hidden', () => {
+    const beat = vi.spyOn(TestBed.inject(ParticipantsService), 'heartbeat');
+    visible.next(false);
+    start();
+
+    vi.advanceTimersByTime(HEARTBEAT_INTERVAL_MS * 3);
+
+    expect(beat).not.toHaveBeenCalled();
+  });
+
+  it('should beat at once when the tab comes back after the minute has passed', () => {
+    const beat = vi.spyOn(TestBed.inject(ParticipantsService), 'heartbeat');
+    start();
+    visible.next(false);
+    vi.spyOn(testClock, 'now').mockReturnValue(TEST_NOW + HEARTBEAT_INTERVAL_MS * 2);
+
+    visible.next(true);
+    vi.advanceTimersByTime(0);
+
+    expect(beat).toHaveBeenCalledTimes(1);
+  });
+
+  it('should keep to the minute when the tab comes back within it', () => {
+    const beat = vi.spyOn(TestBed.inject(ParticipantsService), 'heartbeat');
+    start();
+    visible.next(false);
+
+    visible.next(true);
+    vi.advanceTimersByTime(HEARTBEAT_INTERVAL_MS - 1);
+    expect(beat).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(1);
+
+    expect(beat).toHaveBeenCalledTimes(1);
   });
 
   it('should say when the room is gone or cannot be read', () => {

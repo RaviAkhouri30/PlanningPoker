@@ -79,5 +79,6 @@ saves that room; My rooms saves one room or all of them in one file. Nothing is 
 
 - **Auto-reveal runs in the moderator's tab** (rules can't count votes). If the moderator's tab is
   closed, the round waits until the moderator returns or flips by hand.
-- Presence is a heartbeat (`lastSeenAt` every 30 s, online within 75 s), not a live connection.
+- Presence is a heartbeat (`lastSeenAt` every 60 s while the tab is on screen, online within 150 s),
+  not a live connection. A hidden tab stops beating, so a room left open in the background is free.
 - Discussion threads, the session summary and accounts are later features.

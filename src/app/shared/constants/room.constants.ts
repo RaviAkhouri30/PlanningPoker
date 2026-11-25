@@ -20,11 +20,15 @@ export const DEFAULT_ROOM_NAME = 'Planning poker';
 /** Cards flip this long after the last player votes, so the last card is seen landing. */
 export const AUTO_REVEAL_DELAY_MS = 700;
 
-/** How often an open room tells the others you're still there. */
-export const HEARTBEAT_INTERVAL_MS = 30_000;
+/**
+ * How often an open room tells the others you're still there, while its tab is on screen. Every
+ * heartbeat is read by everyone in the room, so it is most of a room's Firestore reads: a minute
+ * keeps "online" honest at half the cost of 30 s (docs/performance).
+ */
+export const HEARTBEAT_INTERVAL_MS = 60_000;
 
 /** Someone counts as online when seen within this window (two missed heartbeats and a margin). */
-export const ONLINE_WINDOW_MS = 75_000;
+export const ONLINE_WINDOW_MS = 150_000;
 
 /**
  * Retries for reading a revealed round's cards. The moderator's own tab sees its flip before the

@@ -160,8 +160,10 @@ $palette-dark: (
 }
 
 // ---- Type -----------------------------------------------------------------
-$font-display: 'Space Grotesk', system-ui, sans-serif;
-$font-body: 'Inter', system-ui, sans-serif;
+// Each web font falls back first to a size-matched Arial (_fonts.scss), so the swap doesn't move
+// the page.
+$font-display: 'Space Grotesk', 'Space Grotesk Fallback', system-ui, sans-serif;
+$font-body: 'Inter', 'Inter Fallback', system-ui, sans-serif;
 
 // ---- Radii ----------------------------------------------------------------
 $radius-sm: 10px;

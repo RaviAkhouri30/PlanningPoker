@@ -4,6 +4,26 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] — 2026-11-26
+
+### Changed
+
+- Presence heartbeat every 60 s instead of 30 s, and paused while the tab is hidden: a room costs
+  far fewer Firestore reads (about 55–60 %), and a room left open in a background tab costs
+  nothing. "Online" now means seen within 150 s.
+
+### Fixed
+
+- Mobile layout shift: a size-matched fallback font stops the page moving when the web fonts load,
+  and the footer no longer appears before the page and gets pushed down (Lighthouse CLS 0).
+
+### Security
+
+- The site now sends security response headers (anti-clickjacking `X-Frame-Options`/`frame-ancestors`,
+  `X-Content-Type-Options`, `Referrer-Policy`, HSTS, `Permissions-Policy`), from a full audit of the
+  rules, auth, CSP, dependencies and the API (docs/aidlc/0010-performance-and-security).
+- Hashed build files are cached for a year as `immutable`, so returning visitors don't re-fetch them.
+
 ## [1.8.0] — 2026-11-25
 
 ### Added
