@@ -234,18 +234,19 @@ describe('firestore.rules · rooms', () => {
     });
 
     it('should let players vote with a card of the deck, marking their seat', async () => {
-      await expect(cast(maya, 'maya', '5')).resolves.not.toEqual(DENIED);
-      await expect(cast(maya, 'maya', '8')).resolves.not.toEqual(DENIED);
-      await expect(cast(maya, 'maya', 'XL')).rejects.toMatchObject(DENIED);
-      await expect(cast(maya, 'maya', '5', 1)).rejects.toMatchObject(DENIED);
-      await expect(cast(sam, 'sam', '5')).rejects.toMatchObject(DENIED);
-      await expect(cast(maya, 'mod', '5')).rejects.toMatchObject(DENIED);
+      // A vote must mark the seat with its round in the same batch.
       await expect(
         setDoc(doc(maya, STORE_PATHS.vote(ROOM, 2, 'maya')), {
           value: '5',
           castAt: serverTimestamp(),
         }),
       ).rejects.toMatchObject(DENIED);
+      await expect(cast(maya, 'maya', '5')).resolves.not.toEqual(DENIED);
+      await expect(cast(maya, 'maya', '8')).resolves.not.toEqual(DENIED);
+      await expect(cast(maya, 'maya', 'XL')).rejects.toMatchObject(DENIED);
+      await expect(cast(maya, 'maya', '5', 1)).rejects.toMatchObject(DENIED);
+      await expect(cast(sam, 'sam', '5')).rejects.toMatchObject(DENIED);
+      await expect(cast(maya, 'mod', '5')).rejects.toMatchObject(DENIED);
     });
 
     it('should keep votes secret until the round is revealed', async () => {
