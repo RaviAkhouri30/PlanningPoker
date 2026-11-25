@@ -2,7 +2,7 @@
 
 // The room's white side cards, shared by its panel components.
 .panel-card {
-  background: t.color('white');
+  background: t.color('surface');
   border: 1px solid t.color('line');
   border-radius: t.$radius-lg;
   padding: 18px;

@@ -4,7 +4,7 @@
   position: sticky;
   top: 0;
   z-index: t.$z-header;
-  background: rgba(244, 245, 247, 0.86);
+  background: t.color('glass');
   backdrop-filter: blur(12px);
   border-bottom: 1px solid t.color('line');
 
@@ -23,6 +23,12 @@
     flex-wrap: wrap;
     gap: 4px 18px;
     flex: 1 1 auto;
+  }
+
+  &__end {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 }
 

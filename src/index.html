@@ -9,7 +9,8 @@
       name="description"
       content="Free planning poker for agile teams. Type your name, share a link, vote in private and flip the cards together."
     />
-    <meta name="theme-color" content="#F4F5F7" />
+    <meta name="theme-color" content="#F4F5F7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0E1015" media="(prefers-color-scheme: dark)" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,6 +23,17 @@
     <!-- Firebase web config, written at deploy time (git-ignored; CLAUDE.md §10). A classic script,
          so it runs before the app's module scripts. Development on the Fake backend ignores it. -->
     <script src="runtime-config.js"></script>
+    <!-- Applies a forced theme before the first paint, so a dark choice never flashes light.
+         Same key and attribute as ThemeService (theme.constants.ts); the production build's
+         strict CSP hashes this script (security.autoCsp). -->
+    <script>
+      try {
+        var theme = localStorage.getItem('planning-poker.theme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <app-root></app-root>

@@ -1,3 +1,4 @@
+import { ThemeToggleComponent } from '@shared/components/theme-toggle/theme-toggle.component';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BaseComponent } from '@shared/base/base-component';
@@ -10,7 +11,13 @@ import { JoinViewModel } from './view-models/join.view-model';
 /** The page behind a room's link for anyone not yet in the room. */
 @Component({
   selector: 'app-join-page',
-  imports: [RouterLink, LogoComponent, RoomPreviewComponent, GuestJoinFormComponent],
+  imports: [
+    RouterLink,
+    LogoComponent,
+    RoomPreviewComponent,
+    GuestJoinFormComponent,
+    ThemeToggleComponent,
+  ],
   templateUrl: './join-page.component.html',
   styleUrl: './join-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

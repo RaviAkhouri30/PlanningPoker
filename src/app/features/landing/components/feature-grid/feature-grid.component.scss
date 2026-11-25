@@ -8,7 +8,7 @@
 
 .feature {
   min-width: 0;
-  background: t.color('white');
+  background: t.color('surface');
   border: 1px solid t.color('line');
   border-radius: 24px;
   padding: 28px;
@@ -33,7 +33,7 @@
     height: 44px;
     border-radius: 12px;
     background: t.color('accent-tint');
-    color: t.color('accent');
+    color: t.color('accent-text');
     display: flex;
     align-items: center;
     justify-content: center;

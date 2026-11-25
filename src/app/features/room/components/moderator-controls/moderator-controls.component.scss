@@ -15,7 +15,7 @@
   padding: 10px 12px;
   border-radius: t.$radius-md;
   border: 1px solid t.color('line');
-  background: t.color('white');
+  background: t.color('surface');
   color: t.color('ink');
   font: 600 14px t.$font-body;
   cursor: pointer;
@@ -27,7 +27,7 @@
 
   app-icon {
     flex: none;
-    color: t.color('accent');
+    color: t.color('accent-text');
   }
 
   &:hover:not(:disabled) {
@@ -93,7 +93,7 @@
   padding: 10px 12px;
   border-radius: 12px;
   border: 1.5px solid t.color('line');
-  background: t.color('white');
+  background: t.color('surface');
   cursor: pointer;
   text-align: left;
   min-width: 0;

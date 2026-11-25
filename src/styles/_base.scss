@@ -16,7 +16,7 @@ body {
 }
 
 a {
-  color: t.color('accent');
+  color: t.color('accent-text');
 
   &:hover {
     color: t.color('accent-deep');

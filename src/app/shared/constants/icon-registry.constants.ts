@@ -38,10 +38,20 @@ export const ICON_REGISTRY: Readonly<Record<IconName, readonly IconShape[]>> = {
     path('M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5'),
     path('M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5'),
   ],
+  [IconName.Monitor]: [
+    { kind: 'rect', x: 2, y: 3, width: 20, height: 14, rx: 2 },
+    path('M8 21h8M12 17v4'),
+  ],
+  [IconName.Moon]: [path('M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z')],
   [IconName.Plus]: [path('M12 5v14M5 12h14')],
   [IconName.Refresh]: [path('M3 12a9 9 0 1 0 3-6.7L3 8'), path('M3 3v5h5')],
   [IconName.Skip]: [path('m5 4 10 8-10 8V4z'), path('M19 5v14')],
   [IconName.Sparkle]: [path('M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z')],
+  [IconName.Sun]: [
+    { kind: 'circle', cx: 12, cy: 12, r: 4 },
+    path('M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2'),
+    path('M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41'),
+  ],
   [IconName.Users]: [
     path('M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'),
     { kind: 'circle', cx: 9, cy: 7, r: 4 },

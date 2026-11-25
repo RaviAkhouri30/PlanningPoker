@@ -15,7 +15,7 @@
   }
 
   &__item {
-    background: t.color('white');
+    background: t.color('surface');
     border: 1px solid t.color('line');
     border-radius: 18px;
     padding: 0 24px;
@@ -47,7 +47,7 @@
 
   &__plus {
     flex: none;
-    color: t.color('accent');
+    color: t.color('accent-text');
     transition: rotate 0.25s t.$ease-out;
   }
 

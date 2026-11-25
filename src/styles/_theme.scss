@@ -1,0 +1,23 @@
+// The colour themes (ADR-0010). Light is the default; dark applies when the page asks for it
+// (`data-theme='dark'`, set by ThemeService) or follows a dark system unless forced light.
+@use 'tokens' as t;
+
+:root {
+  @include t.palette-vars(t.$palette);
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  @include t.palette-vars(t.$palette-dark);
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include t.palette-vars(t.$palette-dark);
+
+    color-scheme: dark;
+  }
+}

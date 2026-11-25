@@ -9,6 +9,7 @@ flowchart TB
   app --> terms["/terms TermsPage"]
 
   landing --> lh[landing-header] & hf[hero-form] & hs[hero-stage] & hiw[how-it-works]
+  hs --> hfl[hero-floats: demo join toasts]
   landing --> fg[feature-grid] & ga[guest-account] & faq[faq-list] & cta[closing-cta] & lf[landing-footer]
 
   join --> rp[room-preview] & gjf[guest-join-form]
@@ -21,5 +22,6 @@ flowchart TB
   res --> cb[confetti-burst]
 ```
 
-Shared building blocks: `logo`, `icon`, `avatar`, `toast`, `site-footer` (copyright and terms link), and the style directives
+Shared building blocks: `logo`, `icon`, `avatar`, `toast`, `site-footer` (copyright and terms link),
+`theme-toggle` (in every page header: system, light, dark), and the style directives
 `appDelay`, `appWidthPercent` and `appBackground` (templates never bind styles directly).

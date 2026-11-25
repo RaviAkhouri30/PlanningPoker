@@ -5,11 +5,11 @@
 
 @import 'bootstrap/scss/functions';
 
-$primary: t.color('accent');
-$dark: t.color('ink');
-$light: t.color('page');
-$body-bg: t.color('page');
-$body-color: t.color('ink');
+$primary: t.raw('accent');
+$dark: t.raw('ink');
+$light: t.raw('page');
+$body-bg: t.raw('page');
+$body-color: t.raw('ink');
 $font-family-base: t.$font-body;
 $headings-font-family: t.$font-display;
 

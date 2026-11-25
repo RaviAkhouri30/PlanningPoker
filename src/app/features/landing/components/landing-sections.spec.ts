@@ -6,6 +6,7 @@ import { FaqListComponent } from './faq-list/faq-list.component';
 import { FeatureGridComponent } from './feature-grid/feature-grid.component';
 import { GuestAccountComponent } from './guest-account/guest-account.component';
 import { JOIN_SLOT_MS, STAGE_JOINS } from '../models/hero-stage.constants';
+import { HeroFloatsComponent } from './hero-floats/hero-floats.component';
 import { HeroStageComponent } from './hero-stage/hero-stage.component';
 import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { LandingFooterComponent } from './landing-footer/landing-footer.component';
@@ -52,8 +53,8 @@ describe('Landing sections', () => {
     expect(render(LandingFooterComponent).querySelectorAll('.footer__link')).toHaveLength(2);
   });
 
-  it('should queue one join toast per seat, each in its own slot, when the hero stage renders', () => {
-    const toasts = render(HeroStageComponent).querySelectorAll<HTMLElement>(
+  it('should queue one join toast per seat, each in its own slot, when the hero floats render', () => {
+    const toasts = render(HeroFloatsComponent).querySelectorAll<HTMLElement>(
       '.float--joined .float__in',
     );
 

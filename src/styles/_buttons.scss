@@ -9,7 +9,7 @@
   padding: 0 16px;
   border-radius: 12px;
   border: 1px solid t.color('line-strong');
-  background: t.color('white');
+  background: t.color('surface');
   color: t.color('ink');
   font: 600 14px/1 t.$font-body;
   text-decoration: none;
@@ -53,14 +53,14 @@
   }
 
   &--dark {
-    background: t.color('ink');
-    border-color: t.color('ink');
-    color: t.color('white');
+    background: t.color('contrast');
+    border-color: t.color('contrast');
+    color: t.color('on-contrast');
 
     &:hover {
-      background: t.color('table-track');
-      border-color: t.color('table-track');
-      color: t.color('white');
+      background: t.color('contrast-hover');
+      border-color: t.color('contrast-hover');
+      color: t.color('on-contrast');
     }
   }
 
@@ -112,7 +112,7 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: t.color('white');
+    background: t.color('surface');
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     transition: transform 0.3s t.$ease-spring;
   }

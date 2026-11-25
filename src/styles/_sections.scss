@@ -11,7 +11,7 @@
 
   &--band {
     max-width: none;
-    background: t.color('white');
+    background: t.color('surface');
     border-block: 1px solid t.color('line');
   }
 
@@ -33,7 +33,7 @@
 
   &__kicker {
     font: 600 14px t.$font-body;
-    color: t.color('accent');
+    color: t.color('accent-text');
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }

@@ -15,8 +15,8 @@
   align-items: center;
   gap: 10px;
   margin: 0;
-  background: t.color('ink');
-  color: t.color('white');
+  background: t.color('contrast');
+  color: t.color('on-contrast');
   border-radius: t.$radius-md;
   padding: 14px 18px;
   font: 600 14px t.$font-body;

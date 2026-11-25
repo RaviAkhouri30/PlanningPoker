@@ -22,7 +22,7 @@
     gap: 6px;
 
     &--on {
-      background: t.color('white');
+      background: t.color('surface');
       color: t.color('ink');
       box-shadow: 0 1px 4px rgba(17, 19, 24, 0.1);
     }
@@ -104,8 +104,8 @@
     min-width: 30px;
     height: 30px;
     border-radius: 8px;
-    background: t.color('ink');
-    color: t.color('white');
+    background: t.color('contrast');
+    color: t.color('on-contrast');
     font: 700 14px t.$font-display;
     display: flex;
     align-items: center;
@@ -116,7 +116,7 @@
   &__badge {
     flex: none;
     font: 600 12px t.$font-body;
-    color: t.color('accent');
+    color: t.color('accent-text');
 
     &--muted {
       color: t.color('text-faint');

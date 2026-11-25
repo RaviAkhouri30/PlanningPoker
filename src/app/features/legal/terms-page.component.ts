@@ -1,3 +1,4 @@
+import { ThemeToggleComponent } from '@shared/components/theme-toggle/theme-toggle.component';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LogoComponent } from '@shared/components/logo/logo.component';
 import {
@@ -12,7 +13,7 @@ import {
  */
 @Component({
   selector: 'app-terms-page',
-  imports: [LogoComponent],
+  imports: [LogoComponent, ThemeToggleComponent],
   templateUrl: './terms-page.component.html',
   styleUrl: './terms-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

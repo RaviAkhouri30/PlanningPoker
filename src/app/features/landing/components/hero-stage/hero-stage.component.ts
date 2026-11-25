@@ -1,17 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AvatarComponent } from '@shared/components/avatar/avatar.component';
-import { IconComponent } from '@shared/components/icon/icon.component';
 import { DelayDirective } from '@shared/directives/delay.directive';
-import { IconName } from '@shared/enums/icon-name.enum';
-import { FAN, STAGE_BOTTOM, STAGE_JOINS, STAGE_TOP } from '../../models/hero-stage.constants';
+import { FAN, STAGE_BOTTOM, STAGE_TOP } from '../../models/hero-stage.constants';
+import { HeroFloatsComponent } from '../hero-floats/hero-floats.component';
 
 /**
- * The hero's decorative table: six cards flip on a loop, a hand of cards bobs below, and a toast
- * announces each person joining, one after another.
+ * The hero's decorative table: six cards flip on a loop and a hand of cards bobs below, with
+ * floating notes around it (`app-hero-floats`).
  */
 @Component({
   selector: 'app-hero-stage',
-  imports: [AvatarComponent, IconComponent, DelayDirective],
+  imports: [AvatarComponent, DelayDirective, HeroFloatsComponent],
   templateUrl: './hero-stage.component.html',
   styleUrl: './hero-stage.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,6 +20,4 @@ export class HeroStageComponent {
   protected readonly top = STAGE_TOP;
   protected readonly bottom = STAGE_BOTTOM;
   protected readonly fan = FAN;
-  protected readonly joins = STAGE_JOINS;
-  protected readonly checkIcon = IconName.Check;
 }

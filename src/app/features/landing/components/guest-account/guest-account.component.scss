@@ -20,7 +20,7 @@
     box-shadow: 0 24px 60px rgba(75, 60, 247, 0.12);
 
     .perk__tick {
-      color: t.color('accent');
+      color: t.color('accent-text');
     }
   }
 
@@ -75,7 +75,7 @@
     width: 100%;
     min-width: 620px;
     border-collapse: collapse;
-    background: t.color('white');
+    background: t.color('surface');
 
     th,
     td {
@@ -99,7 +99,7 @@
   }
 
   &__ours {
-    color: t.color('accent');
+    color: t.color('accent-text');
   }
 
   &__yes {

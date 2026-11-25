@@ -6,7 +6,14 @@
 $palette: (
   // Page and surfaces
   'page': #f4f5f7,
+  // Pure white in both themes: text on the accent and on the dark table, cards on the table.
   'white': #ffffff,
+  // Text on those white cards, dark in both themes.
+  'card-ink': #111318,
+  // Panels, cards and fields: white in light, a raised grey in dark.
+  'surface': #ffffff,
+  // The translucent sticky headers.
+  'glass': rgba(244, 245, 247, 0.86),
   'surface-soft': #f8f8fa,
   'surface-muted': #f1f2f5,
   'accent-wash': #f5f4ff,
@@ -29,6 +36,12 @@ $palette: (
   'accent-deep': #3326c9,
   'accent-light': #7c70ff,
   'accent-pale': #bdb6ff,
+  // The accent as text on surfaces; `accent` is for fills under white text.
+  'accent-text': #4b3cf7,
+  // The strongest fill (dark buttons, toasts), which turns light in dark mode, and its text.
+  'contrast': #111318,
+  'contrast-hover': #262935,
+  'on-contrast': #ffffff,
   // The dark table
   'table': #181a22,
   'table-raised': #2b2f3d,
@@ -52,12 +65,59 @@ $palette: (
   'switch-off': #c9ccd6
 );
 
-/// @return The colour token `$name`.
+// Dark theme: only the tokens that change. The dark table, the status colours and pure white
+// stay as they are. Contrast is checked for text on `surface` and `page` (WCAG AA).
+$palette-dark: (
+  'page': #0e1015,
+  'surface': #171a21,
+  'glass': rgba(14, 16, 21, 0.84),
+  'surface-soft': #1b1e26,
+  'surface-muted': #20232c,
+  'accent-wash': #1c1a33,
+  'accent-tint': #262250,
+  'accent-faint': #191829,
+  'line': #2a2e39,
+  'line-strong': #343845,
+  'line-hover': #4b5162,
+  'accent-line': #4a42a6,
+  'ink': #f1f2f6,
+  'ink-soft': #e2e4eb,
+  'text': #c3c7d2,
+  'text-muted': #a2a7b5,
+  'text-faint': #8b90a1,
+  'accent': #6a5cff,
+  'accent-hover': #7a6eff,
+  'accent-deep': #a59cff,
+  'accent-light': #8f85ff,
+  'accent-text': #8a80ff,
+  'contrast': #f1f2f6,
+  'contrast-hover': #d9dbe3,
+  'on-contrast': #111318,
+  'success-text': #3ccf92,
+  'switch-off': #4a4f5e,
+);
+
+/// @return The colour token `$name`, as a CSS variable so the theme can change it at run time.
 @function color($name) {
   @if not map.has-key($palette, $name) {
     @error 'Unknown colour token: #{$name}';
   }
+  @return var(--pp-#{$name});
+}
+
+/// @return The light value of `$name`, for Sass that needs a real colour (Bootstrap's maths).
+@function raw($name) {
+  @if not map.has-key($palette, $name) {
+    @error 'Unknown colour token: #{$name}';
+  }
   @return map.get($palette, $name);
+}
+
+/// Emits every token in `$map` as a `--pp-*` custom property.
+@mixin palette-vars($map) {
+  @each $name, $value in $map {
+    --pp-#{$name}: #{$value};
+  }
 }
 
 // ---- Type -----------------------------------------------------------------

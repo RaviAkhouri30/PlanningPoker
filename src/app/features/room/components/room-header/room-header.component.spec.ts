@@ -1,3 +1,4 @@
+import { testBackendProviders } from '@shared/testing/test-backend';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { aPerson, aRoom } from '../../testing/room-fixtures';
@@ -5,7 +6,7 @@ import { RoomHeaderComponent } from './room-header.component';
 
 describe('RoomHeaderComponent', () => {
   it('should show the room, presence, code and timer, and ask for the invite', () => {
-    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    TestBed.configureTestingModule({ providers: [provideRouter([]), testBackendProviders()] });
     const fixture = TestBed.createComponent(RoomHeaderComponent);
     fixture.componentRef.setInput('room', aRoom());
     fixture.componentRef.setInput('me', aPerson('mod'));
@@ -27,7 +28,7 @@ describe('RoomHeaderComponent', () => {
   });
 
   it('should ask to replay the tour when the tour button is pressed', () => {
-    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    TestBed.configureTestingModule({ providers: [provideRouter([]), testBackendProviders()] });
     const fixture = TestBed.createComponent(RoomHeaderComponent);
     fixture.componentRef.setInput('room', aRoom());
     const tourStart = vi.fn();
@@ -42,7 +43,7 @@ describe('RoomHeaderComponent', () => {
   });
 
   it('should show "Add story" and ask for the story field when the viewer moderates', () => {
-    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    TestBed.configureTestingModule({ providers: [provideRouter([]), testBackendProviders()] });
     const fixture = TestBed.createComponent(RoomHeaderComponent);
     fixture.componentRef.setInput('room', aRoom());
     fixture.componentRef.setInput('canAddStory', true);

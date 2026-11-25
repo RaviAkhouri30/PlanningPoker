@@ -1,7 +1,7 @@
 @use 'tokens' as t;
 
 .story {
-  background: t.color('white');
+  background: t.color('surface');
   border: 1px solid t.color('line');
   border-radius: t.$radius-lg;
   padding: 22px 24px;
@@ -27,7 +27,7 @@
   }
 
   &__now {
-    color: t.color('accent');
+    color: t.color('accent-text');
   }
 
   &__count {

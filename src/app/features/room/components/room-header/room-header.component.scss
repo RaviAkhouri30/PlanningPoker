@@ -4,7 +4,7 @@
   position: sticky;
   top: 0;
   z-index: t.$z-header;
-  background: rgba(244, 245, 247, 0.88);
+  background: t.color('glass');
   backdrop-filter: blur(12px);
   border-bottom: 1px solid t.color('line');
 
@@ -62,7 +62,7 @@
     height: 44px;
     padding: 0 14px;
     border-radius: 12px;
-    background: t.color('white');
+    background: t.color('surface');
     border: 1px solid t.color('line');
     font: 600 16px t.$font-display;
     font-variant-numeric: tabular-nums;

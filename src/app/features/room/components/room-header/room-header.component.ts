@@ -1,3 +1,4 @@
+import { ThemeToggleComponent } from '@shared/components/theme-toggle/theme-toggle.component';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { AvatarComponent } from '@shared/components/avatar/avatar.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
@@ -13,7 +14,7 @@ import { TourTarget } from '../../models/tour-target.enum';
  */
 @Component({
   selector: 'app-room-header',
-  imports: [LogoComponent, IconComponent, AvatarComponent],
+  imports: [LogoComponent, IconComponent, AvatarComponent, ThemeToggleComponent],
   templateUrl: './room-header.component.html',
   styleUrl: './room-header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,3 +1,4 @@
+import { testBackendProviders } from '@shared/testing/test-backend';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { COPYRIGHT_NOTICE } from '@shared/constants/legal.constants';
@@ -5,7 +6,7 @@ import TermsPageComponent from './terms-page.component';
 
 describe('TermsPageComponent', () => {
   function render(): HTMLElement {
-    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    TestBed.configureTestingModule({ providers: [provideRouter([]), testBackendProviders()] });
     const fixture = TestBed.createComponent(TermsPageComponent);
     fixture.detectChanges();
     return fixture.nativeElement as HTMLElement;
