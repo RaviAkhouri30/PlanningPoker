@@ -1,4 +1,4 @@
-# 04 · Verification — App Check (reCAPTCHA v3)
+# 04 · Verification — App Check (reCAPTCHA Enterprise)
 
 | Check                                   | Result                                                        |
 | --------------------------------------- | ------------------------------------------------------------- |

@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.1] — 2026-11-26
+
+### Changed
+
+- App Check now uses the **reCAPTCHA Enterprise** provider (Firebase "Fraud Defense") instead of
+  the classic reCAPTCHA v3 provider, which Firebase has deprecated (ADR-0012). The deploy workflow
+  passes the `FIREBASE_APP_CHECK_SITE_KEY` secret through to the runtime config, so a key set in CI
+  reaches the live site. Still a no-op until the owner sets the key and turns on enforcement.
+
 ## [1.10.0] — 2026-11-26
 
 ### Security

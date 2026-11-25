@@ -1,8 +1,8 @@
-# ADR-0012: App Check (reCAPTCHA v3) as the stand-in for a rate limiter
+# ADR-0012: App Check (reCAPTCHA Enterprise) as the stand-in for a rate limiter
 
 - **Status:** Accepted
 - **Date:** 2026-11-26
-- **Version:** 1.10.0
+- **Version:** 1.10.0 (wired as classic reCAPTCHA v3); 1.10.1 switched to reCAPTCHA Enterprise
 
 ## Context
 
@@ -16,12 +16,19 @@ not cover the reads and writes that make up the quota.
 
 ## Decision
 
-Turn on **Firebase App Check** with the **reCAPTCHA v3** provider. The SDK attaches an invisible
-attestation token to every Firestore and Auth request; with enforcement on, Firestore rejects any
-request without a valid token, so only the real app (served from our domain, scored by reCAPTCHA)
-can spend the quota.
+Turn on **Firebase App Check** with the **reCAPTCHA Enterprise** provider (Firebase's "Fraud
+Defense"). The SDK attaches an invisible attestation token to every Firestore and Auth request;
+with enforcement on, Firestore rejects any request without a valid token, so only the real app
+(served from our domain, scored by reCAPTCHA) can spend the quota.
 
-- The reCAPTCHA v3 **site key** is public and rides in `runtime-config.js` as an optional
+Why Enterprise and not classic reCAPTCHA v3: Firebase App Check now marks the **classic reCAPTCHA
+provider as deprecated** ("Please use Google Cloud Fraud Defense instead"), so a new setup is built
+on the supported path. The code uses `ReCaptchaEnterpriseProvider` (from 1.10.1; 1.10.0 shipped the
+classic `ReCaptchaV3Provider`, never activated as there was no key yet). Enterprise runs through the
+Google Cloud reCAPTCHA Enterprise API, which needs **billing enabled** on the project (the Blaze
+upgrade already planned) and is free under ~10,000 assessments/month.
+
+- The reCAPTCHA Enterprise **site key** is public and rides in `runtime-config.js` as an optional
   `appCheckSiteKey` (`IFirebaseConfig`), written by CI from `FIREBASE_APP_CHECK_SITE_KEY` when the
   secret is set. It is not a `FirebaseOptions` field, so `getFirebaseApp` strips it before
   `initializeApp`.
@@ -37,8 +44,9 @@ can spend the quota.
   and-adapters design (only `core/backends` touches the SDK).
 - Nothing changes until the owner creates the key and flips enforcement, so this can ship dark and
   be turned on when ready (`docs/operations/pre-launch-checklist.md`).
-- reCAPTCHA v3 loads a Google script and iframe at runtime; it is injected by the already-trusted
-  SDK, so the `strict-dynamic` script-src allows it, and the CSP sets no `frame-src`/`connect-src`,
+- reCAPTCHA Enterprise loads a Google script and iframe at runtime; it is injected by the
+  already-trusted SDK, so the `strict-dynamic` script-src allows it, and the CSP sets no
+  `frame-src`/`connect-src`,
   so its frame and calls are allowed. Verify on the live site when enforcement goes on.
 - A privacy note: reCAPTCHA sends signals to Google. The privacy copy should mention it before
   enforcement, and it pairs with the consent work in the AdSense plan.

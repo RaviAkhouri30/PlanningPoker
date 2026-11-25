@@ -8,7 +8,7 @@ globalThis.__FIREBASE_CONFIG__ = {
   storageBucket: '<project id>.firebasestorage.app',
   messagingSenderId: '<messaging sender id>',
   appId: '<app id>',
-  // Optional: App Check reCAPTCHA v3 site key. Set it to turn on App Check (ADR-0012); leave it
+  // Optional: App Check reCAPTCHA Enterprise site key. Set it to turn on App Check (ADR-0012); leave it
   // out for local work and the emulators.
   // appCheckSiteKey: '<recaptcha v3 site key>',
 };

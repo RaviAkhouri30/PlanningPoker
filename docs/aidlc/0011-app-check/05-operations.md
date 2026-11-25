@@ -1,4 +1,4 @@
-# 05 · Operations — App Check (reCAPTCHA v3)
+# 05 · Operations — App Check (reCAPTCHA Enterprise)
 
 ## Release
 
@@ -9,7 +9,7 @@
 Full steps in [`docs/operations/pre-launch-checklist.md`](../../operations/pre-launch-checklist.md),
 section 2. In short:
 
-1. Create a reCAPTCHA v3 site key and register the web app in Firebase console → Build → App Check.
+1. Create a reCAPTCHA Enterprise site key and register the web app in Firebase console → Build → App Check.
 2. Put the key in `runtime-config.js` as `appCheckSiteKey` and in the CI secret
    `FIREBASE_APP_CHECK_SITE_KEY`; redeploy.
 3. Watch App Check → Metrics until real traffic shows as verified, then **Enforce** on Cloud

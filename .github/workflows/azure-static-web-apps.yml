@@ -61,6 +61,9 @@ jobs:
           FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
           FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          # Optional: App Check reCAPTCHA Enterprise site key. The script writes it only when set,
+          # so a repo without the secret still deploys (App Check stays off). See ADR-0012.
+          FIREBASE_APP_CHECK_SITE_KEY: ${{ secrets.FIREBASE_APP_CHECK_SITE_KEY }}
       - name: Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1

@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { ReCaptchaV3Provider, initializeAppCheck } from 'firebase/app-check';
+import { ReCaptchaEnterpriseProvider, initializeAppCheck } from 'firebase/app-check';
 import { getFirebaseApp } from './firebase-app';
 
 vi.mock('firebase/app', async () => (await import('./testing/firebase-sdk.mock')).firebaseAppMock);
@@ -32,14 +32,14 @@ describe('getFirebaseApp', () => {
     expect(initializeApp).toHaveBeenCalledWith(config);
   });
 
-  it('should start App Check with the reCAPTCHA v3 site key', () => {
+  it('should start App Check with the reCAPTCHA Enterprise site key', () => {
     getFirebaseApp({ ...config, appCheckSiteKey: 'site-key' });
 
-    expect(ReCaptchaV3Provider).toHaveBeenCalledWith('site-key');
+    expect(ReCaptchaEnterpriseProvider).toHaveBeenCalledWith('site-key');
     const call = vi.mocked(initializeAppCheck).mock.calls[0];
     expect(call?.[0]).toBe(app);
     expect(call?.[1].isTokenAutoRefreshEnabled).toBe(true);
-    expect(call?.[1].provider).toBeInstanceOf(ReCaptchaV3Provider);
+    expect(call?.[1].provider).toBeInstanceOf(ReCaptchaEnterpriseProvider);
   });
 
   it('should start App Check only once for the same app', () => {

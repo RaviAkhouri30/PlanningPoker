@@ -1,4 +1,4 @@
-# 02 · Design — App Check (reCAPTCHA v3)
+# 02 · Design — App Check (reCAPTCHA Enterprise)
 
 See [ADR-0012](../../architecture/adr/0012-app-check-recaptcha.md) for the decision.
 
@@ -15,7 +15,7 @@ flowchart LR
   FC --> FG[FirestoreGateway]
   AG --> GFA[getFirebaseApp]
   FG --> GFA
-  GFA -->|site key, once| AC[initializeAppCheck · ReCaptchaV3Provider]
+  GFA -->|site key, once| AC[initializeAppCheck · ReCaptchaEnterpriseProvider]
   GFA -->|always| IA[initializeApp]
 
 ```

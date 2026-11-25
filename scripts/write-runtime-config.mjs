@@ -27,7 +27,7 @@ if (missing.length > 0) {
 const config = Object.fromEntries(
   Object.entries(VARIABLES).map(([key, name]) => [key, process.env[name]]),
 );
-// App Check reCAPTCHA v3 site key: optional, so a deploy without it still ships (App Check stays
+// App Check reCAPTCHA Enterprise site key: optional, so a deploy without it still ships (App Check stays
 // off until it's set). Public, like the rest of this config.
 if (process.env.FIREBASE_APP_CHECK_SITE_KEY) {
   config.appCheckSiteKey = process.env.FIREBASE_APP_CHECK_SITE_KEY;

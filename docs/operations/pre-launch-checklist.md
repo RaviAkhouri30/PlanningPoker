@@ -35,23 +35,30 @@ traffic spike into an email instead of a silent outage or a surprise bill.
 App Check makes Firestore reject any request that doesn't come from your real app, so a script
 can't spam your quota. It is **part console, part code**.
 
-### 2a. reCAPTCHA + register the provider (owner, console) — 10 min
+Classic reCAPTCHA is **deprecated** in App Check, so use **Fraud Defense (reCAPTCHA Enterprise)**
+(ADR-0012). It needs billing (Blaze), which §1 already covers.
 
-- [ ] Get a **reCAPTCHA v3 site key**: Firebase console → **Build → App Check** → your web app →
-      **reCAPTCHA v3** → follow the link to create a key, add the domains
-      `www.planningpoker.in`, `planningpoker.in` and (for testing) `localhost`. Copy the
-      **site key**.
-- [ ] In **App Check**, register the web app with that reCAPTCHA v3 site key.
-- [ ] Put the site key where the app can read it: add it to `public/runtime-config.js` (the
-      git-ignored runtime config) and to the CI secret that writes that file, as e.g.
-      `appCheckSiteKey`. (The site key is public by design — it is safe in the client.)
+### 2a. Create the key and register the provider (owner, console) — 10 min
 
-### 2b. Wire the provider (code — **done in 1.10.0**, ADR-0012)
+- [ ] Create a **reCAPTCHA Enterprise key**: Google Cloud console →
+      **https://console.cloud.google.com/security/recaptcha** (project `planningpoker-6bc64`) →
+      enable the reCAPTCHA Enterprise API if asked → **Create key** → **Website**, add
+      `planningpoker.in` and `www.planningpoker.in`, leave "Use checkbox challenge" **off**
+      (score-based). Copy the **Key ID** — that's the site key.
+- [ ] Firebase console → **Build → App Check** → your web app → **Fraud Defense (reCAPTCHA
+      Enterprise)** → paste the Key ID → leave token TTL at 1 hour → **Save**. Status shows
+      **Registered**.
+- [ ] Put the site key where the app can read it: the CI secret
+      **`FIREBASE_APP_CHECK_SITE_KEY`** (the workflow passes it to `write-runtime-config.mjs`),
+      and optionally `public/runtime-config.js` locally. The site key is public by design.
+
+### 2b. Wire the provider (code — **done**, ADR-0012)
 
 - [x] Done: `getFirebaseApp` ([firebase-app.ts](../../src/app/core/backends/firebase/firebase-app.ts))
-      starts App Check once when `runtime-config.js` carries `appCheckSiteKey`; both gateways route
-      through it, and it's a no-op without a key (so `npm start`, the emulators and the Fake
-      backend are untouched).
+      starts App Check once with `ReCaptchaEnterpriseProvider` when `runtime-config.js` carries
+      `appCheckSiteKey`; both gateways route through it, and it's a no-op without a key (so
+      `npm start`, the emulators and the Fake backend are untouched). The deploy workflow passes
+      the `FIREBASE_APP_CHECK_SITE_KEY` secret to the config writer (1.10.1).
 - [ ] After you set the key and deploy, confirm the app still loads (reCAPTCHA under the CSP);
       the `strict-dynamic` policy should allow the SDK-injected script (ADR-0012).
 

@@ -1,4 +1,4 @@
-# 01 · Inception — App Check (reCAPTCHA v3)
+# 01 · Inception — App Check (reCAPTCHA Enterprise)
 
 Requested by the owner on 2026-11-26: "what about DDoS, let's implement CAPTCHA, in case a rate
 limiter is not possible." Follows the DoS / denial-of-wallet finding in the security audit
@@ -9,7 +9,7 @@ limiter is not possible." Follows the DoS / denial-of-wallet finding in the secu
 There is no server of ours in front of Firestore to rate-limit, and anonymous sign-in is open, so
 a script could exhaust the project's daily free quota (an outage until reset on Spark, a bill on
 Blaze). The rules bound each write but cannot throttle requests. Close the hole with the right
-CAPTCHA for an API-backed app: **App Check with reCAPTCHA v3**, which attests *every* request
+CAPTCHA for an API-backed app: **App Check with reCAPTCHA Enterprise**, which attests *every* request
 invisibly — not a visible challenge on one form.
 
 ## User stories
@@ -22,7 +22,7 @@ invisibly — not a visible challenge on one form.
 
 ## Acceptance criteria
 
-- App Check starts once on the shared Firebase app when a reCAPTCHA v3 **site key** is present in
+- App Check starts once on the shared Firebase app when a reCAPTCHA Enterprise **site key** is present in
   `runtime-config.js`; with no key it is a plain `initializeApp`.
 - The site key is public, optional, written by CI from a secret, and never passed to
   `initializeApp` (it is not a `FirebaseOptions` field).
@@ -33,7 +33,7 @@ invisibly — not a visible challenge on one form.
 
 ## Risks & open questions
 
-- reCAPTCHA v3 loads a Google script/iframe; confirmed compatible with the `strict-dynamic` CSP in
+- reCAPTCHA Enterprise loads a Google script/iframe; confirmed compatible with the `strict-dynamic` CSP in
   reasoning (ADR-0012), to be verified on the live site at enforcement.
 - reCAPTCHA sends signals to Google — a privacy-copy note is owed before enforcement, aligned with
   the AdSense consent work.

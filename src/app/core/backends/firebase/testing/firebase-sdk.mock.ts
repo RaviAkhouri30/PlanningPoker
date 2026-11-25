@@ -9,7 +9,7 @@ export const firebaseAppMock = {
 
 export const appCheckMock = {
   initializeAppCheck: vi.fn(),
-  ReCaptchaV3Provider: vi.fn(),
+  ReCaptchaEnterpriseProvider: vi.fn(),
 };
 
 export const firestoreMock = {
