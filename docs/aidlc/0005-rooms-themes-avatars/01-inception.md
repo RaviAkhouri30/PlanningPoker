@@ -38,8 +38,8 @@ and the moderator always votes.
 - Room: no dark table; the deck is the centre of the room while voting; results show average,
   median, agreement, each person's card and a colour-coded distribution; grey for people who
   didn't vote.
-- Facilitator: the creator chooses "I'll vote" or "Facilitate only" when creating a room, and can
-  switch in the room; a facilitator is a spectator, so auto-reveal ignores them.
+- Facilitator: the creator chooses "I'll vote" or "Facilitate only" when creating a room
+  (facilitating is ticked by default), and can switch in the room; a facilitator is a spectator, so auto-reveal ignores them.
 - Avatars: 16 animals, picked on the create and join forms, random by default; stored on the seat;
   rules accept only known avatar ids; rules tests cover it.
 - My rooms: every room you create or join is listed (name, code, your role, last visit); the

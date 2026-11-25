@@ -53,8 +53,11 @@ export class LandingViewModel extends ViewModel<ILandingState> {
       validators: [TextValidators.maxTrimmed(LIMITS.roomName)],
     }),
     avatar: new FormControl<Animal>(animalAt(inject(RANDOM)()), { nonNullable: true }),
-    /** The organiser runs the session without voting (a scrum master, say). */
-    facilitate: new FormControl(false, { nonNullable: true }),
+    /**
+     * The organiser runs the session without voting (a scrum master, say). On by default: the
+     * owner's call, as most rooms are created by whoever runs the session.
+     */
+    facilitate: new FormControl(true, { nonNullable: true }),
   });
 
   /** "Got a code?" */

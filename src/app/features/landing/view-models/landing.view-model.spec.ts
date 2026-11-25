@@ -52,6 +52,10 @@ describe('LandingViewModel', () => {
     expect(model.createLabel()).toBe('Create room as Alex');
   });
 
+  it('should start with the organiser facilitating when the form first shows', () => {
+    expect(model.createForm.controls.facilitate.value).toBe(true);
+  });
+
   it('should seat the organiser on the colour their animal suits when they pick one', () => {
     model.pickAvatar(Animal.Penguin);
 
