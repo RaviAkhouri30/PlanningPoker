@@ -13,17 +13,17 @@ import { roomMemberGuard } from '@shared/guards/room-member.guard';
 export const routes: Routes = [
   {
     path: '',
-    title: 'Ante — Planning poker',
+    title: 'PlanningPoker — Estimate together',
     loadComponent: () => import('@features/landing/landing-page.component'),
   },
   {
     path: `${ROOM_ROUTE_SEGMENT}/:${ROOM_ID_PARAM}/${JOIN_ROUTE_SEGMENT}`,
-    title: 'Ante — Join the room',
+    title: 'PlanningPoker — Join the room',
     loadComponent: () => import('@features/join/join-page.component'),
   },
   {
     path: `${ROOM_ROUTE_SEGMENT}/:${ROOM_ID_PARAM}`,
-    title: 'Ante — Planning room',
+    title: 'PlanningPoker — Planning room',
     canActivate: [roomMemberGuard],
     loadComponent: () => import('@features/room/room-page.component'),
   },

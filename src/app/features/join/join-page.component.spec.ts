@@ -18,7 +18,7 @@ describe('JoinPageComponent', () => {
       providers: [
         ...testBackendProviders(),
         provideRouter([]),
-        { provide: APP_ORIGIN, useValue: 'https://ante.test' },
+        { provide: APP_ORIGIN, useValue: 'https://planningpoker.test' },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { paramMap: convertToParamMap({ roomId: 'r1' }) } },

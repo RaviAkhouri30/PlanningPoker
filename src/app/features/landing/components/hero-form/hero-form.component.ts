@@ -23,7 +23,7 @@ export class HeroFormComponent {
   public readonly forms = input.required<IHeroForms>();
   /** What the forms are doing. */
   public readonly state = input.required<ILandingState>();
-  /** The start of the room link, e.g. `ante.example.com/r/`. */
+  /** The start of the room link, e.g. `planningpoker.example.com/r/`. */
   public readonly linkPrefix = input.required<string>();
   /** The link's slug from the room name so far. */
   public readonly slug = input.required<string>();

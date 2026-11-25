@@ -1,6 +1,6 @@
 // @ts-check
 /**
- * ESLint flat config for Ante.
+ * ESLint flat config for PlanningPoker.
  *
  * Encodes the CLAUDE.md rules as lint errors so they are enforced, not just documented:
  * file size, SOLID-friendly class shape, Angular best practices, Sonar code smells,

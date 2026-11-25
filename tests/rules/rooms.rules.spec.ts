@@ -17,7 +17,7 @@ import { STORE_PATHS } from '@shared/constants/store-paths.constants';
 /** What the emulator rejects a read or write with when the rules don't allow it. */
 const DENIED = { code: 'permission-denied' };
 
-/** Runs against the emulator started by `npm run test:rules` (project `demo-ante`). */
+/** Runs against the emulator started by `npm run test:rules` (project `demo-planning-poker`). */
 describe('firestore.rules · rooms', () => {
   const ROOM = 'sprint-42-aaaaaa';
   const CODE = 'X7K2-92';
@@ -106,7 +106,7 @@ describe('firestore.rules · rooms', () => {
 
   beforeAll(async () => {
     env = await initializeTestEnvironment({
-      projectId: 'demo-ante',
+      projectId: 'demo-planning-poker',
       firestore: { rules: readFileSync('firestore.rules', 'utf8') },
     });
   });

@@ -3,7 +3,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 import { IconName } from '@shared/enums/icon-name.enum';
 import { ACCOUNT_PERKS, COMPARISONS, GUEST_PERKS } from '../../models/landing-content.constants';
 
-/** "Your choice": guest versus free account, and how Ante compares with a typical tool. */
+/** "Your choice": guest versus free account, and how PlanningPoker compares with a typical tool. */
 @Component({
   selector: 'app-guest-account',
   imports: [IconComponent],

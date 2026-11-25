@@ -36,7 +36,7 @@ describe('Landing sections', () => {
     const section = render(GuestAccountComponent);
 
     expect(section.querySelectorAll('.plan')).toHaveLength(2);
-    expect(section.querySelector('caption')?.textContent).toContain('How Ante compares');
+    expect(section.querySelector('caption')?.textContent).toContain('How PlanningPoker compares');
   });
 
   it('should list the questions with the first open', () => {

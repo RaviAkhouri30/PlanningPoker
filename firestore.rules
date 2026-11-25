@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Ante's security rules (docs/architecture/data-model.md, ADR-0008).
+// PlanningPoker's security rules (docs/architecture/data-model.md, ADR-0008).
 //
 // Everyone is signed in: guests anonymously (ADR-0007). A room's moderator changes the room and
 // its stories; each person writes only their own seat and their own vote. A vote stays secret

@@ -36,7 +36,7 @@ export default defineConfig({
     // group, so Playwright's default SIGKILL would orphan it (and hold port 8080). SIGINT lets
     // the CLI shut its emulators down first.
     command:
-      'npx firebase emulators:exec --only firestore,auth --project demo-ante ' +
+      'npx firebase emulators:exec --only firestore,auth --project demo-planning-poker ' +
       `"npx ng serve --configuration emulator --port ${String(PORT)}"`,
     url: BASE_URL,
     reuseExistingServer: false,

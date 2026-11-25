@@ -20,7 +20,7 @@ describe('LandingViewModel', () => {
       providers: [
         ...testBackendProviders(),
         provideRouter([]),
-        { provide: APP_ORIGIN, useValue: 'https://ante.test' },
+        { provide: APP_ORIGIN, useValue: 'https://planningpoker.test' },
         LandingViewModel,
       ],
     });
@@ -36,7 +36,7 @@ describe('LandingViewModel', () => {
   });
 
   it('should preview the link and the button from what is typed', () => {
-    expect(model.linkPrefix).toBe('ante.test/r/');
+    expect(model.linkPrefix).toBe('planningpoker.test/r/');
     expect(model.slugPreview()).toBe(LANDING_MESSAGES.slugPlaceholder);
     expect(model.createLabel()).toBe(LANDING_MESSAGES.createLabel);
 

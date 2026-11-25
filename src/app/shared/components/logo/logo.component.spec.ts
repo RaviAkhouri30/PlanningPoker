@@ -11,7 +11,7 @@ describe('LogoComponent', () => {
 
     const link = (fixture.nativeElement as HTMLElement).querySelector('a')!;
     expect(link.getAttribute('href')).toBe('/');
-    expect(link.getAttribute('aria-label')).toBe('Ante home');
+    expect(link.getAttribute('aria-label')).toBe('PlanningPoker home');
     expect(link.classList).toContain('logo--compact');
   });
 });

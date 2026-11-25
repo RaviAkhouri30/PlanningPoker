@@ -63,7 +63,7 @@ export class JoinViewModel extends ViewModel<IJoinState> {
   /** The page's state, never undefined. */
   public readonly view = computed(() => this.data() ?? LOADING_JOIN);
 
-  /** The link as people see it, e.g. `ante.example.com/r/sprint-42-x7k2ab`. */
+  /** The link as people see it, e.g. `planningpoker.example.com/r/sprint-42-x7k2ab`. */
   public readonly linkLabel = `${inject(APP_ORIGIN).replace(/^https?:\/\//, '')}/${ROOM_ROUTE_SEGMENT}/${this.roomId}`;
 
   /** The seat as it will look, from the form so far. */

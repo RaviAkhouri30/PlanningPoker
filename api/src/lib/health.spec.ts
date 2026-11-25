@@ -8,7 +8,7 @@ describe('health', () => {
 
     expect(response.status).toBe(200);
     expect(response.jsonBody).toEqual({
-      name: 'ante-api',
+      name: 'planning-poker-api',
       status: 'ok',
       at: '2026-11-25T00:00:00.000Z',
     });

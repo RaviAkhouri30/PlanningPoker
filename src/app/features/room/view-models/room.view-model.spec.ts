@@ -32,7 +32,7 @@ describe('RoomViewModel', () => {
       providers: [
         ...testBackendProviders(),
         provideRouter([]),
-        { provide: APP_ORIGIN, useValue: 'https://ante.test' },
+        { provide: APP_ORIGIN, useValue: 'https://planningpoker.test' },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { paramMap: convertToParamMap({ roomId: 'r1' }) } },
@@ -71,7 +71,7 @@ describe('RoomViewModel', () => {
     expect(model.tableSeats().map((seat) => seat.shortName)).toEqual(['You', 'Maya']);
     expect(model.playerCount()).toBe(2);
     expect(model.canVote()).toBe(true);
-    expect(model.link).toBe('ante.test/r/r1');
+    expect(model.link).toBe('planningpoker.test/r/r1');
   });
 
   it('should tick the timer and count who is online', () => {

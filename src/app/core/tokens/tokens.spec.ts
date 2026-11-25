@@ -9,10 +9,12 @@ import { RANDOM } from './random.token';
 describe('tokens', () => {
   it('should read the origin from the document', () => {
     TestBed.configureTestingModule({
-      providers: [{ provide: DOCUMENT, useValue: { location: { origin: 'https://ante.test' } } }],
+      providers: [
+        { provide: DOCUMENT, useValue: { location: { origin: 'https://planningpoker.test' } } },
+      ],
     });
 
-    expect(TestBed.inject(APP_ORIGIN)).toBe('https://ante.test');
+    expect(TestBed.inject(APP_ORIGIN)).toBe('https://planningpoker.test');
   });
 
   it('should tell the time and draw numbers in [0, 1)', () => {

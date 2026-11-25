@@ -13,7 +13,7 @@ describe('LandingPageComponent', () => {
       providers: [
         ...testBackendProviders(),
         provideRouter([]),
-        { provide: APP_ORIGIN, useValue: 'https://ante.test' },
+        { provide: APP_ORIGIN, useValue: 'https://planningpoker.test' },
       ],
     });
     fixture = TestBed.createComponent(LandingPageComponent);

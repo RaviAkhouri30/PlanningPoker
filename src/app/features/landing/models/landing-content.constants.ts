@@ -25,7 +25,7 @@ export interface IQuestion {
 /** One row of the comparison table. */
 export interface IComparison {
   readonly feature: string;
-  readonly ante: string;
+  readonly ours: string;
   readonly typical: string;
 }
 
@@ -47,7 +47,7 @@ export const STEPS: readonly IStep[] = [
 
 export const SMART_VOTING = {
   title: 'Smart voting',
-  text: 'After the flip, Ante shows the average, the spread and an agreement score, suggests the nearest card, and names the two furthest-apart voters so the right people explain first.',
+  text: 'After the flip, PlanningPoker shows the average, the spread and an agreement score, suggests the nearest card, and names the two furthest-apart voters so the right people explain first.',
   chips: ['Average 5.5', '83% agreement', 'Suggested 5', 'Leo (3) vs Jonah (8): talk it out'],
 } as const;
 
@@ -97,14 +97,14 @@ export const ACCOUNT_PERKS: readonly string[] = [
 ];
 
 export const COMPARISONS: readonly IComparison[] = [
-  { feature: 'Join without an account', ante: 'Yes', typical: 'Often requires sign-up' },
+  { feature: 'Join without an account', ours: 'Yes', typical: 'Often requires sign-up' },
   {
     feature: 'Cards hidden until the flip',
-    ante: 'Yes, enforced by the server',
+    ours: 'Yes, enforced by the server',
     typical: 'Usually',
   },
-  { feature: 'Smart voting & outlier hints', ante: 'Yes', typical: 'Rare' },
-  { feature: 'Multiple scales', ante: 'Yes', typical: 'Usually' },
+  { feature: 'Smart voting & outlier hints', ours: 'Yes', typical: 'Rare' },
+  { feature: 'Multiple scales', ours: 'Yes', typical: 'Usually' },
 ];
 
 export const QUESTIONS: readonly IQuestion[] = [

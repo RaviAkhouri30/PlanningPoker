@@ -2,7 +2,7 @@
 // variables, for CI (CLAUDE.md §10: never committed). Fails when a value is missing, so a deploy
 // can't ship a site that can't reach its database.
 //
-//   node scripts/write-runtime-config.mjs dist/ante/browser/runtime-config.js
+//   node scripts/write-runtime-config.mjs dist/planning-poker/browser/runtime-config.js
 import { writeFileSync } from 'node:fs';
 
 const VARIABLES = {

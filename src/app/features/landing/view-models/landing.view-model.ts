@@ -56,7 +56,7 @@ export class LandingViewModel extends ViewModel<ILandingState> {
   /** The forms' progress and errors, never undefined. */
   public readonly view = computed(() => this.data() ?? IDLE_LANDING);
 
-  /** The start of every room link, e.g. `ante.example.com/r/`. */
+  /** The start of every room link, e.g. `planningpoker.example.com/r/`. */
   public readonly linkPrefix = `${inject(APP_ORIGIN).replace(/^https?:\/\//, '')}/${ROOM_ROUTE_SEGMENT}/`;
 
   /** The room link's slug as it will look, from the room name typed so far. */

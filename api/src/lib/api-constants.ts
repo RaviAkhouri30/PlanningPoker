@@ -5,4 +5,4 @@ export enum HttpStatus {
 }
 
 /** Reported by the health check, so a deploy can be matched to its build. */
-export const API_NAME = 'ante-api';
+export const API_NAME = 'planning-poker-api';

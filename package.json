@@ -1,5 +1,5 @@
 {
-  "name": "ante",
+  "name": "planning-poker",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -17,7 +17,7 @@
     "test:watch": "ng test",
     "test:coverage": "ng test --watch=false --coverage",
     "test:api": "npm --prefix api run test:coverage",
-    "test:rules": "firebase emulators:exec --only firestore,auth --project demo-ante \"vitest run --config vitest.rules.config.ts\"",
+    "test:rules": "firebase emulators:exec --only firestore,auth --project demo-planning-poker \"vitest run --config vitest.rules.config.ts\"",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "e2e:firebase": "playwright test --config playwright.firebase.config.ts",
@@ -30,7 +30,7 @@
     "release:patch": "npm version patch -m \"chore(release): v%s\"",
     "release:minor": "npm version minor -m \"chore(release): v%s\"",
     "release:major": "npm version major -m \"chore(release): v%s\"",
-    "emulators": "firebase emulators:start --only firestore,auth --project demo-ante"
+    "emulators": "firebase emulators:start --only firestore,auth --project demo-planning-poker"
   },
   "private": true,
   "packageManager": "npm@11.19.0",

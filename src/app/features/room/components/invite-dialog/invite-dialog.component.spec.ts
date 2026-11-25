@@ -7,7 +7,7 @@ describe('InviteDialogComponent', () => {
   function render(open: boolean, canConfigure = true): HTMLDialogElement {
     fixture = TestBed.createComponent(InviteDialogComponent);
     fixture.componentRef.setInput('open', open);
-    fixture.componentRef.setInput('link', 'ante.test/r/r1');
+    fixture.componentRef.setInput('link', 'planningpoker.test/r/r1');
     fixture.componentRef.setInput('code', 'X7K2-91');
     fixture.componentRef.setInput('canConfigure', canConfigure);
     fixture.detectChanges();
@@ -58,7 +58,7 @@ describe('InviteDialogComponent', () => {
     dialog.querySelector<HTMLButtonElement>('.switch')?.click();
     dialog.querySelector<HTMLButtonElement>('[aria-label="Close"]')?.click();
 
-    expect(dialog.textContent).toContain('ante.test/r/r1');
+    expect(dialog.textContent).toContain('planningpoker.test/r/r1');
     expect(dialog.textContent).toContain('X7K2-91');
     expect(calls).toEqual(['copy', 'spectators', 'close']);
   });

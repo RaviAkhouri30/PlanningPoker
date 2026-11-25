@@ -1,7 +1,7 @@
 {
-  "name": "ante-api",
+  "name": "planning-poker-api",
   "version": "1.0.0",
-  "description": "Azure Functions for Ante (health now; integrations later).",
+  "description": "Azure Functions for PlanningPoker (health now; integrations later).",
   "private": true,
   "type": "module",
   "main": "dist/functions/*.js",

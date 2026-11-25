@@ -10,9 +10,9 @@ export const environment: IAppEnvironment = {
   backend: BackendType.Firebase,
   firebase: {
     apiKey: 'demo-api-key',
-    authDomain: 'demo-ante.firebaseapp.com',
-    projectId: 'demo-ante',
-    storageBucket: 'demo-ante.firebasestorage.app',
+    authDomain: 'demo-planning-poker.firebaseapp.com',
+    projectId: 'demo-planning-poker',
+    storageBucket: 'demo-planning-poker.firebasestorage.app',
     messagingSenderId: '000000000000',
     appId: 'demo-app-id',
   },

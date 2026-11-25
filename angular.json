@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "ante": {
+    "planning-poker": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -112,13 +112,13 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ante:build:production"
+              "buildTarget": "planning-poker:build:production"
             },
             "development": {
-              "buildTarget": "ante:build:development"
+              "buildTarget": "planning-poker:build:development"
             },
             "emulator": {
-              "buildTarget": "ante:build:emulator"
+              "buildTarget": "planning-poker:build:emulator"
             }
           },
           "defaultConfiguration": "development"

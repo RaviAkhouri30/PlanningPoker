@@ -27,7 +27,7 @@ describe('JoinViewModel', () => {
       providers: [
         ...testBackendProviders(),
         provideRouter([]),
-        { provide: APP_ORIGIN, useValue: 'https://ante.test' },
+        { provide: APP_ORIGIN, useValue: 'https://planningpoker.test' },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { paramMap: convertToParamMap({ roomId: 'r1' }) } },
@@ -63,7 +63,7 @@ describe('JoinViewModel', () => {
     });
     expect(model.view().room?.name).toBe('Sprint 42');
     expect(model.view().people.map((person) => person.uid)).toEqual(['mod']);
-    expect(model.linkLabel).toBe('ante.test/r/r1');
+    expect(model.linkLabel).toBe('planningpoker.test/r/r1');
   });
 
   it('should default to a free colour and the room’s default role', async () => {

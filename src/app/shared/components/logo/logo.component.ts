@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-/** The Ante mark (two tilted cards) and word mark, linking home. */
+/** The PlanningPoker mark (two tilted cards) and word mark, linking home. */
 @Component({
   selector: 'app-logo',
   imports: [RouterLink],

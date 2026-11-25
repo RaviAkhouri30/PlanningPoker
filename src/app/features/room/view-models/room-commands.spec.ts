@@ -33,7 +33,7 @@ describe('RoomCommands', () => {
       providers: [
         ...testBackendProviders(),
         provideRouter([]),
-        { provide: APP_ORIGIN, useValue: 'https://ante.test' },
+        { provide: APP_ORIGIN, useValue: 'https://planningpoker.test' },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { paramMap: convertToParamMap({ roomId: 'r1' }) } },
@@ -150,7 +150,7 @@ describe('RoomCommands', () => {
     copy.mockReturnValueOnce(throwError(() => new Error('denied')));
     model.commands.copyLink();
 
-    expect(copy).toHaveBeenCalledWith('https://ante.test/r/r1');
+    expect(copy).toHaveBeenCalledWith('https://planningpoker.test/r/r1');
     expect(show).toHaveBeenCalledWith(ROOM_MESSAGES.linkCopied, expect.anything());
     expect(show).toHaveBeenCalledWith(ROOM_MESSAGES.copyFailed, expect.anything());
   });

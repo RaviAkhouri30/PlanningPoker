@@ -38,12 +38,12 @@
     <div class="compare">
       <table class="compare__table">
         <caption class="compare__caption">
-          How Ante compares
+          How PlanningPoker compares
         </caption>
         <thead>
           <tr>
             <th scope="col">Feature</th>
-            <th scope="col" class="compare__ante">Ante</th>
+            <th scope="col" class="compare__ours">PlanningPoker</th>
             <th scope="col">Typical free planning poker tool</th>
           </tr>
         </thead>
@@ -51,7 +51,7 @@
           @for (row of comparisons; track row.feature) {
             <tr>
               <th scope="row">{{ row.feature }}</th>
-              <td class="compare__yes">{{ row.ante }}</td>
+              <td class="compare__yes">{{ row.ours }}</td>
               <td class="compare__no">{{ row.typical }}</td>
             </tr>
           }

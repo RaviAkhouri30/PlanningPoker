@@ -23,7 +23,7 @@ describe('HeroFormComponent', () => {
     const fixture = TestBed.createComponent(HeroFormComponent);
     fixture.componentRef.setInput('forms', forms);
     fixture.componentRef.setInput('state', state);
-    fixture.componentRef.setInput('linkPrefix', 'ante.test/r/');
+    fixture.componentRef.setInput('linkPrefix', 'planningpoker.test/r/');
     fixture.componentRef.setInput('slug', 'sprint-42');
     fixture.componentRef.setInput('createLabel', 'Create my room');
     fixture.detectChanges();
@@ -35,7 +35,9 @@ describe('HeroFormComponent', () => {
   it('should preview the link and explain a missing name', () => {
     const { element } = render();
 
-    expect(element.querySelector('.panel__link')?.textContent).toContain('ante.test/r/sprint-42-…');
+    expect(element.querySelector('.panel__link')?.textContent).toContain(
+      'planningpoker.test/r/sprint-42-…',
+    );
     expect(element.querySelector('#hero-name-error')?.textContent).toContain('Enter your name');
   });
 
