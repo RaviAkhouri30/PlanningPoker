@@ -19,21 +19,21 @@
   <div class="list" role="tabpanel">
     @for (story of stories(); track story.id) {
       <button
-        class="row"
+        class="item"
         type="button"
-        [class.row--active]="story.id === activeId()"
+        [class.item--active]="story.id === activeId()"
         [attr.aria-current]="story.id === activeId() ? 'true' : null"
         [disabled]="!isModerator()"
         (click)="storyPick.emit(story)"
       >
         <span class="key">{{ story.key }}</span>
-        <span class="row__title">{{ story.title }}</span>
+        <span class="item__title">{{ story.title }}</span>
         @if (story.id === activeId()) {
-          <span class="row__badge">Voting</span>
+          <span class="item__badge">Voting</span>
         } @else if (story.estimate !== null) {
-          <span class="row__estimate">{{ story.estimate }}</span>
+          <span class="item__estimate">{{ story.estimate }}</span>
         } @else if (story.status === skipped) {
-          <span class="row__badge row__badge--muted">Skipped</span>
+          <span class="item__badge row__badge--muted">Skipped</span>
         }
       </button>
     } @empty {

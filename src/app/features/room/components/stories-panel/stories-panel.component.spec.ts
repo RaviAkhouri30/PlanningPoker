@@ -24,10 +24,10 @@ describe('StoriesPanelComponent', () => {
     const element = render(false);
 
     expect(element.querySelector('[aria-current="true"]')?.textContent).toContain('Voting');
-    expect(element.querySelector('.row__estimate')?.textContent).toContain('5');
+    expect(element.querySelector('.item__estimate')?.textContent).toContain('5');
     expect(element.textContent).toContain('Skipped');
     expect(element.querySelector('form')).toBeNull();
-    expect(element.querySelector<HTMLButtonElement>('.row')?.disabled).toBe(true);
+    expect(element.querySelector<HTMLButtonElement>('.item')?.disabled).toBe(true);
   });
 
   it('should let the moderator pick a tab, a story and add one', () => {
@@ -40,13 +40,29 @@ describe('StoriesPanelComponent', () => {
     const form = element.querySelector('form')!;
 
     element.querySelectorAll<HTMLButtonElement>('[role="tab"]')[1]?.click();
-    element.querySelectorAll<HTMLButtonElement>('.row')[1]?.click();
+    element.querySelectorAll<HTMLButtonElement>('.item')[1]?.click();
     form.dispatchEvent(new Event('submit'));
     field.value = 'PAY-1 Refunds';
     form.dispatchEvent(new Event('submit'));
 
     expect(picks).toEqual([StoryTab.Done, 's2', 'PAY-1 Refunds']);
     expect(field.value).toBe('');
+  });
+
+  it('should put the cursor in the story field when asked to focus it', () => {
+    const element = render(true);
+
+    fixture.componentInstance.focusDraft();
+
+    expect(document.activeElement).toBe(element.querySelector('#new-story'));
+  });
+
+  it('should ignore a focus request when the viewer is not the moderator', () => {
+    render(false);
+
+    expect(() => {
+      fixture.componentInstance.focusDraft();
+    }).not.toThrow();
   });
 
   it('should say when a tab is empty', () => {

@@ -1,10 +1,13 @@
 {
   "name": "planning-poker",
-  "version": "1.1.0",
+  "version": "1.2.0",
+  "author": "Ravi Akhouri",
+  "license": "UNLICENSED",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "start:emulator": "ng serve --configuration emulator",
+    "start:live": "ng serve --configuration live",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint --max-warnings 0",
@@ -23,7 +26,7 @@
     "e2e:firebase": "playwright test --config playwright.firebase.config.ts",
     "e2e:visual:update": "playwright test visual --update-snapshots",
     "e2e:install": "playwright install --with-deps chromium",
-    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes",
+    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes --project live",
     "sonar": "npm run lint:report && npx --yes @sonar/scan@5.0.2 -Dsonar.projectVersion=$npm_package_version",
     "check:diagrams": "node scripts/check-diagrams.mjs",
     "verify": "npm run format:check && npm run lint && npm run check:diagrams && npm run typecheck && npm run test:coverage && npm run test:api && npm run build",

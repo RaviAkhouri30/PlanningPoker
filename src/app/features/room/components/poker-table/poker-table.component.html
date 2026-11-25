@@ -7,6 +7,9 @@
   <div class="table__middle">
     @if (!hasStory()) {
       <div class="empty rise">
+        <span class="empty__icon" aria-hidden="true"
+          ><app-icon [name]="cardsIcon" [size]="26"
+        /></span>
         @if (settledCount() > 0) {
           <span class="empty__title">Every story has an estimate</span>
           <span class="empty__text"
@@ -16,11 +19,16 @@
           <span class="empty__title">No story yet</span>
           <span class="empty__text">
             @if (isModerator()) {
-              Add a story in the Stories panel to start voting.
+              Add the first story and the team can start voting.
             } @else {
               The moderator is adding the first story.
             }
           </span>
+        }
+        @if (isModerator()) {
+          <button class="btn btn--primary btn--lg" type="button" (click)="addStory.emit()">
+            <app-icon [name]="plusIcon" />{{ addLabel() }}
+          </button>
         }
       </div>
     } @else if (revealed() && stats(); as results) {

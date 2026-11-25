@@ -22,6 +22,12 @@ npm run emulators       # in one terminal
 npm run start:emulator  # in another
 ```
 
+Against the real Firebase project (see [docs/tooling.md](docs/tooling.md)):
+
+```bash
+npm run start:live      # reads public/runtime-config.js
+```
+
 ## Checks
 
 ```bash
@@ -36,3 +42,8 @@ npm run e2e:firebase    # two browsers against the emulators
 - [CLAUDE.md](CLAUDE.md) — the engineering rules (mandatory).
 - [docs/](docs/README.md) — architecture, data model, ADRs, AIDLC records.
 - [CHANGELOG.md](CHANGELOG.md)
+
+## License
+
+© 2026 Ravi Akhouri. All rights reserved. This is proprietary software, not open source: see
+[LICENSE](LICENSE). Using the hosted app is covered by its Terms of use (`/terms`).

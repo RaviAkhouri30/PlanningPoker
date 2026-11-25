@@ -6,7 +6,9 @@
         [me]="model.me()"
         [onlineCount]="model.onlineCount()"
         [timer]="model.timerLabel()"
+        [canAddStory]="model.isModerator()"
         (invite)="model.commands.setInviteOpen(true)"
+        (addStory)="focusStoryField()"
       />
       <div class="layout">
         <main class="layout__main">
@@ -30,6 +32,7 @@
               (reveal)="model.commands.reveal()"
               (accept)="model.commands.accept($event)"
               (voteAgain)="model.commands.voteAgain()"
+              (addStory)="focusStoryField()"
             />
             <app-card-deck
               [cards]="room.deck.cards"

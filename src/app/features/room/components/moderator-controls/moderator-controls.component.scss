@@ -9,11 +9,10 @@
 
 .control {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  min-height: 68px;
-  padding: 12px 14px;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 12px;
   border-radius: t.$radius-md;
   border: 1px solid t.color('line');
   background: t.color('white');
@@ -27,6 +26,7 @@
     transform 0.18s t.$ease-spring;
 
   app-icon {
+    flex: none;
     color: t.color('accent');
   }
 
@@ -43,9 +43,47 @@
 }
 
 .group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  border-top: 1px solid t.color('line');
+  padding-top: 4px;
+
+  &__summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+
+    // Safari still draws its own disclosure triangle unless told not to.
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  &__current {
+    flex: 1 1 auto;
+    min-width: 0;
+    font: 600 13px t.$font-body;
+    color: t.color('ink');
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__chevron {
+    flex: none;
+    color: t.color('text-muted');
+    transition: transform 0.2s t.$ease-out;
+
+    .group[open] & {
+      transform: rotate(180deg);
+    }
+  }
+
+  .decks {
+    padding: 4px 0 8px;
+  }
 }
 
 .deck {
@@ -91,7 +129,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid t.color('line');
 
   &__copy {
     display: flex;

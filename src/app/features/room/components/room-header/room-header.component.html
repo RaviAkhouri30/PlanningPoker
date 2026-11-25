@@ -13,6 +13,11 @@
     <div class="bar__timer" role="timer" aria-label="Round timer">
       <app-icon [name]="clockIcon" [size]="16" />{{ timer() }}
     </div>
+    @if (canAddStory()) {
+      <button class="btn" type="button" (click)="addStory.emit()">
+        <app-icon [name]="plusIcon" [size]="16" />Add story
+      </button>
+    }
     <button class="btn btn--primary" type="button" (click)="invite.emit()">
       <app-icon [name]="linkIcon" [size]="16" />Invite
     </button>

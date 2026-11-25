@@ -33,8 +33,13 @@ real Firebase project.
 
 1. Copy `public/runtime-config.example.js` to `public/runtime-config.js` (git-ignored) and fill in
    the web app config from Firebase console → Project settings → Your apps.
-2. Turn on Authentication → Sign-in method → Anonymous.
-3. Deploy the rules with `npm run deploy:rules` (after `firebase login`, with the owner's OK).
+2. Turn on Authentication → Sign-in method → Anonymous, and create Firestore in Native mode.
+3. Add the project to `.firebaserc` under the alias `live` (`firebase use --add`). The default
+   project stays `demo-planning-poker`, so the emulator scripts never touch the real one.
+4. Deploy the rules with `npm run deploy:rules` (after `firebase login`, with the owner's OK). It
+   always targets the `live` alias.
+5. `npm run start:live` serves the app on :4200 against that project. `localhost` is in Auth's
+   authorised domains by default.
 
 ## Notes
 

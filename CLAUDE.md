@@ -38,6 +38,7 @@ recorded as ADRs (real-time Firestore, anonymous guests).
 npm start              # dev server on :4200, Fake backend (no Firebase needed)
 npm run emulators      # Firestore + Auth emulators, project demo-planning-poker (needs Java)
 npm run start:emulator # dev server against the running emulators
+npm run start:live     # dev server against the real project (public/runtime-config.js)
 npm run build          # production build (budgets + auto strict CSP)
 npm run lint           # ESLint, 0 errors / 0 warnings      (lint:fix to autofix)
 npm run format:check   # Prettier check                      (format to write)

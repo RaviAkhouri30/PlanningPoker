@@ -24,8 +24,13 @@
       <app-icon [name]="icons.Skip" />Skip story
     </button>
   </div>
-  <div class="group">
-    <span class="eyebrow" id="deck-label">Card deck</span>
+  <!-- A native disclosure: collapsed by default, keyboard and screen-reader support built in. -->
+  <details class="group">
+    <summary class="group__summary">
+      <span class="eyebrow" id="deck-label">Card deck</span>
+      <span class="group__current">{{ room().deck.label }}</span>
+      <app-icon class="group__chevron" [name]="icons.ChevronDown" [size]="18" />
+    </summary>
     <div class="decks" role="group" aria-labelledby="deck-label">
       @for (deck of decks; track deck.type) {
         <button
@@ -40,7 +45,7 @@
         </button>
       }
     </div>
-  </div>
+  </details>
   <div class="toggle">
     <div class="toggle__copy">
       <span class="toggle__label" id="auto-label">Auto-reveal</span>

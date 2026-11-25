@@ -1,0 +1,34 @@
+@use 'tokens' as t;
+
+.legal {
+  border-top: 1px solid t.color('line');
+
+  &__inner {
+    max-width: t.$room-width;
+    margin: 0 auto;
+    padding: 18px t.$gutter;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 20px;
+    font-size: 13px;
+    color: t.color('text-muted');
+  }
+
+  &__link {
+    color: t.color('text');
+    font-weight: 600;
+    // A 24 px target at least (WCAG 2.2 target size), without a taller footer.
+    padding: 4px 0;
+
+    &:hover {
+      color: t.color('accent');
+    }
+  }
+
+  @media (max-width: 620px) {
+    &__inner {
+      padding-inline: t.$gutter-mobile;
+    }
+  }
+}

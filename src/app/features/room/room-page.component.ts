@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BaseComponent } from '@shared/base/base-component';
 import { StoryTab } from './models/i-room-state';
@@ -62,4 +62,11 @@ export default class RoomPageComponent extends BaseComponent<IRoomState> {
     }
     return this.model.view().myCard === null ? ROOM_MESSAGES.pickCard : ROOM_MESSAGES.voteIn;
   });
+
+  private readonly storiesPanel = viewChild(StoriesPanelComponent);
+
+  /** "Add story" in the header or on the empty table: a view-only jump to the story field. */
+  protected focusStoryField(): void {
+    this.storiesPanel()?.focusDraft();
+  }
 }

@@ -3,6 +3,7 @@ import {
   JOIN_ROUTE_SEGMENT,
   ROOM_ID_PARAM,
   ROOM_ROUTE_SEGMENT,
+  TERMS_ROUTE_SEGMENT,
 } from '@shared/constants/routes.constants';
 import { roomMemberGuard } from '@shared/guards/room-member.guard';
 
@@ -26,6 +27,11 @@ export const routes: Routes = [
     title: 'PlanningPoker — Planning room',
     canActivate: [roomMemberGuard],
     loadComponent: () => import('@features/room/room-page.component'),
+  },
+  {
+    path: TERMS_ROUTE_SEGMENT,
+    title: 'PlanningPoker — Terms of use',
+    loadComponent: () => import('@features/legal/terms-page.component'),
   },
   { path: '**', redirectTo: '' },
 ];

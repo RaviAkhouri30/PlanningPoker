@@ -16,6 +16,7 @@ flowchart LR
 | ----------- | ---------------------------- | ---------------------------------------------- |
 | Local       | Fake (in memory)             | `npm start`                                    |
 | Emulator    | Firestore + Auth emulators, project `demo-planning-poker` | `npm run emulators`, then `npm run start:emulator` |
+| Live (local) | The real Firebase project, alias `live`, config from `public/runtime-config.js` | `npm run start:live` |
 | Production  | The real Firebase project    | Azure Static Web Apps, config from GitHub secrets |
 
 - `public/staticwebapp.config.json` falls back to `/index.html`, so `/r/<id>` links work, and serves

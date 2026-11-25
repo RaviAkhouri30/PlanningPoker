@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  type ElementRef,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { LIMITS } from '@shared/constants/limits.constants';
 import { IconName } from '@shared/enums/icon-name.enum';
@@ -42,6 +49,16 @@ export class StoriesPanelComponent {
   protected readonly skipped = StoryStatus.Skipped;
   protected readonly maxTitle = LIMITS.storyTitle;
   protected readonly plusIcon = IconName.Plus;
+
+  private readonly draft = viewChild<ElementRef<HTMLInputElement>>('draft');
+
+  /**
+   * Puts the cursor in "Add a story…". Focus scrolls the field into view, instantly, so it also
+   * suits reduced motion; `scroll-margin` keeps it clear of the sticky header.
+   */
+  public focusDraft(): void {
+    this.draft()?.nativeElement.focus();
+  }
 
   /** Sends the draft and clears the field. */
   protected submit(event: Event, field: HTMLInputElement): void {

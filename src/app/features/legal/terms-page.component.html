@@ -1,0 +1,50 @@
+<header class="top">
+  <app-logo />
+</header>
+<main class="terms">
+  <span class="eyebrow">Last updated {{ updated }}</span>
+  <h1 class="terms__title">Terms of use</h1>
+
+  <section class="terms__section" aria-labelledby="terms-copyright">
+    <h2 id="terms-copyright">Copyright</h2>
+    <p>
+      PlanningPoker, including its source code, design, text and graphics, is the property of
+      {{ holder }}. {{ notice }} You may use the PlanningPoker service as described on this page.
+      You may not copy, modify, redistribute or resell the software or its design, in whole or in
+      part, without written permission.
+    </p>
+  </section>
+
+  <section class="terms__section" aria-labelledby="terms-accounts">
+    <h2 id="terms-accounts">Do I need an account?</h2>
+    <p>
+      No. Type your name to start a room, or to join one from a link, and you play as a guest. The
+      app signs you in anonymously behind the scenes, so your browser remembers your seat in the
+      room. Clearing your browser data, or switching browser, starts you as a new guest.
+    </p>
+    <p>
+      Free accounts may be offered later, for things like saved history and permanent rooms. Some of
+      those future features may need an account. Starting and joining rooms as a guest will keep
+      working without one.
+    </p>
+  </section>
+
+  <section class="terms__section" aria-labelledby="terms-data">
+    <h2 id="terms-data">Your rooms and data</h2>
+    <p>
+      Rooms are stored with Google Firebase (Cloud Firestore). Anyone with a room’s link or code can
+      join it and see the names and stories in it. Each vote stays hidden from others until the
+      cards are flipped. Don’t put confidential or personal information in room names, names or
+      stories.
+    </p>
+  </section>
+
+  <section class="terms__section" aria-labelledby="terms-warranty">
+    <h2 id="terms-warranty">No warranty</h2>
+    <p>
+      PlanningPoker is provided “as is”, without warranty of any kind. It may change, pause or stop
+      at any time, and rooms may be removed. To the extent the law allows, {{ holder }} is not
+      liable for any loss that comes from using it.
+    </p>
+  </section>
+</main>

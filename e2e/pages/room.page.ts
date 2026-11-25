@@ -6,6 +6,9 @@ export class RoomPage extends BasePage {
   public readonly storyTitle: Locator;
   public readonly newStoryField: Locator;
   public readonly addStoryButton: Locator;
+  public readonly headerAddStoryButton: Locator;
+  public readonly tableAddStoryButton: Locator;
+  public readonly deckDisclosure: Locator;
   public readonly revealButton: Locator;
   public readonly results: Locator;
   public readonly inviteButton: Locator;
@@ -18,7 +21,13 @@ export class RoomPage extends BasePage {
     this.path = roomPath;
     this.storyTitle = page.locator('#story-title');
     this.newStoryField = page.getByLabel('New story title');
-    this.addStoryButton = page.getByRole('button', { name: 'Add story' });
+    // Scoped: the header has an "Add story" button too, for the moderator.
+    this.addStoryButton = page
+      .getByRole('region', { name: 'Stories' })
+      .getByRole('button', { name: 'Add story' });
+    this.headerAddStoryButton = page.getByRole('banner').getByRole('button', { name: 'Add story' });
+    this.tableAddStoryButton = page.getByRole('button', { name: 'Add a story' });
+    this.deckDisclosure = page.getByText('Card deck');
     this.revealButton = page.getByRole('button', { name: 'Reveal cards' });
     this.results = page.getByRole('region', { name: 'Results' });
     this.inviteButton = page.getByRole('banner').getByRole('button', { name: /Invite/ });

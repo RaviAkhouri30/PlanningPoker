@@ -34,6 +34,8 @@ export class PokerTableComponent {
   public readonly reveal = output();
   public readonly accept = output<string>();
   public readonly voteAgain = output();
+  /** The moderator asked to add a story from the empty table. */
+  public readonly addStory = output();
 
   protected readonly top = computed(() => this.seats().slice(0, TOP_ROW));
   protected readonly bottom = computed(() => this.seats().slice(TOP_ROW));
@@ -48,8 +50,13 @@ export class PokerTableComponent {
     }
     return this.isModerator() ? ROOM_MESSAGES.autoOff : ROOM_MESSAGES.waitingModerator;
   });
+  protected readonly addLabel = computed(() =>
+    this.settledCount() > 0 ? ROOM_MESSAGES.addAnotherStory : ROOM_MESSAGES.addFirstStory,
+  );
   protected readonly dots = computed(() =>
     this.seats().map((_, index) => index < this.votedCount()),
   );
   protected readonly eyeIcon = IconName.Eye;
+  protected readonly cardsIcon = IconName.Cards;
+  protected readonly plusIcon = IconName.Plus;
 }

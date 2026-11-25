@@ -1,6 +1,8 @@
 {
   "name": "planning-poker-api",
   "version": "1.0.0",
+  "author": "Ravi Akhouri",
+  "license": "UNLICENSED",
   "description": "Azure Functions for PlanningPoker (health now; integrations later).",
   "private": true,
   "type": "module",

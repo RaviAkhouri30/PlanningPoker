@@ -33,7 +33,7 @@ describe('LandingPageComponent', () => {
     ]);
     expect(page.querySelectorAll('.flip')).toHaveLength(6);
     expect(page.querySelector('details')?.open).toBe(true);
-    expect(page.querySelector('footer')).not.toBeNull();
+    expect(page.querySelector('app-landing-footer .footer')).not.toBeNull();
   });
 
   it('should send both create forms and the code form to the view model', () => {

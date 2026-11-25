@@ -104,6 +104,17 @@
                   "with": "src/environments/environment.emulator.ts"
                 }
               ]
+            },
+            "live": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.live.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -119,6 +130,9 @@
             },
             "emulator": {
               "buildTarget": "planning-poker:build:emulator"
+            },
+            "live": {
+              "buildTarget": "planning-poker:build:live"
             }
           },
           "defaultConfiguration": "development"

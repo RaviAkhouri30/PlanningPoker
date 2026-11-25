@@ -12,6 +12,8 @@ export const ROOM_MESSAGES = {
   voteIn: 'Your vote is in. Tap it again to take it back.',
   revealed: 'Cards are revealed',
   addStory: 'Add a story to start voting',
+  addFirstStory: 'Add a story',
+  addAnotherStory: 'Add another story',
   spectating: 'You are watching as a spectator',
   thinking: 'Thinking…',
   ready: 'Ready',

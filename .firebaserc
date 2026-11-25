@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "demo-planning-poker"
+    "default": "demo-planning-poker",
+    "live": "planningpoker-6bc64"
   }
 }

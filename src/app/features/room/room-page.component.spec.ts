@@ -79,10 +79,19 @@ describe('RoomPageComponent', () => {
     expect(page.querySelector('dialog')?.hasAttribute('open')).toBe(true);
   });
 
+  it('should move the cursor to the story field when the moderator clicks "Add story"', async () => {
+    const page = await render();
+
+    click(page, 'app-room-header .btn:not(.btn--primary)');
+
+    expect(document.activeElement).toBe(page.querySelector('#new-story'));
+  });
+
   it('should hide moderator tools from others and tell spectators they are watching', async () => {
     const page = await render('someone-else', 'spectator');
 
     expect(page.textContent).not.toContain('Moderator controls');
+    expect(page.querySelector('app-room-header')?.textContent).not.toContain('Add story');
     expect(page.textContent).toContain(ROOM_MESSAGES.spectating);
   });
 });

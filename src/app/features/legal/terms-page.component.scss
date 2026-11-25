@@ -1,0 +1,44 @@
+@use 'tokens' as t;
+
+.top {
+  max-width: t.$content-width;
+  margin: 0 auto;
+  padding: 18px t.$gutter;
+}
+
+.terms {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px t.$gutter 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  color: t.color('text');
+  font-size: 16px;
+  line-height: 1.6;
+
+  &__title {
+    margin-top: -16px;
+    font: 700 40px/1.1 t.$font-display;
+    color: t.color('ink');
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    h2 {
+      font: 600 20px t.$font-display;
+      color: t.color('ink');
+    }
+  }
+
+  @media (max-width: 620px) {
+    padding-inline: t.$gutter-mobile;
+
+    &__title {
+      font-size: 32px;
+    }
+  }
+}

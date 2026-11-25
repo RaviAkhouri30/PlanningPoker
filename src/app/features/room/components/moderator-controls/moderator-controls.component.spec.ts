@@ -30,4 +30,16 @@ describe('ModeratorControlsComponent', () => {
     expect(element.querySelector('.deck--on')?.textContent).toContain('Modified Fibonacci');
     expect(element.querySelector('.switch')?.getAttribute('aria-checked')).toBe('true');
   });
+
+  it('should keep the deck choice collapsed and name the current deck when first shown', () => {
+    const fixture = TestBed.createComponent(ModeratorControlsComponent);
+    fixture.componentRef.setInput('room', aRoom());
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+
+    const details = element.querySelector('details');
+
+    expect(details?.open).toBe(false);
+    expect(details?.querySelector('summary')?.textContent).toContain('Modified Fibonacci');
+  });
 });

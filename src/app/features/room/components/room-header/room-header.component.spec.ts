@@ -23,5 +23,24 @@ describe('RoomHeaderComponent', () => {
     expect(header.querySelector('[role="timer"]')?.textContent).toContain('01:05');
     expect(header.querySelector('app-avatar')).not.toBeNull();
     expect(invite).toHaveBeenCalled();
+    expect(header.textContent).not.toContain('Add story');
+  });
+
+  it('should show "Add story" and ask for the story field when the viewer moderates', () => {
+    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    const fixture = TestBed.createComponent(RoomHeaderComponent);
+    fixture.componentRef.setInput('room', aRoom());
+    fixture.componentRef.setInput('canAddStory', true);
+    const addStory = vi.fn();
+    fixture.componentInstance.addStory.subscribe(addStory);
+    fixture.detectChanges();
+    const buttons = (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
+      '.btn',
+    );
+
+    buttons[0]?.click();
+
+    expect(buttons[0]?.textContent).toContain('Add story');
+    expect(addStory).toHaveBeenCalled();
   });
 });

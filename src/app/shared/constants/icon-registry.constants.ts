@@ -12,6 +12,7 @@ export const ICON_REGISTRY: Readonly<Record<IconName, readonly IconShape[]>> = {
     { kind: 'rect', x: 13, y: 8, width: 8, height: 12, rx: 2 },
   ],
   [IconName.Check]: [path('M20 6 9 17l-5-5')],
+  [IconName.ChevronDown]: [path('m6 9 6 6 6-6')],
   [IconName.Clock]: [{ kind: 'circle', cx: 12, cy: 12, r: 9 }, path('M12 7v5l3 2')],
   [IconName.Close]: [path('M18 6 6 18M6 6l12 12')],
   [IconName.Coffee]: [

@@ -1,0 +1,20 @@
+Copyright (c) 2026 Ravi Akhouri. All rights reserved.
+
+PlanningPoker, including its source code, design, documentation, text and graphics (the
+"Software"), is proprietary and confidential.
+
+No license is granted. You may not use, copy, modify, merge, publish, distribute, sublicense or
+sell copies of the Software, in whole or in part, without the prior written permission of the
+copyright holder.
+
+Using the hosted PlanningPoker service is governed by its Terms of use (the /terms page of the
+app), not by this file.
+
+Third-party packages the Software depends on remain under their own licenses; a production build
+lists them in 3rdpartylicenses.txt.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

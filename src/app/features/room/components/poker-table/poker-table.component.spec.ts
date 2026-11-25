@@ -79,7 +79,7 @@ describe('PokerTableComponent', () => {
 
   it('should explain an empty table, and a finished session', () => {
     expect(render({ hasStory: false, isModerator: true }).element.textContent).toContain(
-      'Add a story in the Stories panel',
+      'Add the first story',
     );
     expect(render({ hasStory: false }).element.textContent).toContain(
       'The moderator is adding the first story.',
@@ -87,5 +87,34 @@ describe('PokerTableComponent', () => {
     expect(render({ hasStory: false, settledCount: 3 }).element.textContent).toContain(
       'Every story has an estimate',
     );
+  });
+
+  it('should offer the moderator a button to add the first story when the table is empty', () => {
+    const fixture = TestBed.createComponent(PokerTableComponent);
+    fixture.componentRef.setInput('seats', []);
+    fixture.componentRef.setInput('isModerator', true);
+    const addStory = vi.fn();
+    fixture.componentInstance.addStory.subscribe(addStory);
+    fixture.detectChanges();
+    const button = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>(
+      '.empty .btn',
+    );
+
+    button?.click();
+
+    expect(button?.textContent).toContain(ROOM_MESSAGES.addFirstStory);
+    expect(addStory).toHaveBeenCalled();
+  });
+
+  it('should offer another story when every story has an estimate', () => {
+    const { element } = render({ hasStory: false, isModerator: true, settledCount: 2 });
+
+    expect(element.querySelector('.empty .btn')?.textContent).toContain(
+      ROOM_MESSAGES.addAnotherStory,
+    );
+  });
+
+  it('should not offer to add stories when the viewer is not the moderator', () => {
+    expect(render({ hasStory: false }).element.querySelector('.empty .btn')).toBeNull();
   });
 });
