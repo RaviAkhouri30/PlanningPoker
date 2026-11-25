@@ -52,6 +52,18 @@
     }
   }
 
+  &--danger {
+    background: t.color('danger');
+    border-color: t.color('danger');
+    color: t.color('white');
+
+    &:hover {
+      background: t.color('danger-hover');
+      border-color: t.color('danger-hover');
+      color: t.color('white');
+    }
+  }
+
   &--dark {
     background: t.color('contrast');
     border-color: t.color('contrast');

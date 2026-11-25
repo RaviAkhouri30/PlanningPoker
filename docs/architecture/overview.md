@@ -72,7 +72,7 @@ The guest's name, avatar and room list live in this browser (`IPreferenceStore`,
 its people, stories and, per story, the votes of its last flipped round, as the rules allow), builds
 one UTF-8 CSV with `backupCsv` and hands it to `IFileSaver`. One row per story; columns: room, room
 code, key, story, notes, status, estimate, rounds, then one per voter. Cells that start like a
-formula (`= + - @`) get a leading `'` so a spreadsheet shows them as text. The room's Stories panel
+formula (`= + - @`) get a leading `'` so a spreadsheet shows them as text. The room's stories table
 saves that room; My rooms saves one room or all of them in one file. Nothing is uploaded.
 
 ## Known limitations

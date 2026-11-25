@@ -18,10 +18,11 @@ flowchart TB
 
   room --> rh[room-header] & sh[story-header] & pt["poker-table: the light stage"]
   pt -. "projects, while voting" .-> cd[card-deck]
-  room --> mc[moderator-controls] & pp[players-panel] & sp["stories-panel: Download CSV"] & id[invite-dialog]
+  room --> mc[moderator-controls] & pp[players-panel] & id[invite-dialog]
+  room --> st["stories-table: under the cards; tabs, Add story, Vote, CSV"]
   room --> asd["add-story-dialog (moderator)"]
   room --> tour[room-tour: spotlight + step card]
-  rh & pt -. "Add story: opens" .-> asd
+  rh & pt & st -. "Add story: opens" .-> asd
   pt --> ts[table-seat: card coloured by band] & res[results-panel: band-coloured chart]
   res --> cb[confetti-burst]
 ```

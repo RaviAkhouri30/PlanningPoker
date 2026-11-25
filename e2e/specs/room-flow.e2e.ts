@@ -44,14 +44,24 @@ test.describe('Room flow', () => {
     await expect(room.newStoryField).toBeFocused();
     await page.keyboard.type('PAY-214 Save cards for later');
     await room.addAnotherButton.click();
-    await expect(room.storyDialog.getByRole('status')).toContainText('PAY-214');
     await expect(room.newStoryField).toBeFocused();
-    expect((await axe().analyze()).violations).toEqual([]);
     await page.keyboard.type('PAY-215 Refunds');
-    await page.keyboard.press('Enter');
+    await room.addAnotherButton.click();
+    const added = room.storyDialog
+      .getByRole('list', { name: 'Stories added' })
+      .getByRole('listitem');
+    await expect(added).toHaveText(['PAY-214 Save cards for later', 'PAY-215 Refunds']);
+    await expect(room.storyDialog.getByRole('status')).toContainText('2 stories added');
+    expect((await axe().analyze()).violations).toEqual([]);
+    await room.closeStoryDialogButton.click();
     await expect(room.storyDialog).toBeHidden();
     await expect(room.storyTitle).toHaveText('Save cards for later');
-    await expect(page.getByRole('region', { name: 'Stories' })).toContainText('Refunds');
+
+    // The table under the table of cards: the moderator picks the next story there.
+    await expect(room.storiesTable.getByRole('row')).toHaveCount(3);
+    await room.storiesTable.getByRole('button', { name: 'Vote: Refunds' }).click();
+    await expect(room.storyTitle).toHaveText('Refunds');
+    await expect(room.storiesTable.getByRole('row', { name: /Refunds/ })).toContainText('Voting');
 
     await room.headerAddStoryButton.click();
     await expect(room.newStoryField).toBeFocused();

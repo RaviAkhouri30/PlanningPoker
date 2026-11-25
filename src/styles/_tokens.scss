@@ -57,6 +57,10 @@ $palette: (
   // Status
   'success': #12a06a,
   'success-text': #0e7a52,
+  'success-wash': #e8f7f0,
+  // Destructive buttons ("Close" in the add-story dialog): white text passes AA on both.
+  'danger': #d33a31,
+  'danger-hover': #b52f27,
   'mint-bright': #7ce0b4,
   'consensus': #3dd598,
   'warning': #ffb547,
@@ -115,6 +119,7 @@ $palette-dark: (
   'contrast-hover': #d9dbe3,
   'on-contrast': #111318,
   'success-text': #3ccf92,
+  'success-wash': #13291f,
   'switch-off': #4a4f5e,
   'band-low': #34c48a,
   'band-mid': #f5c04a,
@@ -158,6 +163,8 @@ $radius-pill: 999px;
 
 // ---- Shadows --------------------------------------------------------------
 $shadow-hover: 0 8px 20px rgba(17, 19, 24, 0.08);
+// A selected tab or segment, lifted just off its track.
+$shadow-raised: 0 1px 4px rgba(17, 19, 24, 0.1);
 $shadow-accent: 0 10px 26px rgba(75, 60, 247, 0.35);
 $shadow-panel: 0 24px 60px rgba(17, 19, 24, 0.07);
 $shadow-toast: 0 18px 40px rgba(0, 0, 0, 0.25);

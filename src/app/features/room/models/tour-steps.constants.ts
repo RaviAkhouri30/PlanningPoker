@@ -49,8 +49,8 @@ export const TOUR_STEPS: readonly ITourStep[] = [
   },
   {
     target: TourTarget.Stories,
-    title: 'The story list',
-    text: 'What’s next, what’s settled and every estimate so far.',
+    title: 'The stories',
+    text: 'What’s next, what’s settled and every estimate so far. The moderator adds stories and picks the next one here.',
     moderatorOnly: false,
   },
   {

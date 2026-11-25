@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] — 2026-11-25
+
+### Added
+
+- **Stories table** under the voting area: key, story and notes, status, estimate and rounds,
+  with Active, Completed and All tabs, Download CSV, and an "Add story" button for the
+  moderator. The moderator picks the next story from its row ("Vote", or "Re-estimate" for a
+  settled one). On phones each story becomes a card.
+- The Add story dialog lists every story added with "Add another", each with an animated tick,
+  and has a red Close button. Closing with "Add story" confirms with a toast.
+
+### Removed
+
+- The narrow Stories side panel (replaced by the table).
+
 ## [1.4.1] — 2026-11-25
 
 ### Changed

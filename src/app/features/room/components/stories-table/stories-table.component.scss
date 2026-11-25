@@ -1,0 +1,262 @@
+@use 'tokens' as t;
+
+.stories {
+  border: 1px solid t.color('line');
+  border-radius: t.$radius-lg;
+  background: t.color('surface');
+  overflow: hidden;
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid t.color('line');
+  }
+
+  &__title {
+    font: 700 18px t.$font-display;
+    color: t.color('ink');
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__total {
+    font: 600 12px t.$font-body;
+    color: t.color('text-muted');
+  }
+
+  &__actions {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: t.color('surface-muted');
+
+  &__tab {
+    min-height: 36px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: t.color('text');
+    font: 600 13px t.$font-body;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+
+    &--on {
+      background: t.color('surface');
+      color: t.color('ink');
+      box-shadow: t.$shadow-raised;
+    }
+  }
+
+  &__count {
+    min-width: 20px;
+    padding: 0 6px;
+    border-radius: t.$radius-pill;
+    background: t.color('line');
+    font-size: 11px;
+    line-height: 20px;
+    text-align: center;
+
+    .tabs__tab--on & {
+      background: t.color('accent');
+      color: t.color('white');
+    }
+  }
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th {
+    padding: 10px 20px;
+    text-align: left;
+    font: 600 12px t.$font-body;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: t.color('text-muted');
+    background: t.color('surface-soft');
+  }
+
+  td {
+    padding: 14px 20px;
+    border-top: 1px solid t.color('line');
+    vertical-align: middle;
+    color: t.color('text');
+  }
+
+  &__row--active td {
+    background: t.color('accent-wash');
+  }
+
+  &__row--active td:first-child {
+    box-shadow: inset 3px 0 0 t.color('accent');
+  }
+
+  &__story {
+    width: 100%;
+  }
+
+  &__title {
+    display: block;
+    font-weight: 600;
+    color: t.color('ink');
+  }
+
+  &__notes {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 2px;
+    font-size: 13px;
+    color: t.color('text-muted');
+  }
+
+  &__estimate {
+    display: inline-flex;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: t.color('contrast');
+    color: t.color('on-contrast');
+    font: 700 14px t.$font-display;
+  }
+
+  &__none {
+    color: t.color('text-faint');
+  }
+
+  &__key {
+    white-space: nowrap;
+  }
+
+  &__action {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__pick {
+    min-height: 36px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: t.$radius-pill;
+  font: 600 12px t.$font-body;
+  white-space: nowrap;
+  background: t.color('surface-muted');
+  color: t.color('text');
+
+  &[data-status='voting'] {
+    background: t.color('accent');
+    color: t.color('white');
+  }
+
+  &[data-status='estimated'] {
+    background: t.color('success-wash');
+    color: t.color('success-text');
+  }
+
+  &[data-status='skipped'] {
+    color: t.color('text-faint');
+  }
+}
+
+.empty {
+  padding: 28px 20px;
+  text-align: center;
+  color: t.color('text-muted');
+}
+
+// Phones: each story is a card; the column names come from `data-label`.
+@media (max-width: 620px) {
+  .stories__head {
+    padding: 14px 16px;
+  }
+
+  .grid {
+    // Hidden from sight only: screen readers still announce the column names.
+    thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    // Key and story on top, then status, estimate and rounds side by side, then the action.
+    tr {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px 12px;
+      padding: 14px 16px;
+      border-top: 1px solid t.color('line');
+    }
+
+    td {
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+
+    .grid__story {
+      grid-column: 2 / -1;
+    }
+
+    td[data-label] {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+
+      &::before {
+        content: attr(data-label);
+        font-size: 12px;
+        color: t.color('text-muted');
+      }
+    }
+
+    // The accent bar marks the whole card, not just its key.
+    &__row--active {
+      background: t.color('accent-wash');
+      box-shadow: inset 3px 0 0 t.color('accent');
+    }
+
+    &__row--active td:first-child {
+      box-shadow: none;
+    }
+
+    &__action {
+      grid-column: 1 / -1;
+      text-align: left;
+    }
+
+    &__pick {
+      width: 100%;
+    }
+  }
+}

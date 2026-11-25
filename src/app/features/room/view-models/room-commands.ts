@@ -153,9 +153,16 @@ export class RoomCommands {
       const draft = parseStoryDraft(title, state.stories.length + 1, story.description);
       const order = Math.max(0, ...state.stories.map((story) => story.order)) + 1;
       const needsActive = RoomView.activeStory(state) === null;
-      return this.stories.add(room.id, draft, order, (id) =>
-        needsActive ? activationWrites(room, id) : [],
-      );
+      return this.stories
+        .add(room.id, draft, order, (id) => (needsActive ? activationWrites(room, id) : []))
+        .pipe(
+          tap(() => {
+            // The open dialog lists what was added; a toast would sit behind its backdrop.
+            if (!this.host.view().addStoryOpen) {
+              this.toast.show(ROOM_MESSAGES.storyAddedPrefix + draft.title, ToastTone.Success);
+            }
+          }),
+        );
     });
   }
 

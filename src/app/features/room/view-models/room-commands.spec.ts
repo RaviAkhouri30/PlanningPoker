@@ -213,4 +213,28 @@ describe('RoomCommands', () => {
     });
     expect(show).not.toHaveBeenCalledWith(ROOM_MESSAGES.actionFailed, expect.anything());
   });
+
+  it('should confirm with a toast when a story is added from the closed dialog', async () => {
+    await start();
+    const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+
+    model.commands.addStory({ text: 'PAY-300 Refunds', description: '' });
+
+    await vi.waitFor(() => {
+      expect(show).toHaveBeenCalledWith('Story added: Refunds', expect.anything());
+    });
+  });
+
+  it('should leave the confirmation to the dialog when it stays open', async () => {
+    await start();
+    const show = vi.spyOn(TestBed.inject(ToastService), 'show');
+    model.commands.setAddStoryOpen(true);
+
+    model.commands.addStory({ text: 'PAY-300 Refunds', description: '' });
+
+    await vi.waitFor(() => {
+      expect(model.view().stories.map((story) => story.title)).toContain('Refunds');
+    });
+    expect(show).not.toHaveBeenCalled();
+  });
 });

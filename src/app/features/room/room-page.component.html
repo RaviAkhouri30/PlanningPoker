@@ -48,6 +48,18 @@
               }
             </app-poker-table>
           </section>
+          <app-stories-table
+            [attr.data-tour]="targets.Stories"
+            [stories]="listed()"
+            [counts]="counts()"
+            [tab]="model.view().storyTab"
+            [activeId]="room.activeStoryId"
+            [isModerator]="model.isModerator()"
+            (tabPick)="model.commands.showTab($event)"
+            (storyPick)="model.commands.select($event)"
+            (addStory)="model.commands.setAddStoryOpen(true)"
+            (downloadCsv)="model.commands.downloadCsv()"
+          />
         </main>
         <aside class="layout__side">
           @if (model.isModerator()) {
@@ -71,17 +83,6 @@
             [seats]="model.seats()"
             [votedCount]="model.votedCount()"
             [playerCount]="model.playerCount()"
-          />
-          <app-stories-panel
-            [attr.data-tour]="targets.Stories"
-            [stories]="listed()"
-            [counts]="counts()"
-            [tab]="model.view().storyTab"
-            [activeId]="room.activeStoryId"
-            [isModerator]="model.isModerator()"
-            (tabPick)="model.commands.showTab($event)"
-            (storyPick)="model.commands.select($event)"
-            (downloadCsv)="model.commands.downloadCsv()"
           />
         </aside>
       </div>

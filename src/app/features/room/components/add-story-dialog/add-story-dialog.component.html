@@ -63,13 +63,28 @@
       }
     </div>
     <div class="form__actions">
-      <p class="form__status" role="status">
-        @if (lastAdded()) {
-          Added “{{ lastAdded() }}”. Add the next one.
-        }
-      </p>
-      <button class="btn" type="button" (click)="submit(true)">Add another</button>
+      <button class="btn btn--danger form__close" type="button" (click)="close()">Close</button>
+      <button class="btn" type="button" (click)="submit(true)">
+        <app-icon [name]="plusIcon" [size]="18" />Add another
+      </button>
       <button class="btn btn--primary" type="submit">Add story</button>
     </div>
   </form>
+  <!-- Always in the page, so screen readers announce each addition. -->
+  <div class="added" role="status" [class.added--shown]="added().length > 0">
+    @if (added().length > 0) {
+      <p class="added__head">
+        <span class="added__badge"><app-icon [name]="checkIcon" [size]="14" /></span>
+        {{ addedLabel() }}. Add the next one, or close when you’re done.
+      </p>
+      <ul class="added__list" aria-label="Stories added">
+        @for (story of added(); track $index) {
+          <li class="added__item">
+            <span class="added__tick"><app-icon [name]="checkIcon" [size]="14" /></span>
+            <span class="added__text">{{ story }}</span>
+          </li>
+        }
+      </ul>
+    }
+  </div>
 </dialog>

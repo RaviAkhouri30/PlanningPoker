@@ -14,7 +14,7 @@ import { PlayersPanelComponent } from './components/players-panel/players-panel.
 import { PokerTableComponent } from './components/poker-table/poker-table.component';
 import { RoomHeaderComponent } from './components/room-header/room-header.component';
 import { RoomTourComponent } from './components/room-tour/room-tour.component';
-import { StoriesPanelComponent } from './components/stories-panel/stories-panel.component';
+import { StoriesTableComponent } from './components/stories-table/stories-table.component';
 import { StoryHeaderComponent } from './components/story-header/story-header.component';
 import { RoomViewModel } from './view-models/room.view-model';
 
@@ -29,7 +29,7 @@ import { RoomViewModel } from './view-models/room.view-model';
     CardDeckComponent,
     ModeratorControlsComponent,
     PlayersPanelComponent,
-    StoriesPanelComponent,
+    StoriesTableComponent,
     InviteDialogComponent,
     AddStoryDialogComponent,
     RoomTourComponent,

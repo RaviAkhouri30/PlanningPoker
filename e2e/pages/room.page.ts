@@ -8,6 +8,8 @@ export class RoomPage extends BasePage {
   public readonly newStoryField: Locator;
   public readonly addStoryButton: Locator;
   public readonly addAnotherButton: Locator;
+  public readonly closeStoryDialogButton: Locator;
+  public readonly storiesTable: Locator;
   public readonly headerAddStoryButton: Locator;
   public readonly tableAddStoryButton: Locator;
   public readonly deckDisclosure: Locator;
@@ -31,6 +33,11 @@ export class RoomPage extends BasePage {
     // Scoped: the header has an "Add story" button too, which opens this dialog.
     this.addStoryButton = this.storyDialog.getByRole('button', { name: 'Add story' });
     this.addAnotherButton = this.storyDialog.getByRole('button', { name: 'Add another' });
+    // The red button in the actions row; the corner "×" is labelled "Close" too.
+    this.closeStoryDialogButton = this.storyDialog
+      .getByRole('button', { name: 'Close', exact: true })
+      .last();
+    this.storiesTable = page.getByRole('region', { name: /^Stories/ });
     this.headerAddStoryButton = page.getByRole('banner').getByRole('button', { name: 'Add story' });
     this.tableAddStoryButton = page.getByRole('button', { name: 'Add a story' });
     this.deckDisclosure = page.getByText('Card deck');

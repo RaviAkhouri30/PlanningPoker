@@ -22,12 +22,9 @@
     resize: vertical;
   }
 
-  &__status {
-    // Takes no room while empty, so the buttons stay on one line.
-    flex: 1 1 auto;
-    min-width: 0;
-    font-size: 14px;
-    color: t.color('success-text');
+  // Close sits on the left, away from the two add buttons.
+  &__close {
+    margin-right: auto;
   }
 
   &__actions {
@@ -36,5 +33,105 @@
     align-items: center;
     justify-content: flex-end;
     gap: 10px;
+  }
+
+  // Phones: the two add buttons side by side, Close full width under them.
+  @media (max-width: 620px) {
+    &__actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &__close {
+      order: 1;
+      grid-column: 1 / -1;
+      margin-right: 0;
+    }
+  }
+}
+
+// A toast-like panel under the buttons: what was added since the dialog opened.
+.added {
+  display: none;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid t.color('success');
+  border-radius: t.$radius-md;
+  background: t.color('success-wash');
+
+  &--shown {
+    display: block;
+    animation: rise 0.25s ease-out;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: 600 14px t.$font-body;
+    color: t.color('success-text');
+  }
+
+  &__badge,
+  &__tick {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: t.color('success');
+    color: t.color('white');
+  }
+
+  &__list {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+    max-height: 160px;
+    overflow-y: auto;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 14px;
+    color: t.color('ink');
+    animation: rise 0.3s ease-out;
+  }
+
+  // The tick pops in, with a small overshoot, as each story is added.
+  &__tick {
+    animation: tick 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  &__text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes tick {
+  from {
+    opacity: 0;
+    transform: scale(0.2) rotate(-45deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .added,
+  .added__item,
+  .added__tick {
+    animation: none;
   }
 }

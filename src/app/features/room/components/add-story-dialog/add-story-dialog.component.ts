@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   type ElementRef,
+  computed,
   input,
   output,
   signal,
@@ -15,10 +16,14 @@ import { IconName } from '@shared/enums/icon-name.enum';
 import { TextValidators } from '@shared/validators/text.validators';
 import { type INewStory } from '../../models/story-draft.util';
 
+const ADDED_ONE = '1 story added';
+const ADDED_MANY_SUFFIX = ' stories added';
+
 /**
  * The moderator's "Add a story" dialog: one line (a ticket key and title) and optional notes.
- * "Add another" keeps it open for the next story. The draft is this dialog's own UI state; the
- * page decides what adding means.
+ * "Add another" keeps it open for the next story and lists, below the buttons, every story added
+ * since it opened. The draft and that list are this dialog's own UI state; the page decides what
+ * adding means.
  */
 @Component({
   selector: 'app-add-story-dialog',
@@ -46,10 +51,17 @@ export class AddStoryDialogComponent {
       validators: [TextValidators.maxTrimmed(LIMITS.storyDescription)],
     }),
   });
-  /** The last story added while the dialog stayed open, for the status line. */
-  protected readonly lastAdded = signal('');
+  /** The stories added while the dialog stayed open, oldest first. */
+  protected readonly added = signal<readonly string[]>([]);
+  /** "1 story added" or "3 stories added". */
+  protected readonly addedLabel = computed(() => {
+    const count = this.added().length;
+    return count === 1 ? ADDED_ONE : `${String(count)}${ADDED_MANY_SUFFIX}`;
+  });
   protected readonly limits = LIMITS;
   protected readonly closeIcon = IconName.Close;
+  protected readonly checkIcon = IconName.Check;
+  protected readonly plusIcon = IconName.Plus;
 
   private readonly textField = viewChild.required<ElementRef<HTMLInputElement>>('textField');
 
@@ -66,7 +78,7 @@ export class AddStoryDialogComponent {
     this.add.emit(story);
     this.form.reset();
     if (keepOpen) {
-      this.lastAdded.set(story.text.trim());
+      this.added.update((added) => [...added, story.text.trim()]);
       this.textField().nativeElement.focus();
     } else {
       this.close();
@@ -74,7 +86,7 @@ export class AddStoryDialogComponent {
   }
 
   protected close(): void {
-    this.lastAdded.set('');
+    this.added.set([]);
     this.closed.emit();
   }
 }

@@ -61,7 +61,7 @@ describe('AddStoryDialogComponent', () => {
     expect(closes).toBe(1);
   });
 
-  it('should stay open with an empty field and say what was added when Add another is pressed', () => {
+  it('should stay open with an empty field when Add another is pressed', () => {
     const dialog = render();
     type(dialog, '#new-story', ' PAY-215 Refunds ');
 
@@ -71,10 +71,39 @@ describe('AddStoryDialogComponent', () => {
     expect(closes).toBe(0);
     expect(dialog.querySelector<HTMLInputElement>('#new-story')?.value).toBe('');
     expect(document.activeElement).toBe(dialog.querySelector('#new-story'));
-    expect(dialog.querySelector('[role="status"]')?.textContent).toContain('PAY-215 Refunds');
   });
 
-  it('should report closing when the close button is pressed', () => {
+  it('should list every story added with a tick when Add another is pressed again', () => {
+    const dialog = render();
+    expect(dialog.querySelector('.added--shown')).toBeNull();
+
+    type(dialog, '#new-story', 'PAY-215 Refunds');
+    press(dialog, 'Add another');
+    expect(dialog.querySelector('[role="status"]')?.textContent).toContain('1 story added');
+    type(dialog, '#new-story', 'PAY-216 Receipts');
+    press(dialog, 'Add another');
+
+    const items = [...dialog.querySelectorAll('.added__item')];
+    expect(items.map((item) => item.textContent.trim())).toEqual([
+      'PAY-215 Refunds',
+      'PAY-216 Receipts',
+    ]);
+    expect(items.every((item) => item.querySelector('.added__tick app-icon') !== null)).toBe(true);
+    expect(dialog.querySelector('[role="status"]')?.textContent).toContain('2 stories added');
+  });
+
+  it('should report closing and forget the list when the red Close button is pressed', () => {
+    const dialog = render();
+    type(dialog, '#new-story', 'PAY-215 Refunds');
+    press(dialog, 'Add another');
+
+    press(dialog, 'Close');
+
+    expect(closes).toBe(1);
+    expect(dialog.querySelector('.added__item')).toBeNull();
+  });
+
+  it('should report closing when the corner close button is pressed', () => {
     const dialog = render();
 
     dialog.querySelector<HTMLButtonElement>('[aria-label="Close"]')?.click();

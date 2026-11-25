@@ -1,0 +1,101 @@
+<section class="stories" aria-labelledby="stories-title">
+  <div class="stories__head">
+    <h2 class="stories__title" id="stories-title">
+      Stories <span class="stories__total">{{ counts().all }}</span>
+    </h2>
+    <div class="tabs" role="tablist" aria-label="Story filter">
+      @for (item of tabs; track item.tab) {
+        <button
+          class="tabs__tab"
+          type="button"
+          role="tab"
+          [class.tabs__tab--on]="tab() === item.tab"
+          [attr.aria-selected]="tab() === item.tab"
+          (click)="tabPick.emit(item.tab)"
+        >
+          {{ item.label }}<span class="tabs__count">{{ counts()[item.key] }}</span>
+        </button>
+      }
+    </div>
+    <div class="stories__actions">
+      <button
+        class="btn btn--icon"
+        type="button"
+        aria-label="Download the stories as CSV"
+        title="Download as CSV"
+        (click)="downloadCsv.emit()"
+      >
+        <app-icon [name]="downloadIcon" [size]="18" />
+      </button>
+      @if (isModerator()) {
+        <button class="btn btn--primary" type="button" (click)="addStory.emit()">
+          <app-icon [name]="plusIcon" [size]="18" />Add story
+        </button>
+      }
+    </div>
+  </div>
+  @if (rows().length > 0) {
+    <table class="grid" role="tabpanel">
+      <thead>
+        <tr>
+          <th scope="col">Key</th>
+          <th scope="col">Story</th>
+          <th scope="col">Status</th>
+          <th scope="col">Estimate</th>
+          <th scope="col">Rounds</th>
+          @if (isModerator()) {
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.story.id) {
+          <tr
+            class="grid__row"
+            [class.grid__row--active]="row.status === voting"
+            [attr.aria-current]="row.status === voting ? 'true' : null"
+          >
+            <td class="grid__key">
+              <span class="key">{{ row.story.key }}</span>
+            </td>
+            <td class="grid__story">
+              <span class="grid__title">{{ row.story.title }}</span>
+              @if (row.story.description) {
+                <span class="grid__notes">{{ row.story.description }}</span>
+              }
+            </td>
+            <td data-label="Status">
+              <span class="pill" [attr.data-status]="row.status">{{ row.statusLabel }}</span>
+            </td>
+            <td data-label="Estimate">
+              @if (row.story.estimate !== null) {
+                <span class="grid__estimate">{{ row.story.estimate }}</span>
+              } @else {
+                <span class="grid__none">–</span>
+              }
+            </td>
+            <td class="grid__rounds" data-label="Rounds">{{ row.story.rounds }}</td>
+            @if (isModerator()) {
+              <td class="grid__action">
+                @if (row.pickLabel; as pickLabel) {
+                  <button
+                    class="btn grid__pick"
+                    type="button"
+                    [attr.aria-label]="pickLabel + ': ' + row.story.title"
+                    (click)="storyPick.emit(row.story)"
+                  >
+                    {{ pickLabel }}
+                  </button>
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <div class="empty" role="tabpanel">
+      <p class="empty__text">{{ emptyText() }}</p>
+    </div>
+  }
+</section>

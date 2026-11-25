@@ -26,6 +26,10 @@ export const ROOM_MESSAGES = {
   facilitator: 'Facilitator',
   joinedSuffix: ' joined the room',
   nameSeparator: ', ',
+  noStoriesModerator: 'No stories yet. Add the first one to start voting.',
+  noStoriesPlayer: 'No stories yet. The moderator adds them.',
+  noStoriesInTab: 'Nothing here yet.',
+  storyAddedPrefix: 'Story added: ',
 } as const;
 
 /** Stagger between seats when the cards flip, in ms. */
