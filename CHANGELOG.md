@@ -4,6 +4,27 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] — 2026-11-25
+
+### Added
+
+- The room tour explains the countdown and, for the moderator, how to settle an estimate
+  (including typing the agreed value). It shows once more to moderators who saw the old tour.
+- Tour keyboard support: the arrow keys move between steps, each step is announced, and closing
+  the tour returns focus to the button that opened it (or to the tour button). Progress dots.
+
+### Fixed
+
+- Accessibility: the vote cards' names now include the value shown on them (voice control),
+  the room has a main heading before its first story, the landing footer sits in a landmark,
+  pages have a heading while loading, and the join form's tab panel uses an allowed role.
+- The countdown shows its full length while no round is running, instead of ticking down.
+
+### Changed
+
+- The e2e accessibility scans also check WCAG 2.1 A and axe's best practices, and scan the join
+  page.
+
 ## [1.7.0] — 2026-11-25
 
 ### Added

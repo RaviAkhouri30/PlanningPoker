@@ -104,6 +104,7 @@ describe('RoundCountdown', () => {
     expect(countdown.phase()).toBe(TimerPhase.Idle);
     view.set(aState({ room: aRoom({ activeStoryId: null }) }));
 
+    expect(countdown.label()).toBe('01:00');
     expect(countdown.locked()).toBe(false);
     expect(shown).not.toHaveBeenCalled();
   });

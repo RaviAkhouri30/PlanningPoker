@@ -22,7 +22,8 @@
       />
     }
     @case (statuses.Loading) {
-      <p class="notice" role="status">Opening the room…</p>
+      <!-- A heading even while loading, so the page is never without one. -->
+      <div class="notice" role="status"><h1 class="notice__status">Opening the room…</h1></div>
     }
     @case (statuses.Missing) {
       <div class="notice">

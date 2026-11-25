@@ -15,11 +15,33 @@
     <span class="coach__count">Step {{ number() }} of {{ total() }}</span>
     <button class="coach__skip" type="button" (click)="skip.emit()">Skip tour</button>
   </div>
-  <h2 class="coach__title" id="tour-title">{{ step().title }}</h2>
-  <p class="coach__text" id="tour-text">{{ step().text }}</p>
+  <!-- Focus stays on "Next" between steps, so the new step is announced from here. -->
+  <div aria-live="polite" aria-atomic="true">
+    <h2 class="coach__title" id="tour-title">{{ step().title }}</h2>
+    <p class="coach__text" id="tour-text">{{ step().text }}</p>
+  </div>
   <div class="coach__actions">
-    <button class="btn" type="button" [disabled]="isFirst()" (click)="back.emit()">Back</button>
-    <button #nextButton class="btn btn--primary" type="button" (click)="next.emit()">
+    <span class="coach__dots" aria-hidden="true">
+      @for (current of dots(); track $index) {
+        <span class="coach__dot" [class.coach__dot--on]="current"></span>
+      }
+    </span>
+    <button
+      class="btn"
+      type="button"
+      aria-keyshortcuts="ArrowLeft"
+      [disabled]="isFirst()"
+      (click)="back.emit()"
+    >
+      Back
+    </button>
+    <button
+      #nextButton
+      class="btn btn--primary"
+      type="button"
+      aria-keyshortcuts="ArrowRight"
+      (click)="next.emit()"
+    >
       {{ nextLabel() }}
     </button>
   </div>

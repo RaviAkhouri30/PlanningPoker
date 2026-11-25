@@ -8,14 +8,15 @@
         [class.card--picked]="picked() === card"
         [disabled]="!enabled()"
         [attr.aria-pressed]="picked() === card"
-        [attr.aria-label]="card === breakCard ? 'I need a break' : 'Vote ' + card"
+        [attr.aria-label]="card === breakCard ? breakLabel : null"
         (click)="pick.emit(card)"
       >
         @if (card === breakCard) {
           <app-icon [name]="coffeeIcon" [size]="26" />
         } @else {
+          <!-- Named by its text, "Vote 5", so the visible value is part of the name (WCAG 2.5.3). -->
           <span class="card__corner" aria-hidden="true">{{ card }}</span>
-          {{ card }}
+          <span class="visually-hidden">Vote </span>{{ card }}
           <span class="card__corner card__corner--end" aria-hidden="true">{{ card }}</span>
         }
       </button>

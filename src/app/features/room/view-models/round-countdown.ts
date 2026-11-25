@@ -27,10 +27,14 @@ interface ISeen {
  * (the rules close it too). Built in the view model's injection context.
  */
 export class RoundCountdown {
-  /** Whole seconds left. */
-  public readonly secondsLeft = computed(
-    () => this.host.view().room?.secondsLeft(this.host.now()) ?? TIMER_LIMITS.defaultSeconds,
-  );
+  /** Whole seconds left; the full length while no round is running (no story, or flipped). */
+  public readonly secondsLeft = computed(() => {
+    const room = this.host.view().room;
+    if (room === null) {
+      return TIMER_LIMITS.defaultSeconds;
+    }
+    return this.running() ? room.secondsLeft(this.host.now()) : room.timerSeconds;
+  });
   /** e.g. "00:42". */
   public readonly label = computed(() => formatClock(this.secondsLeft() * MS_PER_SECOND));
   /** Whether a round is being voted on, so the countdown matters. */

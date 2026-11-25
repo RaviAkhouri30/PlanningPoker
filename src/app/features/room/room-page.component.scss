@@ -44,3 +44,9 @@
     color: t.color('ink');
   }
 }
+
+// Looks like the text it replaced: a heading for navigation, not for size.
+.notice__status {
+  margin: 0;
+  font: inherit;
+}

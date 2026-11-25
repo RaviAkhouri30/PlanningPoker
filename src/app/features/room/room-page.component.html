@@ -20,6 +20,9 @@
               [stories]="model.view().stories"
               [deckLabel]="room.deck.label"
             />
+          } @else {
+            <!-- No story yet: the page still has its main heading, for screen-reader navigation. -->
+            <h1 class="visually-hidden">{{ room.name }}</h1>
           }
           <section aria-label="Poker table">
             <app-poker-table
@@ -120,7 +123,8 @@
     }
   }
   @case (statuses.Loading) {
-    <p class="notice" role="status">Opening the room…</p>
+    <!-- A heading even while loading, so the page is never without one. -->
+    <div class="notice" role="status"><h1 class="notice__status">Opening the room…</h1></div>
   }
   @case (statuses.Missing) {
     <div class="notice">

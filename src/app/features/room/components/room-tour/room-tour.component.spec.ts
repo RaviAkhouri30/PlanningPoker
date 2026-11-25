@@ -99,4 +99,56 @@ describe('RoomTourComponent', () => {
     expect(element.querySelector<HTMLElement>('.spot')?.style.top).toBe('42px');
     expect(element.querySelector('.coach--top')).toBeNull();
   });
+  it('should move with the arrow keys, but not while typing in a field', async () => {
+    const element = await render(2);
+    const moves: string[] = [];
+    fixture.componentInstance.next.subscribe(() => moves.push('next'));
+    fixture.componentInstance.back.subscribe(() => moves.push('back'));
+    const field = document.createElement('input');
+    document.body.append(field);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+    field.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    field.remove();
+
+    expect(moves).toEqual(['next', 'back']);
+    expect(element.querySelectorAll('.coach__dot')).toHaveLength(TOUR_STEPS.length);
+    expect(element.querySelectorAll('.coach__dot--on')).toHaveLength(1);
+  });
+
+  it('should not go back from the first step with the arrow key', async () => {
+    await render(1);
+    const back = vi.fn();
+    fixture.componentInstance.back.subscribe(back);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+
+    expect(back).not.toHaveBeenCalled();
+  });
+
+  it('should give focus back to the button that opened it when it closes', async () => {
+    const opener = document.createElement('button');
+    document.body.append(opener);
+    opener.focus();
+    await render(1);
+
+    fixture.destroy();
+
+    expect(document.activeElement).toBe(opener);
+    opener.remove();
+  });
+
+  it('should focus the tour button when it closes after opening by itself', async () => {
+    const tourButton = document.createElement('button');
+    tourButton.dataset['tour'] = TourTarget.TourButton;
+    document.body.append(tourButton);
+    (document.activeElement as HTMLElement | null)?.blur();
+    await render(1);
+
+    fixture.destroy();
+
+    expect(document.activeElement).toBe(tourButton);
+    tourButton.remove();
+  });
 });

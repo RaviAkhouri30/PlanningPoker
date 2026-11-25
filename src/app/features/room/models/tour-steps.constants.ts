@@ -24,21 +24,33 @@ export const TOUR_STEPS: readonly ITourStep[] = [
     moderatorOnly: true,
   },
   {
+    target: TourTarget.Timer,
+    title: 'The countdown',
+    text: 'Each round counts down from a minute. A toast warns at 20 seconds, and at 00:00 voting closes until the moderator resets the timer.',
+    moderatorOnly: false,
+  },
+  {
     target: TourTarget.Table,
     title: 'The table',
-    text: 'Votes land here face down. Nobody sees a card until they all flip together.',
+    text: 'Votes land here face down and flip together. Then everyone sees the average and how much the team agrees.',
     moderatorOnly: false,
   },
   {
     target: TourTarget.Deck,
     title: 'Your cards',
-    text: 'Pick a card to vote. Tap it again to take it back before the flip.',
+    text: 'Pick a card to vote, or the cup for a break. Pick it again to take it back before the flip.',
     moderatorOnly: false,
+  },
+  {
+    target: TourTarget.Table,
+    title: 'Settle the estimate',
+    text: 'After the flip, accept the suggested card, pick another one, or type the value the team agreed on. Or vote again.',
+    moderatorOnly: true,
   },
   {
     target: TourTarget.Moderator,
     title: 'Run the round',
-    text: 'Flip the cards, clear votes, skip a story, change the deck or turn auto-reveal off.',
+    text: 'Reset the timer, flip, clear votes or skip a story. Set the countdown’s length, whether voting locks at 00:00, the deck and auto-reveal.',
     moderatorOnly: true,
   },
   {
@@ -56,7 +68,7 @@ export const TOUR_STEPS: readonly ITourStep[] = [
   {
     target: TourTarget.TourButton,
     title: 'That’s it',
-    text: 'Replay this tour any time from here.',
+    text: 'Replay this tour any time from here. In the tour, the arrow keys move between steps and Escape closes it.',
     moderatorOnly: false,
   },
 ];
@@ -65,4 +77,4 @@ export const TOUR_STEPS: readonly ITourStep[] = [
 export const TOUR_SEEN_KEY = 'planning-poker.room-tour';
 
 /** Its value once shown; bump it to show a changed tour again. */
-export const TOUR_SEEN_VALUE = 'v1';
+export const TOUR_SEEN_VALUE = 'v2';

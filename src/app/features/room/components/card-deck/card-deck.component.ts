@@ -25,5 +25,7 @@ export class CardDeckComponent {
   public readonly pick = output<string>();
 
   protected readonly breakCard = BREAK_CARD;
+  /** The break card shows only an icon, so it is named here. */
+  protected readonly breakLabel = 'I need a break';
   protected readonly coffeeIcon = IconName.Coffee;
 }

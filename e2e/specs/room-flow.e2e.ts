@@ -106,14 +106,21 @@ test.describe('Room flow', () => {
     await landing.createRoom('Alex Kim', 'Sprint 42');
     const room = new RoomPage(page);
 
-    await expect(room.tour).toContainText('Step 1 of 8');
+    await expect(room.tour).toContainText('Step 1 of 10');
     expect((await axe().analyze()).violations).toEqual([]);
-    for (let step = 1; step < 8; step += 1) {
+    // The arrow keys turn the page too.
+    await page.keyboard.press('ArrowRight');
+    await expect(room.tour).toContainText('Step 2 of 10');
+    await page.keyboard.press('ArrowLeft');
+    await expect(room.tour).toContainText('Step 1 of 10');
+    for (let step = 1; step < 10; step += 1) {
       await room.tour.getByRole('button', { name: 'Next' }).click();
     }
-    await expect(room.tour).toContainText('Step 8 of 8');
+    await expect(room.tour).toContainText('Step 10 of 10');
     await room.tour.getByRole('button', { name: 'Done' }).click();
     await expect(room.tour).toBeHidden();
+    // Opened by itself, it hands focus to the tour button, so keyboard users aren't lost.
+    await expect(room.tourButton).toBeFocused();
 
     // Shown once per browser: a second room doesn't bring it back, the tour button does. Coming
     // back to the home page with a room saved opens My rooms, whose "New room" leads to the form.
@@ -123,9 +130,10 @@ test.describe('Room flow', () => {
     await expect(page.getByText('No story yet')).toBeVisible();
     await expect(room.tour).toBeHidden();
     await room.tourButton.click();
-    await expect(room.tour).toContainText('Step 1 of 8');
+    await expect(room.tour).toContainText('Step 1 of 10');
     await page.keyboard.press('Escape');
     await expect(room.tour).toBeHidden();
+    await expect(room.tourButton).toBeFocused();
   });
 
   test('should show the room link in the invite dialog', async ({ landing, page }) => {

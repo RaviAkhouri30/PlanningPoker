@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { accessibleName, cardNamed } from '../../testing/room-fixtures';
 import { CardDeckComponent } from './card-deck.component';
 
 describe('CardDeckComponent', () => {
@@ -13,9 +14,12 @@ describe('CardDeckComponent', () => {
     fixture.detectChanges();
     const deck = fixture.nativeElement as HTMLElement;
 
-    deck.querySelector<HTMLButtonElement>('[aria-label="Vote 1"]')?.click();
+    cardNamed(deck, 'Vote 1')?.click();
+    const picked = deck.querySelector('.card--picked');
 
-    expect(deck.querySelector('.card--picked')?.getAttribute('aria-label')).toBe('Vote 2');
+    expect(picked === null ? null : accessibleName(picked)).toBe('Vote 2');
+    // The visible value is part of the name, for voice control (WCAG 2.5.3).
+    expect(picked?.hasAttribute('aria-label')).toBe(false);
     expect(deck.querySelector('[aria-label="I need a break"] app-icon')).not.toBeNull();
     expect(pick).toHaveBeenCalledWith('1');
   });

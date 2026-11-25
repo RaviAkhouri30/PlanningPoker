@@ -14,7 +14,7 @@ import {
 } from '@shared/testing/test-backend';
 import RoomPageComponent from './room-page.component';
 import { ROOM_MESSAGES } from './models/room-messages.constants';
-import { storyFields } from './testing/room-fixtures';
+import { cardNamed, storyFields } from './testing/room-fixtures';
 
 describe('RoomPageComponent', () => {
   let fixture: ComponentFixture<RoomPageComponent>;
@@ -69,7 +69,8 @@ describe('RoomPageComponent', () => {
   it('should vote, reveal and show the results in place of the deck', async () => {
     const page = await render();
 
-    click(page, 'button[aria-label="Vote 5"]');
+    cardNamed(page, 'Vote 5')?.click();
+    fixture.detectChanges();
     expect(page.textContent).toContain(ROOM_MESSAGES.voteIn);
     click(page, '.status .btn--primary');
 
@@ -117,9 +118,7 @@ describe('RoomPageComponent', () => {
     const page = await render();
 
     expect(page.textContent).toContain(ROOM_MESSAGES.votingClosedModerator);
-    expect(page.querySelector<HTMLButtonElement>('button[aria-label="Vote 5"]')?.disabled).toBe(
-      true,
-    );
+    expect(cardNamed(page, 'Vote 5')?.disabled).toBe(true);
     expect(page.querySelector('[role="timer"]')?.getAttribute('data-phase')).toBe('up');
   });
 
@@ -128,6 +127,15 @@ describe('RoomPageComponent', () => {
     const page = await render('someone-else');
 
     expect(page.textContent).toContain(ROOM_MESSAGES.votingClosed);
+  });
+
+  it('should keep the room name as the main heading when no story is active', async () => {
+    const page = await render();
+
+    await seed({ 'rooms/r1': roomFields({ moderatorUid: FAKE_GUEST_UID, activeStoryId: null }) });
+    fixture.detectChanges();
+
+    expect(page.querySelector('h1')?.textContent).toContain('Sprint 42');
   });
 
   it('should hide moderator tools from others and tell spectators they are watching', async () => {

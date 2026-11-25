@@ -1,4 +1,4 @@
-import { expect, test } from '../fixtures/test';
+import { axeFor, expect, test } from '../fixtures/test';
 import { JoinPage } from '../pages/join.page';
 import { RoomPage } from '../pages/room.page';
 
@@ -27,6 +27,8 @@ test.describe('Firebase room', () => {
       const join = new JoinPage(guestPage, new URL(page.url()).pathname);
       await join.open();
       await expect(guestPage).toHaveURL(/\/join$/);
+      await expect(guestPage.getByRole('heading', { level: 1, name: 'Sprint 42' })).toBeVisible();
+      expect((await axeFor(guestPage).analyze()).violations).toEqual([]);
       await join.pickAvatar('Whale');
       await join.join('Maya Patel');
       const guest = new RoomPage(guestPage);

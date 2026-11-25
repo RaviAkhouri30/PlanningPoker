@@ -86,7 +86,28 @@
   &__actions {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 8px;
     padding-top: 6px;
+  }
+
+  // Where you are in the tour, at a glance; "Step 2 of 9" says it in words.
+  &__dots {
+    display: flex;
+    gap: 5px;
+    margin-right: auto;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: t.$radius-pill;
+    background: t.color('line-strong');
+    transition: width 0.2s;
+
+    &--on {
+      width: 16px;
+      background: t.color('accent');
+    }
   }
 }

@@ -10,7 +10,13 @@
       >
     </div>
     <span class="bar__spacer"></span>
-    <div class="bar__timer" role="timer" aria-label="Time left" [attr.data-phase]="timerPhase()">
+    <div
+      class="bar__timer"
+      role="timer"
+      aria-label="Time left"
+      [attr.data-phase]="timerPhase()"
+      [attr.data-tour]="targets.Timer"
+    >
       <app-icon [name]="clockIcon" [size]="16" />{{ timer() }}
     </div>
     @if (canAddStory()) {

@@ -50,3 +50,28 @@ export function aState(change: Partial<IRoomState> = {}): IRoomState {
     ...change,
   };
 }
+
+/** A button's name as a screen reader reads it: its label, or its text without hidden parts. */
+export function accessibleName(button: Element): string {
+  const label = button.getAttribute('aria-label');
+  if (label !== null) {
+    return label;
+  }
+  return (
+    [...button.childNodes]
+      // Text and elements only: Angular leaves comment nodes ("container") in the template.
+      .filter((node) => node.nodeType === Node.TEXT_NODE || node instanceof Element)
+      .filter((node) => !(node instanceof Element && node.getAttribute('aria-hidden') === 'true'))
+      .map((node) => node.textContent)
+      .join('')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
+}
+
+/** The card button named `name`, e.g. "Vote 5", under `root`. */
+export function cardNamed(root: Element, name: string): HTMLButtonElement | undefined {
+  return [...root.querySelectorAll<HTMLButtonElement>('.card')].find(
+    (button) => accessibleName(button) === name,
+  );
+}
