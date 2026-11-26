@@ -101,6 +101,7 @@ serves as the DI token. A **factory** (`core/factories`) picks the adapter from
 | `IClipboardService` | `BrowserClipboardService`, `FakeClipboardService`| `copy(text)`                                                            |
 | `IPreferenceStore`  | `BrowserPreferenceStore`, `FakePreferenceStore`  | `read(key)`, `write(key, value)`: per-browser settings, never throw     |
 | `IFileSaver`        | `BrowserFileSaver`, `FakeFileSaver`              | `save(file)`: hands a generated file (a CSV backup) to the browser      |
+| `IServerClock`      | `BrowserServerClock`, `FakeServerClock`          | `offset()`: server clock minus device clock, once (`/api/health`), never errors |
 
 - The Firebase SDK is loaded lazily through the `*_GATEWAY_LOADER` tokens, so the landing page
   never downloads it.

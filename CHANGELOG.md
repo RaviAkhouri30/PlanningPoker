@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.3] — 2026-11-26
+
+### Fixed
+
+- The round countdown no longer hits 00:00 the moment it starts on a device whose clock runs fast.
+  It compared the server's start time with the device's clock, so a laptop a minute or more ahead
+  ended a one-minute round at once (and locked voting in that tab). The room now reads the server's
+  time once from `/api/health` and counts down on that; without the API (`npm start`, the
+  emulators) it falls back to the device's clock. New `IServerClock` port with browser and fake
+  adapters.
+
 ## [1.10.2] — 2026-11-26
 
 ### Fixed

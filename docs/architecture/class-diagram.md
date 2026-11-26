@@ -50,6 +50,12 @@ classDiagram
   }
   IFileSaver <|-- BrowserFileSaver
   IFileSaver <|-- FakeFileSaver
+  class IServerClock {
+    <<abstract>>
+    +offset() Observable~number~
+  }
+  IServerClock <|-- BrowserServerClock
+  IServerClock <|-- FakeServerClock
 
   ViewModel <|-- LandingViewModel
   ViewModel <|-- JoinViewModel
@@ -58,6 +64,7 @@ classDiagram
   RoomViewModel *-- RoomTour
   RoomTour ..> IPreferenceStore : seen once per browser
   RoomViewModel ..> RoomView : builds seats, stats
+  RoomViewModel ..> IServerClock : countdown on server time
   RoomCommands ..> ModerationService
   RoomCommands ..> VotesService
   RoomCommands ..> StoriesService
