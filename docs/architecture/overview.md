@@ -30,7 +30,7 @@ flowchart TB
     S[Feature services: paths, DTO mapping, batches]
   end
   subgraph Ports
-    P[IRealtimeStore · IAuthService · IClipboardService · IPreferenceStore · IFileSaver]
+    P[IRealtimeStore · IAuthService · IClipboardService · IPreferenceStore · IFileSaver · IServerClock]
   end
   subgraph Adapters
     F[Firebase adapters, lazy chunk]

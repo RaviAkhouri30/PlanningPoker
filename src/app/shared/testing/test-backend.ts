@@ -6,12 +6,14 @@ import { FakeClipboardService } from '@core/backends/fake/fake-clipboard.service
 import { FakeFileSaver } from '@core/backends/fake/fake-file-saver';
 import { FakePreferenceStore } from '@core/backends/fake/fake-preference-store';
 import { FakeRealtimeStore } from '@core/backends/fake/fake-realtime-store';
+import { FakeServerClock } from '@core/backends/fake/fake-server-clock';
 import { StoreWriteKind } from '@core/enums/store-write-kind.enum';
 import { IAuthService } from '@core/interfaces/i-auth-service';
 import { IClipboardService } from '@core/interfaces/i-clipboard-service';
 import { IFileSaver } from '@core/interfaces/i-file-saver';
 import { IPreferenceStore } from '@core/interfaces/i-preference-store';
 import { IRealtimeStore, type StoreFields } from '@core/interfaces/i-realtime-store';
+import { IServerClock } from '@core/interfaces/i-server-clock';
 import { CLOCK } from '@core/tokens/clock.token';
 import { RANDOM } from '@core/tokens/random.token';
 
@@ -34,6 +36,7 @@ export function testBackendProviders(): Provider[] {
     { provide: IClipboardService, useFactory: () => new FakeClipboardService() },
     { provide: IPreferenceStore, useFactory: () => new FakePreferenceStore() },
     { provide: IFileSaver, useFactory: () => new FakeFileSaver() },
+    { provide: IServerClock, useFactory: () => new FakeServerClock() },
   ];
 }
 

@@ -2,10 +2,11 @@ import { RoomRole } from '@shared/enums/room-role.enum';
 import { MyRoomsService } from '@shared/services/my-rooms.service';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
-import { BehaviorSubject, type Subscription, firstValueFrom, throwError } from 'rxjs';
+import { BehaviorSubject, type Subscription, firstValueFrom, of, throwError } from 'rxjs';
 import { FAKE_GUEST_UID } from '@core/backends/fake/fake-auth.service';
 import { IAuthService } from '@core/interfaces/i-auth-service';
 import { IRealtimeStore } from '@core/interfaces/i-realtime-store';
+import { IServerClock } from '@core/interfaces/i-server-clock';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
 import { PAGE_VISIBLE } from '@core/tokens/page-visible.token';
@@ -112,6 +113,17 @@ describe('RoomViewModel', () => {
     now.mockReturnValue(TEST_NOW + 16_000);
     vi.advanceTimersByTime(1000);
     expect(model.countdown.label()).toBe('00:44');
+  });
+
+  it('should count down from the server time when this device’s clock runs fast', () => {
+    vi.spyOn(TestBed.inject(IServerClock), 'offset').mockReturnValue(of(-75_000));
+    vi.spyOn(testClock, 'now').mockReturnValue(TEST_NOW + 75_000 + 15_000);
+    const model = start();
+
+    vi.advanceTimersByTime(0);
+
+    expect(model.countdown.label()).toBe('00:45');
+    expect(model.canVote()).toBe(true);
   });
 
   it('should show my vote and, once revealed, everyone’s cards and the stats', async () => {

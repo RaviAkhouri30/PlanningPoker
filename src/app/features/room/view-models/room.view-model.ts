@@ -20,6 +20,7 @@ import {
   timer,
 } from 'rxjs';
 import { IAuthService, type IAuthUser } from '@core/interfaces/i-auth-service';
+import { IServerClock } from '@core/interfaces/i-server-clock';
 import { LoggerService } from '@core/services/logger.service';
 import { APP_ORIGIN } from '@core/tokens/app-origin.token';
 import { CLOCK } from '@core/tokens/clock.token';
@@ -73,7 +74,7 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   /** The page's state, never undefined. */
   public readonly view = computed(() => this.data() ?? LOADING_ROOM);
 
-  /** The current time, ticking once a second for the timer and presence. */
+  /** The server's time, ticking once a second for the timer and presence. */
   public readonly now = signal(inject(CLOCK).now());
 
   public readonly me = computed(() => RoomView.me(this.view()));
@@ -111,6 +112,7 @@ export class RoomViewModel extends ViewModel<IRoomState> {
   private readonly stories = inject(StoriesService);
   private readonly votes = inject(VotesService);
   private readonly clock = inject(CLOCK);
+  private readonly serverClock = inject(IServerClock);
   private readonly visible = inject(PAGE_VISIBLE);
   private readonly toast = inject(ToastService);
   private readonly logger = inject(LoggerService);
@@ -229,12 +231,23 @@ export class RoomViewModel extends ViewModel<IRoomState> {
     this.changes.next(this.view());
   }
 
+  /**
+   * The countdown and presence compare server timestamps with `now`, so `now` is this device's
+   * clock corrected by the server's: a laptop running a minute fast would otherwise end a
+   * one-minute countdown the moment it starts. The offset is measured once, before the first tick,
+   * so the countdown's first reading is already right and no false "time's up" is toasted.
+   */
   private tick(): Observable<unknown> {
-    return timer(0, TIMER_TICK_MS).pipe(
-      tap(() => {
-        this.now.set(this.clock.now());
-        this.countdown.check();
-      }),
+    return this.serverClock.offset().pipe(
+      // switchMap: one offset, then the ticks for the rest of the visit.
+      switchMap((offset) =>
+        timer(0, TIMER_TICK_MS).pipe(
+          tap(() => {
+            this.now.set(this.clock.now() + offset);
+            this.countdown.check();
+          }),
+        ),
+      ),
     );
   }
 
